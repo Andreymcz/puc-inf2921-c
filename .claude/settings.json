@@ -1,0 +1,8 @@
+{
+  "seja": {
+    "output_dir": "_output",
+    "project_dir": "_references/project",
+    "template_dir": "_references/template",
+    "general_dir": "_references/general"
+  }
+}
