@@ -21,6 +21,9 @@ uv.lock
 # Knowledge base vector store (generated, not committed)
 knowledge/vectorstore/
 
+# Local-only documents (personal, not shared with team)
+knowledge/local_library/
+
 # Testing
 .pytest_cache/
 .coverage

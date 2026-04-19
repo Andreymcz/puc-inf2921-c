@@ -1,2 +1,12 @@
+#
 https://www.gov.br/mj/pt-br/assuntos/sua-seguranca/seguranca-publica/estatistica/dados-nacionais-1/base-de-dados-e-notas-metodologicas-dos-gestores-estaduais-sinesp-vde-2022-e-2023
+#
 https://docs.google.com/spreadsheets/d/1ufC7mYPMUc8Rwj5eE0biece5KOFI0_qG-hrZYvnEE_c/edit?usp=sharing
+
+# Recomendados pela disciplina
+
+## IPLAN
+https://www.iplan.rio/
+
+# DATAZOOM
+https://github.com/datazoompuc
