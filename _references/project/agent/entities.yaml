@@ -1,0 +1,25 @@
+version: 1
+
+entities:
+  - id: knowledge-base
+    name: KnowledgeBase
+    description: Top-level container — ChromaDB collection holding all embedded chunks
+    visibility: local (single-user)
+    ownership: system
+    soft_delete: false
+
+  - id: document
+    name: Document
+    description: A source file (.md or .pdf) ingested into the knowledge base
+    parent: knowledge-base
+    visibility: local
+    ownership: user (whoever runs kb-qa ingest)
+    soft_delete: false
+
+  - id: chunk
+    name: Chunk
+    description: An embedded text segment derived from a Document; the atomic retrieval unit
+    parent: document
+    visibility: local
+    ownership: system (auto-generated from Document)
+    soft_delete: false

@@ -1,0 +1,26 @@
+version: 1
+
+spec_checks:
+  - id: check-001
+    description: "Ingest path isolation"
+    rule: "Only ingest.py writes to ChromaDB"
+    check_type: grep_absent
+    pattern: "collection\\.add|chroma_client\\.get_or_create"
+    exclude_files:
+      - "src/kb_qa/ingest.py"
+      - "tests/"
+
+  - id: check-002
+    description: "Query path isolation"
+    rule: "Only query.py reads from ChromaDB via similarity search"
+    check_type: grep_absent
+    pattern: "collection\\.query|collection\\.get"
+    exclude_files:
+      - "src/kb_qa/query.py"
+      - "tests/"
+
+  - id: check-003
+    description: "No hardcoded secrets"
+    check_type: grep_absent
+    pattern: "sk-ant-|ANTHROPIC_API_KEY\\s*=\\s*['\"]"
+    scope: "src/"
