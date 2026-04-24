@@ -80,6 +80,8 @@ Para MVP: token estatico simples (varavel de ambiente) como `access_level`. Para
 
 Rationale critico: dados de localizacao de comunidades indigenas tem historico documentado de uso por atores mal-intencionados. Nao ha negociacao aqui -- e prerequisito etico e de seguranca antes de ingerir qualquer dado do PNCSA ou FUNAI.
 
+User arodrigues: Isso aqui é um componente importante para o estudo atual ? o objetivo, pelo que entendo é que o sistema final forneça mecanismos de controle de acesso mais alto nível ( uma api rest por exemplo), que não é o escopo atual
+
 ---
 
 #### Perspectiva DATA -- Soberania de dados: principios CARE + OCAP como restricoes de design [HIGH]
@@ -150,6 +152,7 @@ O datazoom.amazonia e um pacote R que acessa PRODES, DETER, IMAZON, SIMLAM, IBAM
 
 Estender `src/kb_qa/ingestion/` para suportar GeoJSON como novo tipo de fonte, alem de .md e .pdf.
 
+User arodrigues: opção A
 ---
 
 #### Resumo executivo: o que construir, em que ordem
@@ -167,13 +170,139 @@ Estender `src/kb_qa/ingestion/` para suportar GeoJSON como novo tipo de fonte, a
 
 ---
 
+### Q2
+
+**Pergunta** (User arodrigues): Quero depender menos do MCP e ir para um caminho de construir uma solucao que execute por si so -- por exemplo um executavel que levanta um servidor MCP e/ou REST e que forneca os servicos discutidos. Alem disso, esse servico poderia ser configuravel para se conectar a um modelo de LLM que pode ser local. Sobre SEC: o objetivo e que o sistema final forneca mecanismos de controle de acesso em nivel mais alto (uma API REST), que nao e o escopo atual.
+
+**Resposta**:
+
+#### Correcao de escopo -- SEC no nivel certo
+
+O usuario esta correto: controle de acesso por `sensitivity_level` nos metadados do ChromaDB e over-engineering para o escopo atual. O mecanismo adequado e na camada HTTP (API Key via `Authorization: Bearer` no middleware FastAPI). O campo `sensitivity_level` ainda tem valor como **metadado de curadoria** (documentar que um chunk e sensivel), mas nao como mecanismo de controle de acesso tecnico para o MVP.
+
+Revisao da prioridade R1: de HIGH para MEDIUM (metadado de curadoria, implementar junto com o modelo de proveniencia).
+
+#### Arquitetura de servico dual MCP + REST [HIGH]
+
+Tres topologias existem; a mais adequada para MVP e:
+
+**Topologia A -- Processo unico, asyncio tasks paralelas**
+
+```python
+# agents/server.py (conceitual)
+async def main():
+    config = uvicorn.Config(fastapi_app, port=8000)
+    http_server = uvicorn.Server(config)
+    await asyncio.gather(
+        http_server.serve(),
+        mcp_server.run_sse_async()  # FastMCP SSE transport, porta 8001
+    )
+```
+
+- FastMCP suporta `run(transport="sse")` -- HTTP-native, nao conflita com uvicorn.
+- Manter `agents/mcp_server.py` como entrypoint standalone para Claude Code / Copilot (compatibilidade retroativa).
+- `agents/server.py` como novo entrypoint para o servico dual.
+
+#### Abstracacao de LLM -- litellm e a escolha certa [HIGH]
+
+| Biblioteca | Peso | Ollama | Overhead | Veredicto |
+|---|---|---|---|---|
+| **litellm >= 1.40** | Leve | Sim | Aceitavel para academico | **Recomendado** |
+| langchain | Pesado | Sim | Alto | Nao -- over-engineering |
+| openai SDK direto | Minimo | Sim (base_url) | Zero | Alternativa se litellm for muito |
+
+Ollama expoe `/v1/chat/completions` em `localhost:11434/v1` -- 100% compativel com o SDK OpenAI e com litellm:
+
+```python
+# litellm abstrai tudo:
+litellm.completion(model="ollama/llama3.2", ...)      # local
+litellm.completion(model="anthropic/claude-sonnet-4-6", ...)  # cloud
+```
+
+**Impacto de LLMs locais no design do agente**:
+- Nem todos os modelos locais suportam tool calling confiavelmente. Llama 3.2, Qwen2.5 tem suporte razoavel; modelos < 3B podem ignorar o formato.
+- Latencia de 2-30s por resposta -> o endpoint `/chat` DEVE ser streaming (SSE) desde o inicio.
+- Context window menor (4k-8k vs 200k do Claude) -> numero de chunks RAG configuravel, default conservador (3-5).
+
+#### Configuracao via pydantic-settings [HIGH]
+
+```python
+# src/kb_qa/config.py
+class Settings(BaseSettings):
+    llm_provider: str = "anthropic"          # "anthropic" | "ollama" | "openai"
+    llm_model: str = "claude-sonnet-4-6"     # "llama3.2" para Ollama
+    llm_base_url: str | None = None          # "http://localhost:11434/v1" para Ollama
+    anthropic_api_key: str | None = None
+    rest_port: int = 8000
+    mcp_port: int = 8001
+    api_key: str | None = None               # Bearer token para REST
+    debug: bool = False
+
+    model_config = SettingsConfigDict(env_file=".env", env_ignore_empty=True)
+```
+
+#### Endpoints REST para MVP [MEDIUM]
+
+```
+POST /query    -- RAG retrieval puro (retorna chunks, sem LLM) [sem auth para MVP]
+POST /chat     -- RAG + LLM generation (streaming SSE)         [API Key]
+GET  /status   -- health check (vectorstore, embed model, LLM) [sem auth]
+```
+
+Manter `/ingest` exclusivamente no CLI para MVP -- ingestao e operacao privilegiada e ChromaDB PersistentClient nao tem garantias de seguranca multi-writer.
+
+#### Deploy para comunidades com infraestrutura limitada [MEDIUM]
+
+Nao usar Docker -- adiciona complexidade desnecessaria para hardware limitado.
+
+Estrategia recomendada:
+- `uv` + `systemd unit` (Linux) como servico de sistema.
+- Script `install.sh`: instala uv, clona repo, `uv sync`, cria `.env`, registra servico.
+- Para LLM local: `ollama pull llama3.2` (3B para hardware limitado) ou `ollama pull llama3.2:8b` para hardware medio.
+- Escolha do modelo e configuracao via `.env` -- nenhum modelo hardcoded.
+
+#### Referencia de mercado mais proxima
+
+**RAGFlow** (infiniflow/ragflow, 40k+ stars) combina REST API propria + multiplos LLM backends + ingestao de documentos. Mas e uma stack full-stack pesada.
+
+Padrao mais util: **Open WebUI usa `mcpo`** -- converte MCP servers em endpoints REST OpenAI-compativel. Se o MCP server atual ja estiver funcionando, `mcpo` pode expor ele como REST como passo intermediario rapido antes de construir uma FastAPI propria.
+
+#### Roadmap revisado (incorporando nova direcao)
+
+| # | Extensao | Prioridade | Complexidade |
+|---|---|---|---|
+| 1 | `src/kb_qa/config.py` com pydantic-settings | HIGH | Baixa |
+| 2 | `src/kb_qa/llm.py` com litellm (Ollama + Anthropic) | HIGH | Baixa |
+| 3 | FastAPI REST: `/status`, `/query`, `/chat` (SSE) | HIGH | Media |
+| 4 | `agents/server.py` dual (MCP SSE + FastAPI, asyncio.gather) | HIGH | Media |
+| 5 | DuckDB spatial como engine geoespacial | HIGH | Media |
+| 6 | Metadados de proveniencia CARE/OCAP + sensitivity_level (curadoria) | MEDIUM | Baixa |
+| 7 | Pipeline de ingestao GeoJSON (script R + exportacao) | MEDIUM | Media |
+| 8 | Tool MCP `query_spatial` + `render_map` | MEDIUM | Media |
+| 9 | `install.sh` + systemd unit para deploy em comunidades | MEDIUM | Baixa |
+| 10 | Migrar para PostGIS (multi-usuario, producao) | LOW | Alta |
+
+---
+
 ## Recommendations Summary
 
 | # | Recomendacao | Prioridade |
 |---|---|---|
-| R1 | Implementar controle de acesso por `sensitivity_level` no MCP server ANTES de ingerir qualquer dado comunitario | HIGH |
-| R2 | Adotar CARE + OCAP como restricoes de design: proveniencia, consentimento, direito de remocao por chunk | HIGH |
-| R3 | Adicionar DuckDB spatial como segunda engine de recuperacao para queries geoespaciais reais | HIGH |
+**Revisao apos Q2 -- nova direcao arquitetural (servico autocontido + LLM local)**
+
+| # | Recomendacao | Prioridade |
+|---|---|---|
+| R1 | Implementar `src/kb_qa/config.py` com pydantic-settings (LLM provider, model, base_url, portas, API key REST) | HIGH |
+| R2 | Adotar litellm como camada de abstracao de LLM -- suporta Ollama, Anthropic, OpenAI sem reescrever o agente | HIGH |
+| R3 | Construir FastAPI REST com endpoints `/status`, `/query`, `/chat` (SSE streaming) | HIGH |
+| R4 | `agents/server.py` dual: FastMCP SSE + uvicorn/FastAPI via asyncio.gather() -- manter mcp_server.py standalone | HIGH |
+| R5 | Adicionar DuckDB spatial como segunda engine de recuperacao para queries geoespaciais reais | HIGH |
+| R6 | Metadados de proveniencia CARE/OCAP + sensitivity_level como campo de curadoria (nao controle de acesso) | MEDIUM |
+| R7 | Pipeline de ingestao GeoJSON via script R + exportacao (Opcao A, escolha do usuario) | MEDIUM |
+| R8 | Tools MCP `query_spatial` + `render_map` (PNG base64 ou link kepler.gl) | MEDIUM |
+| R9 | Script `install.sh` + systemd unit para deploy em comunidades sem Docker | MEDIUM |
+| R10 | Adotar CARE + OCAP como restricoes de governanca comunitaria da base de dados | HIGH |
+| R11 | Migrar para PostGIS quando uso multi-usuario exigir (nao no MVP) | LOW |
 | R4 | Expor `query_spatial` como tool MCP adicional, orquestrado pelo mesmo agente que `query_knowledge` | HIGH |
 | R5 | Implementar `render_map` tool MCP para saida visual cartografica (PNG base64 ou link kepler.gl) | MEDIUM |
 | R6 | Construir pipeline de ingestao GeoJSON a partir de APIs do TerraBrasilis/INPE (sem dependencia de R) | MEDIUM |
