@@ -1,0 +1,1 @@
+https://simonw.github.io/nicar-2026-coding-agents/?utm_source=substack&utm_medium=email
