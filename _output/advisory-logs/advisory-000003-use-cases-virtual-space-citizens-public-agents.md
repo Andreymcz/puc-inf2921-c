@@ -1,6 +1,6 @@
 # Advisory 000003 | FEATURE-X | 2026-05-22 00:00 | Use Cases: Virtual Space for Citizens and Public Agents
 
-tags: civic-tech, participatory-democracy, use-cases, ux, data-privacy, architecture
+tags: civic-tech, participatory-democracy, use-cases, ux, data-privacy, architecture, open-data, citizen-profiling
 
 ## User Brief
 
@@ -306,3 +306,149 @@ Batch pipeline (embed -> cluster -> label with LLM -> quote-ground) producing a 
 Two separate dashboards -- public managers (clustered territorial problems by theme, location, urgency) and GaveaLab researchers (full corpus, audit trail, longitudinal profile) -- plus a defined institutional handoff routing synthesized outputs to municipal government or academic publication.
 
 **The critical gap across all platforms:** Every platform generates synthesis outputs; every platform struggles to ensure those outputs are acted on. GaveaLab's academic legitimacy is a structural asset that commercial platforms and volunteer processes lack -- framing synthesis outputs as peer-reviewed research findings (with methodology, reproducibility, and citation) is the institutional reception mechanism that vTaiwan's volunteer model cannot guarantee.
+
+---
+
+## Q2 -- Open Datasets for Citizen Profiling and Territorial Needs Analysis
+
+*Follow-up question: are there open datasets for this civic tech? We will work on synthesizing these datasets to extract insights and develop citizen common profiles and needs.*
+
+### Brazilian Open Datasets
+
+#### 1. IBGE -- Censo Demografico 2022
+
+The primary sociodemographic source. Portal: censo2022.ibge.gov.br and downloads.ibge.gov.br. REST API: `https://servicodados.ibge.gov.br/api/v3/agregados/{pesquisa}/periodos/{periodo}/variaveis/{variavel}?localidades=N6[all]`. Geographic granularity from Brazil down to census tracts (setor censitario) and weighting areas. Variables: age pyramid, income per capita, literacy, race/ethnicity, water/sanitation/electricity access, employment status, housing conditions, indigenous/quilombola self-declaration. Practical access: Base dos Dados (BigQuery, harmonized codes) and the `censobr` R package.
+
+#### 2. Base dos Dados -- basedosdados.org
+
+The single most practical entry point. A nonprofit data lake hosted on Google BigQuery (~1 TB/month free tier). Aggregates and cleans 100+ Brazilian official datasets (Censo 2022, DATASUS, INEP, RAIS, SNIS, CadUnico aggregates) with harmonized IBGE municipality codes as the universal join key. Access via BigQuery SQL, Python (`pip install basedosdados`), or R package. Eliminates 80% of data engineering work.
+
+#### 3. DATASUS -- Health System Data
+
+Portal: dadosabertos.saude.gov.br (67 data collections). Key systems: SIM (mortality causes by municipality), SINASC (births, maternal conditions), SINAN (notifiable diseases -- dengue, malaria, TB, critical for Amazonian contexts), CNES (health facility locations and capacity), SIA/SIH (outpatient and hospital information). Access tools: `microdatasus` R package, TabNet web queries. Health access gaps and disease burden are direct indicators of territorial neglect.
+
+#### 4. INEP -- Education Data
+
+Portal: gov.br/inep/dados-abertos and community API at api.dadosabertosinep.org. Key datasets: Censo Escolar (enrollment, school infrastructure: water, electricity, internet, toilets -- school and municipal level), IDEB (learning quality index by school and municipality), ENEM microdata (individual exam results with municipality of residence and sociodemographics). `educabR` R package for tidy access.
+
+#### 5. RAIS / CAGED -- Labor Market
+
+Portal: gov.br/trabalho-e-emprego/microdados-rais-e-caged. RAIS: annual formal employment stock by municipality/sector/occupation/gender/age/race/salary band, back to 1985. CAGED: monthly formal job creation/destruction flows (New CAGED, e-Social based, since 2020). Important: full identified microdata requires a Data Use Agreement (months to process). The `clean_RAIS` GitHub repo provides processing scripts. Covers formal employment only -- in many Amazonian municipalities 60-80% of economic activity is informal and invisible in this dataset.
+
+#### 6. CadUnico -- Cadastro Unico
+
+Portal: CECAD 2.0 (cecad.cidadania.gov.br) and Observatorio do CadUnico. Coverage: ~100 million registered low-income individuals in ~40 million families. Variables: household address, composition, housing conditions, income, education level, disabilities, water/sanitation access, employment status, social program enrollment. Open data: municipal aggregates via CECAD. Individual microdata requires formal research partnership with MDS/DATAPREV. The richest available proxy for poverty geography and multi-dimensional vulnerability in Brazil.
+
+#### 7. SNIS / SINISA -- Water and Sanitation
+
+Portal: gov.br/cidades/saneamento/snis (replaced in 2024 by SINISA). Available cleaned at Base dos Dados. Annual municipal data: water access rates, sewerage coverage, treatment rates, per-capita investment. Sanitation deficits are a direct indicator of unmet territorial needs, especially in peri-urban and Amazonian communities.
+
+#### 8. Fala.BR -- Federal Ombudsman Complaints
+
+Portal: falabr.cgu.gov.br. Coverage: 6+ million manifestations (denunciations, complaints, compliments, suggestions, requests). REST API documented at wiki.cgu.gov.br/Fala.BR_API_Faq. Bulk download available. Granularity: individual manifestation with topic categorization, agency, and geographic origin. The closest available real-time citizen need signal from the federal sphere. Complement: SP 156 (sp156.prefeitura.sp.gov.br) for Sao Paulo municipal complaints.
+
+#### 9. datazoom.amazonia -- PUC-Rio DataZoom
+
+Portal: datazoom.com.br/datazoom.amazonia. GitHub: datazoompuc/datazoom.amazonia. An R package (CRAN) that wraps and pre-processes multiple official datasets specifically for Legal Amazon municipalities: PRODES (deforestation), DETER (deforestation alerts), IBGE municipality mapping, agricultural production (PAM), mining (ANM), SINAN health, CNES, conservation units, indigenous lands, land use. This is a direct PUC-Rio output and the most useful aggregation tool for Amazonian territorial analysis.
+
+#### 10. TerraBrasilis / INPE -- Environmental Monitoring
+
+Portal: terrabrasilis.dpi.inpe.br. Datasets: PRODES (annual deforestation since 1988), DETER (daily deforestation alerts), fire hotspots, land use change. Formats: Shapefile, GeoJSON, WMS/WFS web services. Polygon-level granularity aggregable to municipality or indigenous territory. Essential for Amazonian territorial analysis.
+
+#### 11. geobr -- Spatial Boundaries (IPEA)
+
+Portal: ipeagit.github.io/geobr. R/Python package providing 27 spatial datasets: municipalities, states, census tracts, urbanized areas, indigenous lands, conservation units, weighting areas, macro/meso/microregions. Harmonized projections and fixed topology. The recommended tool for all spatial operations -- eliminates common spatial join errors.
+
+#### 12. Brazil Data Commons
+
+Portal: brazildatacommons.com.br. Emerging semantic platform (2024 arXiv:2511.11755) that unifies Brazilian public datasets under shared ontologies and interoperable data standards. Provides a SPARQL endpoint. Addresses the absence of shared schemas that hinder cross-domain integration across existing portals.
+
+---
+
+### International Civic Participation Datasets
+
+| Dataset | Portal | Format | Relevance |
+|---------|--------|--------|-----------|
+| Open311 / GeoReport v2 | open311.org | REST JSON | Standard for civic service requests (311 equivalent); benchmark for complaint-to-need classification |
+| Decidim exports (per city) | decidim.org / per-city admin | CSV, JSON, GraphQL | Proposals, votes, comments, participatory budgeting results per city instance |
+| Pol.is exports | compdemocracy/polis GitHub | CSV (vote matrix) | Comment-vote matrix, opinion clusters for deliberative polling studies |
+| Participedia | participedia.net | Web / JSON | 3,000+ participatory process case descriptions globally, including Brazilian cases |
+| MapAgora (US) | nature.com/s41597-025-05353-6 | CSV (ZIP codes) | Civic opportunity/need profile per territory; direct international precedent |
+
+---
+
+### Entity Model for Citizen Profiles and Territorial Needs
+
+The universal join key across all Brazilian datasets is the **Codigo IBGE de Municipio** (7-digit). Every join happens through this code or through the 15-digit setor censitario code.
+
+```
+TERRITORY (municipio / setor censitario / terra indigena)
++-- Sociodemographic Profile
+|   +-- IBGE Censo 2022: age, race, income, household, literacy
+|   +-- CadUnico (aggregated): poverty concentration, social vulnerability
+|   +-- RAIS: formal employment rate by sector
++-- Health Needs
+|   +-- SINAN: disease burden (malaria, dengue, TB -- Amazonian)
+|   +-- CNES: health facility coverage, distance to nearest facility
+|   +-- SIM: premature mortality rate
++-- Education Needs
+|   +-- Censo Escolar: school infrastructure, enrollment, dropout rate
+|   +-- IDEB: learning quality outcomes
++-- Infrastructure Needs
+|   +-- SNIS/SINISA: water access, sewerage coverage
+|   +-- IBGE Censo: electricity, internet, housing precarity
++-- Environmental Dimension (Amazonia)
+|   +-- PRODES: accumulated deforestation
+|   +-- DETER: active deforestation pressure
+|   +-- datazoom.amazonia: integrated Legal Amazon variables
++-- Citizen Voice Dimension
+    +-- Fala.BR: complaint type frequency by municipality/theme
+    +-- Platform-native: participatory platform proposals and votes
+```
+
+**Standard methodology for "common citizen profiles":**
+1. Sociodemographic segmentation from Census microdata (age, income, race, household type)
+2. Multi-dimensional need scoring: normalize deficit indicators across all dimensions above
+3. Spatial clustering: k-means or HDBSCAN on census tracts using indicators as features
+4. Profile labeling: LLM-generated labels for each cluster backed by indicator values
+
+---
+
+### Key Gaps -- What is NOT in Open Datasets
+
+These are the dimensions that GaveaLab's participatory platform must collect as primary data:
+
+| Gap | Why it matters |
+|-----|---------------|
+| Intra-municipal granularity (neighborhood, street, community level) | Open datasets stop at municipality or census tract; informal settlements (*favelas*, *comunidades*) and dispersed riverbank communities (*ribeirinhos*) are invisible |
+| Expressed vs. derived needs | Datasets measure observed conditions; citizens' own priority ordering only comes from surveys or participatory processes |
+| Indigenous and traditional community data | FUNAI TI registry exists but individual socioeconomic data is fragmentary; RAIS undercounts informal Amazonian economies |
+| Qualitative/cultural dimensions | No variables for territorial belonging, cultural heritage, community governance, traditional ecological knowledge |
+| Real-time needs from acute events | Most datasets are annual or decennial; floods, fires, and economic shocks are invisible until the next cycle |
+| Service quality vs. availability | CNES says a health post exists; does not capture wait times, medication stock, or whether staff is present |
+| Informal economy | RAIS/CAGED cover formal employment only; 60-80% of economic activity in many Amazonian municipalities is invisible |
+| Digital exclusion bias | Fala.BR, Decidim, 156 systems -- only digitally literate, connected citizens participate; rural Amazonian communities are structurally absent |
+
+The last gap is the most critical for GaveaLab's research design: any "citizen voice" dataset from digital platforms requires explicit bias correction when used to characterize territorial needs.
+
+---
+
+### Practical Integration Path for GaveaLab
+
+1. **Start with Base dos Dados** as the technical access layer (BigQuery, harmonized codes, Python/R SDK).
+2. **Use datazoom.amazonia** for Legal Amazon municipality profiling -- it is a direct PUC-Rio output.
+3. **Layer Fala.BR API data** for the citizen voice dimension -- parse complaint themes and map to municipalities to detect service failure concentrations.
+4. **Use geobr** for all spatial operations -- harmonized projections, indigenous land boundaries, conservation units.
+5. **Plan primary data collection** for intra-municipal need mapping, expressed preference ordering, and service quality experience. No open dataset covers these, and they represent GaveaLab's distinctive research contribution.
+
+---
+
+### Academic Precedents for Multi-Source Civic Data Synthesis
+
+| Source | Contribution |
+|--------|-------------|
+| Brazil Data Commons (arXiv 2511.11755, 2024) | Unified semantic layer for Brazilian datasets; SPARQL endpoint; direct precedent for data integration challenge |
+| "A Citizen-Centric Approach for Territorial Services Management" (MDPI IJGI, doi:10.3390/ijgi9040223) | Framework combining open government data with citizen-generated service feedback to build territorial service profiles |
+| "Effective City Planning: Data-Driven Analysis of Infrastructure and Citizen Feedback in Bangalore" (arXiv 2211.03126) | Infrastructure open data + complaint data -> territorial planning insights pipeline |
+| MapAgora (Scientific Data, 2025) | Multi-source civic dataset building territorial civic opportunity/need profiles per ZIP code |
+| "Voice to Vision" (arXiv 2505.14853, 2025) | Co-designed civic data infrastructure for participatory decision support -- most recent directly relevant paper |
