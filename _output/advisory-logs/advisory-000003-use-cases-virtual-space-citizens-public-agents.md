@@ -164,10 +164,145 @@ Territorial communities (especially in Amazonia/Gavea context) include individua
 | Decidim | Open-source participatory democracy; participatory budgeting + citizen proposals + assemblies modules |
 | Pol.is | Consensus-detection algorithm; structurally resistant to astroturfing; used in vTaiwan |
 | Talk to the City (AI Objectives Institute) | Canonical AI-assisted synthesis pipeline; embedding + clustering + LLM labeling |
-| CitizenLab | Commercial civic engagement SaaS; separate analytics dashboard for decision-makers |
-| UrbanSim / Urban Digital Twins | Territory risk/opportunity profiling for investors and planners |
+| CitizenLab / Go Vocal | Commercial civic engagement SaaS; separate analytics dashboard for decision-makers |
+| Consul Democracy | Participatory budgeting model; collaborative legislation annotation |
+| vTaiwan | Governance process model; institutional handoff from synthesis to policy |
+| Urban Digital Twins | Spatial anchoring of testimony; equity-first participation design |
 | LGPD (Brazil, Lei 13.709/2018) | Data protection law applicable to citizen testimony collection |
 | Carnegie Endowment (2026) -- Realizing Gains of AI-Enabled Deliberative Democracy | AI augmentation patterns for deliberative processes |
 | Chan 2024 -- Online astroturfing: A problem beyond disinformation | Astroturfing as existential risk for civic platforms |
 | arXiv 2405.03452 -- LLMs as Agents for Augmented Democracy | LLM agent patterns for democratic participation at scale |
 | arXiv 2604.16348 -- Spatial Anchoring and LLM Agents for Participatory Urban Planning | Spatially-anchored LLM agents for UC2 decision-support |
+
+---
+
+## Platform Synthesis (Deep Research)
+
+*Added 2026-05-22 in response to follow-up. Full research by advisory-reviewer agent with web search.*
+
+### 1. Decidim
+
+**What it is:** Open-source participatory democracy framework (Ruby on Rails), used by 450+ organizations including Barcelona, built around Participatory Spaces (Processes, Assemblies, Initiatives) and Participatory Components (Proposals, Comments, Votes, Budgeting, Accountability).
+
+**Core mechanism:** Citizens submit proposals within a Process space; proposals flow through comment/amendment/vote/accountability stages. All activity is public (radical transparency). A GraphQL API exposes participatory data for external integrations.
+
+**Technical architecture:** Gem-based modularity -- each feature is an independent Rails engine, configurable per deployment. PostgreSQL + Elasticsearch. Space/Component composition decouples "where we discuss" from "how we discuss."
+
+**AI integration:** None native. The GraphQL API is the integration point for an external AI synthesis layer -- export proposals and comments periodically to a T3C-style pipeline.
+
+**Limitations:** Reproduces participation inequalities (requires digital literacy, sustained attention). No native geospatial layer. Upgrade friction from gem modularity. Radical transparency can deter participation on sensitive topics.
+
+**Relevance to GaveaLab:** The Space/Component model maps directly to GaveaLab's structure (territory as Space; testimony collection, deliberation, synthesis reporting as Components). The Accountability component pattern (linking decisions back to citizen proposals) closes the UC3c feedback loop. Radical transparency resolves synthesis-layer capture risk. GraphQL provides the UC3b integration point.
+
+---
+
+### 2. Pol.is
+
+**What it is:** Open-source real-time opinion-collection and consensus-detection system. Participants vote agree/disagree/pass on short statements; PCA + k-means clustering identifies opinion groups and cross-group consensus points.
+
+**Core mechanism:** Sparse vote matrix (participants x statements). PCA finds variance-explaining dimensions; k-means clusters participants by opinion similarity. The algorithm is **structurally resistant to astroturfing**: organized blocs appear as visible outlier clusters rather than distorting consensus. Consensus statements emerge only when they receive high agreement across multiple distinct clusters.
+
+**Key use case:** Identifying where genuine consensus exists before deliberation begins. Not suited for complex multi-stage deliberation or idea generation.
+
+**Technical architecture:** Node.js API + React frontend + R-based math worker. PostgreSQL. Open-source at github.com/compdemocracy/polis. Computationally lightweight (vote matrix, not embeddings).
+
+**AI integration:** arXiv:2306.11932 documents three LLM augmentation patterns: (1) LLM-generated narrative summaries of cluster distinguishing statements; (2) LLM-seeded statements from policy documents to accelerate convergence; (3) LLM deduplication of near-identical statements. vTaiwan now integrates generative AI for post-session summaries.
+
+**Limitations:** Topic-framing depends entirely on who seeds initial statements. Captures sentiment but not reasons. Under-represents minority viewpoints (auditing paper arXiv:2511.04588). Requires 100+ active voters for reliable clusters.
+
+**Relevance to GaveaLab:** Primary use is for UC1 anti-manipulation layer and UC2a manager dashboard. Opinion landscape visualization is more methodologically defensible than raw LLM summaries for public reporting. Tiered trust scoring from advisory-000003 mirrors Pol.is implicit architecture. Statements can be geographically tagged for per-neighborhood opinion maps.
+
+---
+
+### 3. Talk to the City (T3C)
+
+**What it is:** Open-source AI pipeline (Python DAG) by the AI Objectives Institute that transforms large volumes of unstructured citizen text into hierarchical theme trees, with every synthesized claim grounded in a direct participant quote.
+
+**Core mechanism:** Configurable graph pipeline: extract claims (LLM) -> embed (sentence-transformers or OpenAI) -> cluster (UMAP + HDBSCAN) -> label clusters (LLM) -> deduplicate -> generate quote-grounded report. The quote-verification step (confirming every synthesized claim traces to a verbatim source quote) is the anti-hallucination mechanism. Batch mode, not real-time.
+
+**Used in:** Tokyo gubernatorial election pre-consultation (1,000 respondents), Chatham House/vTaiwan AI governance process (1,000 participants), multiple civic deliberation contexts.
+
+**Technical architecture:** Python class DAG configured via JSON/YAML. Steps are composable and replaceable (swap LLM provider, clustering algorithm, embedding model). Output is a structured JSON report (theme tree + quotes + metadata). Open-source at github.com/AIObjectives/talk-to-the-city-reports.
+
+**AI integration:** Entirely AI-native. LLMs used for extraction and labeling (where source grounding is enforceable), not for summarization (where hallucination is hard to detect). Each LLM call must produce a claim + supporting quote; post-processing verifies the quote exists verbatim.
+
+**Limitations:** Context window limits for very large corpora (mitigated by chunking, but cross-chunk claims can be missed). Produces a theme tree, not a deliberative outcome (no agreement signal -- Pol.is addresses this). Asynchronous batch only -- no real-time participation feedback. API costs proportional to corpus size. Cluster quality depends on embedding model and parameter tuning.
+
+**Relevance to GaveaLab:** This is the **direct reference architecture for UC3b**. The pipeline's three stages (embed -> cluster -> label with quote grounding) are buildable on the existing stack: sentence-transformers (already in use), UMAP + HDBSCAN clustering module (add), Anthropic SDK (already in use). The open-source repository provides working Python code to adapt. Quote-grounded output format is specifically well-suited to academic/policy audiences requiring evidence chains. T3C can be understood as the synthesis layer sitting above the retrieval layer the team already built.
+
+---
+
+### 4. Go Vocal (formerly CitizenLab)
+
+**What it is:** Commercial civic engagement SaaS (closed-source, subscription-based). Multi-modal citizen input (ideas, surveys, participatory budgeting, polls) plus built-in NLP sensemaking dashboard for government administrators. 500+ cities globally.
+
+**Core mechanism:** Projects with phases (information, ideation, voting, implementation) and multiple input types. Proprietary NLP pipeline applies topic modeling to cluster submitted ideas, generating a keyword co-occurrence map for administrators. Human-in-the-loop: AI generates draft cluster labels that administrators validate before publishing findings.
+
+**AI integration:** Built-in sensemaking tool (NLP topic clustering, keyword map). Premium "Sensemaking" feature uses AI to assist in writing consultation reports. Cambridge City Council reported 50% reduction in manual processing time.
+
+**Limitations:** Vendor lock-in -- all citizen data on Go Vocal's servers; NLP models are not auditable; pricing is unsuitable for resource-constrained contexts. Portuguese-language NLP quality unknown. No native geospatial layer. Black-box clustering prevents methodological defense in research contexts.
+
+**Relevance to GaveaLab:** Primary extractable pattern is the **two-audience separation**: citizen-facing interface (simple, action-oriented) vs. administrator sensemaking dashboard (analytical, research-oriented). This maps to UC1/UC2/UC3 separation. The human-in-the-loop cluster validation pattern -- AI generates draft labels, researcher confirms before publishing -- is the right model for UC3b methodological defensibility. GaveaLab should build an open-source equivalent using T3C rather than subscribing, given LGPD data residency requirements.
+
+---
+
+### 5. Consul Democracy
+
+**What it is:** Open-source citizen participation platform (Ruby on Rails), built by Madrid City Council (2015), used by 90+ governments. Strongest use case: participatory budgeting. Also supports citizen proposals (with signature thresholds), debates, and collaborative legislation annotation.
+
+**Core mechanism:** Madrid-specific democratic processes: citizen proposals trigger official review at defined signature thresholds; participatory budgeting allocates a defined municipal budget via proposals and vote; citizens annotate draft regulations sentence by sentence in the collaborative legislation module. Identity verification via municipal census check (high-trust, low-accessibility).
+
+**Technical architecture:** Monolithic, non-modular Rails app with PostgreSQL and Elasticsearch. Cannot run multiple participatory portals on a single installation. Extending Consul for non-Madrid processes requires forking the codebase. No plug-in system.
+
+**AI integration:** None.
+
+**Limitations:** Non-modular architecture makes adaptation expensive. Identity verification model is Spain-specific (not directly portable to Brazil without CPF/Cadastro integration). No multi-tenancy (multiple territories require separate instances). No AI synthesis. No geographic filtering or qualitative text analysis.
+
+**Relevance to GaveaLab:** Most useful if the platform eventually adds participatory budget processes -- Consul's data model and UX are the most mature reference implementation. The collaborative legislation annotation feature (citizens commenting on draft regulation paragraph by paragraph) is applicable if GaveaLab's territorial context includes existing urban plans or environmental regulations to annotate. For the core synthesis and research use cases, Decidim + T3C is a stronger architecture choice.
+
+---
+
+### 6. vTaiwan -- The Governance Process
+
+**What it is:** A governance process (not a platform) that combines digital tools (Pol.is for opinion mapping, collaborative notes, GitHub for document versioning) with structured in-person meetings to produce consensus recommendations on contested technology-policy questions.
+
+**How the process works:**
+1. **Objective stage**: crowdsource facts and evidence
+2. **Reflective stage**: deploy Pol.is to map public opinion before deliberation -- discover existing consensus
+3. **Deliberative stage**: live-streamed stakeholder meetings using Pol.is results as a shared factual baseline
+4. **Legislative stage**: transmit documented consensus to government ministry
+
+Key insight: Pol.is runs **before** human deliberation, not after. Human meetings begin from a mapped consensus baseline rather than an adversarial blank slate. Early processes achieved 80% implementation rate (government action followed consensus outputs).
+
+**Current status (2025-2026):** Fully volunteer-driven. No formal mandate requiring government to act on outputs. December 2024 AI governance event produced recommendations reflected in Taiwan's National Human Rights Commission guidance on the draft AI Basic Act.
+
+**Relevance to GaveaLab:** Provides the **governance wrapper** the technology platforms alone cannot supply. The critical lesson: a territorial platform will only produce sustained impact if there is a defined institutional receiver for synthesis outputs. The four-stage sequencing (objective -> reflective -> deliberative -> legislative) is transferable as: territory documentation -> Pol.is-style opinion mapping -> GaveaLab synthesis -> handoff to municipal government or publication. GaveaLab's academic legitimacy (framing outputs as peer-reviewed research with methodology and citation) is the mechanism for institutional reception that volunteer-driven processes lack.
+
+---
+
+### 7. Urban Digital Twins for Participatory Planning
+
+**What it is:** Computational models that mirror a physical territory's infrastructure and dynamics, combined with participatory interfaces allowing citizens to see their territory in simulation, propose interventions, and observe modeled consequences.
+
+**Participation patterns:** Interactive immersive visualization (3D web viewers, VR/AR) significantly increases citizen engagement quality -- participants provide more spatially specific, actionable feedback when interacting with a 3D model vs. text descriptions. However, VR/AR creates significant equity barriers.
+
+**Limitations:** Academic critique (Dawkins/Kitchin 2025): UDTs remain "shallow explanations of urban processes" because cities aggregate socio-political complexity that resists parametric modeling. Citizens were explicitly listed as co-developers in only 16.7% of UDT projects. Commercial platforms have faced viability challenges (Cityzenith ceased trading 2023).
+
+**Relevance to GaveaLab:** Two specific applicable patterns:
+1. **Spatial anchoring of citizen testimony**: allowing citizens to attach problem reports to a geographic point on a map dramatically increases precision and actionability of synthesis. This is the missing geospatial layer in Decidim and Consul. A simplified version (territorial map with geotagged testimonies, without simulation) captures most of the participation benefit at a fraction of engineering cost.
+2. **Equity-first design imperative**: UDT research finding that immersive interfaces create accessibility barriers is directly applicable to Amazonian/Gavea territorial contexts. Text-first, mobile-first, SMS-fallback interfaces are mandatory, not optional features for later versions.
+
+---
+
+### Architecture that emerges from all seven patterns
+
+**Layer 1 -- Citizen participation layer** (Decidim, Pol.is, UDT equity research):
+Territory-scoped spaces, multi-modal input (text, geotagged pin, voice), Pol.is-style agree/disagree voting on surfaced themes, mobile-first with SMS fallback.
+
+**Layer 2 -- AI synthesis layer** (Talk to the City, Go Vocal):
+Batch pipeline (embed -> cluster -> label with LLM -> quote-ground) producing a theme tree that researchers validate before publishing. Built on existing sentence-transformers + Anthropic SDK stack with a clustering module (UMAP + HDBSCAN) added.
+
+**Layer 3 -- Decision-support layer** (Go Vocal, vTaiwan, UDTs):
+Two separate dashboards -- public managers (clustered territorial problems by theme, location, urgency) and GaveaLab researchers (full corpus, audit trail, longitudinal profile) -- plus a defined institutional handoff routing synthesized outputs to municipal government or academic publication.
+
+**The critical gap across all platforms:** Every platform generates synthesis outputs; every platform struggles to ensure those outputs are acted on. GaveaLab's academic legitimacy is a structural asset that commercial platforms and volunteer processes lack -- framing synthesis outputs as peer-reviewed research findings (with methodology, reproducibility, and citation) is the institutional reception mechanism that vTaiwan's volunteer model cannot guarantee.
