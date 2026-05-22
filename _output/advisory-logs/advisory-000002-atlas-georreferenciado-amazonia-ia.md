@@ -10,7 +10,7 @@ Busca de informacao e brainstorm sobre o seguinte problema e produto que pode se
 
 **Problema**: Acesso controlado e curado a informacao multimodal referenciada geograficamente -- datazoom.amazonia, nova cartografia social da amazonia.
 
-**Produto**: Atlas digital georreferenciado e iterativo assistido por IA (chat com ferramentas para navegacao na base de dados) para auxiliar na busca de informacao armazenada, mantida e curada por uma comunidade.
+**Produto**: Atlas digital georreferenciado e interativo assistido por IA (chat com ferramentas para navegacao na base de dados) para auxiliar na busca de informacao armazenada, mantida e curada por uma comunidade.
 
 ## Agent Interpretation
 

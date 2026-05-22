@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "mcp__kb-qa__query_knowledge"
+      "mcp__kb-qa__query_knowledge",
+      "WebSearch"
     ]
   }
 }
