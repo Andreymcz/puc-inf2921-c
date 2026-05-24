@@ -4,6 +4,10 @@ Execution log of all skill invocations.
 
 ---
 
+DONE | 2026-05-24 21:31 UTC | STARTED | 2026-05-24 21:24 UTC | research | o step 3 do plano 1 está pronto. abri o site em localhost:3000. para fazer um report precico fazer o login. mas nós desabilidamos o login do firebase, e agora ? será que conseguimos mockar ? criamos um usuarioi 'citzen' que sera usado na hora do login.
+
+---
+
 DONE | 2026-05-24 19:49 UTC | STARTED | 2026-05-24 19:35 UTC | implement | step 3 do plano 1 | PLAN | 000001
 
 ---
