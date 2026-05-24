@@ -56,7 +56,7 @@ Fazer o clone do fork `https://github.com/Diegorb1329/tttc-light-js-ollama` para
 - **Tests**: N/A
 - **Docs**: Anotar no README-poc.md o commit hash clonado e a data
 - **Traces**: N/A
-- [ ] Done
+- [x] Done
 
 ### Step 2: Criar arquivo `.env.poc` desativando serviços de nuvem
 
