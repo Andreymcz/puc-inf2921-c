@@ -53,6 +53,24 @@ open http://localhost:3000
 # Usar tttc-poc/data/sample-gavealab.csv
 ```
 
+## Variáveis de ambiente (`.env.poc`)
+
+| Variável | Serviço | Valor PoC | Função |
+|----------|---------|-----------|--------|
+| `USE_OLLAMA` | pyserver | `true` | Ativa Ollama como backend LLM |
+| `OLLAMA_BASE_URL` | pyserver | `http://ollama:11434` | URL do container Ollama |
+| `OLLAMA_DEFAULT_MODEL` | pyserver | `llama3.2:latest` | Modelo padrão |
+| `USE_LOCAL_STORAGE` | express-server | `true` | Bypass de Firebase/GCS — salva relatórios localmente |
+| `OPENAI_API_KEY` | express-server | `local-ollama-no-key-needed` | Satisfaz validação Zod; não é usada pelo pyserver em modo Ollama |
+| `PYSERVER_URL` | express-server | `http://pyserver:8000` | URL do pipeline LLM |
+| `CLIENT_BASE_URL` | express-server | `http://localhost:3000` | URL do frontend para CORS |
+| `REDIS_URL` | express-server | `redis://redis:6379` | Fila BullMQ |
+| `NODE_ENV` | express-server | `development` | Modo de operação |
+| `PIPELINE_EXPRESS_URL` | next-client | `http://express-server:8080` | URL da API para submissão de CSVs |
+| `NEXT_PUBLIC_FIREBASE_*` | next-client | stubs | Firebase de cliente desativado no modo PoC |
+
+**Patches PoC** (`tttc-poc/patches/`): substituem `Firebase.ts` e `storage.ts` no express-server por implementações locais (sem firebase-admin nem GCS). Aplicados via Docker volume no Step 3.
+
 ## Dados de teste
 
 `data/sample-gavealab.csv` contém respostas qualitativas baseadas no diagnóstico real do GaveaLab (2023), simulando uma consulta sobre desafios urbanos e tecnologia na Gávea.

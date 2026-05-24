@@ -77,7 +77,7 @@ Inspecionar o código do fork em `express-server/` e `pipeline-worker/` para ide
 - **Tests**: N/A
 - **Docs**: Documentar cada variável no README-poc.md com sua função
 - **Traces**: N/A
-- [ ] Done
+- [x] Done
 
 ### Step 3: Criar `docker-compose.yml` simplificado para PoC
 
