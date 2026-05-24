@@ -63,3 +63,12 @@ This project uses Claude Code skills (`.claude/skills/`). Skills are invoked via
 
 @.claude/rules/
 @product-design/conventions.md
+
+## Project Design
+
+@product-design/project/product-design-as-intended.md
+@product-design/project/ux-research-results.md
+@product-design/project/standards.md
+@product-design/project/design-standards.md
+@product-design/project/security-checklists.md
+@product-design/project/constitution.md
