@@ -15,13 +15,24 @@ tttc-poc/
   README-poc.md           # Este arquivo
 ```
 
-## Fork clonado
+## Fork (git submodule)
 
 | Campo | Valor |
 |-------|-------|
 | Repositório | https://github.com/Diegorb1329/tttc-light-js-ollama |
-| Commit | `1ddb59d` — "Changing qwen for llama3 and handling json parsing errors" |
-| Data do clone | 2026-05-24 |
+| Commit fixado | `1ddb59d` — "Changing qwen for llama3 and handling json parsing errors" |
+| Caminho | `tttc-poc/tttc-light-js-ollama/` |
+| Adicionado como | git submodule (ver `.gitmodules` na raiz do repo) |
+
+## Setup (primeira vez ou nova máquina)
+
+```bash
+# Clonar o repo principal com o submodule do fork incluído
+git clone --recurse-submodules <url-do-repo>
+
+# Se já tiver o repo clonado sem o submodule:
+git submodule update --init
+```
 
 ## Como executar (após concluir todos os steps)
 

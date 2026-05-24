@@ -41,6 +41,3 @@ htmlcov/
 # OS
 .DS_Store
 Thumbs.db
-
-# tttc-poc: fork clonado como dependência externa
-tttc-poc/tttc-light-js-ollama/

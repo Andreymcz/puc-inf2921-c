@@ -1,0 +1,3 @@
+[submodule "tttc-poc/tttc-light-js-ollama"]
+	path = tttc-poc/tttc-light-js-ollama
+	url = https://github.com/Diegorb1329/tttc-light-js-ollama
