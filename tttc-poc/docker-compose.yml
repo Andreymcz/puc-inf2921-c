@@ -36,8 +36,8 @@ services:
 
   next-client:
     build:
-      context: ./tttc-light-js-ollama
-      dockerfile: ../Dockerfile.nextclient-poc
+      context: .
+      dockerfile: Dockerfile.nextclient-poc
     env_file: .env.poc
     environment:
       # PORT=8000 no env_file é para o pyserver; sobrescreve aqui para o Next.js
