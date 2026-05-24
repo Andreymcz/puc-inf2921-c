@@ -1,0 +1,46 @@
+# PoC Dockerfile for express-server — applies local patches before building.
+# Build context: tttc-poc/ (parent of tttc-light-js-ollama/ and patches/).
+# Usage: docker compose build express-server
+
+# Stage 1: Install dependencies and build
+FROM node:18-slim AS build
+
+WORKDIR /usr/src/app
+
+COPY tttc-light-js-ollama/common/package*.json ./common/
+COPY tttc-light-js-ollama/express-server/package*.json ./express-server/
+RUN npm install --prefix ./common
+RUN npm install --prefix ./express-server
+
+COPY tttc-light-js-ollama/common/ ./common/
+COPY tttc-light-js-ollama/express-server/ ./express-server/
+
+# Apply PoC patches: replace Firebase and storage with local stubs
+COPY patches/express-server/src/Firebase.ts ./express-server/src/Firebase.ts
+COPY patches/express-server/src/storage.ts ./express-server/src/storage.ts
+COPY patches/express-server/src/types/context.ts ./express-server/src/types/context.ts
+
+RUN npm run build --prefix ./common
+RUN npm run build --prefix ./express-server
+
+# Stage 2: Production image
+FROM node:18-slim
+
+WORKDIR /usr/src/app
+
+COPY --from=build /usr/src/app/express-server/package*.json ./
+RUN npm install --only=production
+
+COPY --from=build /usr/src/app/express-server/ ./
+COPY --from=build /usr/src/app/common ./node_modules/tttc-common
+
+ENV NODE_ENV=production
+ENV PORT=8080
+EXPOSE 8080
+
+HEALTHCHECK CMD curl --fail http://localhost:8080/ || exit 1
+
+RUN useradd --user-group --create-home --shell /bin/false appuser
+USER appuser
+
+CMD ["npm", "start"]

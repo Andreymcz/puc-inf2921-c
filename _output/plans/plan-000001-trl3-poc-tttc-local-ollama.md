@@ -115,7 +115,7 @@ Adaptar os nomes dos diretórios de build conforme a estrutura real do fork clon
 - **Tests**: N/A
 - **Docs**: N/A
 - **Traces**: N/A
-- [ ] Done
+- [x] Done
 
 ### Step 4: Criar dados de teste do GaveaLab + adaptador multi-formato (PoC)
 
