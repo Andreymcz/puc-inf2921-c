@@ -13,8 +13,8 @@ services:
 
   pyserver:
     build:
-      context: ./tttc-light-js-ollama
-      dockerfile: pyserver/Dockerfile
+      context: .
+      dockerfile: Dockerfile.pyserver-poc
     env_file: .env.poc
     ports:
       - "8000:8000"
@@ -28,6 +28,9 @@ services:
       context: .
       dockerfile: Dockerfile.express-poc
     env_file: .env.poc
+    environment:
+      # PORT=8000 no env_file é para o pyserver; sobrescreve aqui para o express-server
+      PORT: "8080"
     ports:
       - "8080:8080"
     depends_on:

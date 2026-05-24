@@ -1,0 +1,53 @@
+# PoC Dockerfile for pyserver -- corrige imports relativos de main.py em build-time.
+# Build context: tttc-poc/ (inclui tttc-light-js-ollama/ e patches/).
+# Usage: docker compose build pyserver
+
+FROM python:3.11-slim
+WORKDIR /app
+
+COPY tttc-light-js-ollama/pyserver/requirements.txt .
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
+
+RUN useradd --no-create-home appuser
+
+# Copiar fonte do pyserver
+COPY tttc-light-js-ollama/pyserver/ .
+
+# PoC: copiar json_response_parser.py do diretorio de testes (nao copiado pelo Dockerfile original)
+COPY tttc-light-js-ollama/ollama-tests/tests/phase3_integration/json_response_parser.py .
+
+# PoC: corrigir imports relativos para rodar como modulo top-level (uvicorn main:app).
+# O Dockerfile original usa 'from .module' que exige contexto de pacote; aqui usamos imports absolutos.
+RUN python3 - <<'EOF'
+content = open("main.py").read()
+content = content.replace(
+    "from .ollama_openai_adapter import create_client",
+    "from ollama_openai_adapter import create_client",
+)
+content = content.replace(
+    "from . import ollama_config",
+    "import ollama_config",
+)
+content = content.replace(
+    'sys.path.append(str(Path(__file__).parent.parent / "ollama-tests" / "tests" / "phase3_integration"))',
+    "# PoC: json_response_parser.py copiado para /app/ -- path fix nao necessario",
+)
+content = content.replace(
+    "from . import config",
+    "import config",
+)
+content = content.replace(
+    "from .utils import",
+    "from utils import",
+)
+open("main.py", "w").write(content)
+print("imports relativos corrigidos em main.py")
+EOF
+
+RUN chown -R appuser:appuser /app
+
+ENV PORT=8080
+EXPOSE 8080
+USER appuser
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]

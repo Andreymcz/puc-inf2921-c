@@ -1,4 +1,4 @@
-# Plan 000006 | FIX-F | 2026-05-24 21:34 UTC | Mock Firebase Auth no next-client para PoC citizen user | Review: Light
+# DONE | 2026-05-24 23:30 UTC | Plan 000006 | FIX-F | 2026-05-24 21:34 UTC | Mock Firebase Auth no next-client para PoC citizen user | Review: Light
 plan_format_version: 1
 source: research-000005 -- Firebase Auth stub necessario para criar relatorios na PoC
 
@@ -117,7 +117,7 @@ export async function fetchToken(
 - **Interface**: N/A
 - **Verify**: Os dois arquivos existem com o conteudo correto; TypeScript compila sem erros (verificado no step 3 via docker build)
 - **Tests**: N/A (PoC patch -- sem test harness no tttc-poc)
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -209,7 +209,7 @@ CMD ["node", "server.js"]
 - **Interface**: N/A
 - **Verify**: `docker compose build next-client` (a partir do diretorio `tttc-poc/`) conclui sem erros de COPY ou TypeScript
 - **Tests**: N/A (build Docker e o teste de compilacao)
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -235,7 +235,7 @@ porque com o novo context (`.` = `tttc-poc/`), o Dockerfile esta no proprio cont
 - **Interface**: N/A
 - **Verify**: `docker compose config` nao emite warnings sobre contexto; `docker compose build next-client` usa o contexto correto
 - **Tests**: N/A
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -267,7 +267,7 @@ docker compose logs -f next-client
 - **Interface**: N/A
 - **Verify**: Browser mostra nome "Citizen" na navbar e formulario de criacao de relatorio habilitado; submit nao retorna "You need to be logged in"
 - **Tests**: N/A (verificacao manual -- PoC sem test harness)
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -299,3 +299,20 @@ Atualiza Dockerfile.nextclient-poc e docker-compose.yml para seguir o
 padrao do Dockerfile.express-poc: build context tttc-poc/, COPY paths
 prefixados com tttc-light-js-ollama/, patches aplicados antes do build.
 ```
+
+---
+
+## Summary
+
+**Steps completed:** 4/4 | **Iterations used:** 4 + debugging pos-plano
+
+**Changes beyond the original plan scope** (bugs descobertos durante smoke test):
+
+- `tttc-poc/Dockerfile.pyserver-poc` (criado): pyserver crashava com `ImportError: attempted relative import with no known parent package`. Novo Dockerfile corrige imports relativos de `main.py` em build-time via heredoc Python e copia `json_response_parser.py` do diretorio de testes.
+- `tttc-poc/docker-compose.yml`: pyserver agora usa `context: .` + `Dockerfile.pyserver-poc`; express-server recebeu `PORT: "8080"` override (o `PORT=8000` do `.env.poc` destinado ao pyserver estava sendo herdado pelo express-server, causando `ECONNREFUSED` no next-client).
+- `tttc-poc/Makefile` (criado): targets para todo o ciclo de vida da PoC (build, up, logs, stop, clean, rebuild por servico, pull-model).
+- `patches/express-server/src/routes/report.ts` (criado): `getReportDataHandler` sempre instanciava `new Bucket()` que e um stub que joga excecao em modo PoC; o fallback tentava uma URL GCS publica que retornava 403. O patch curto-circuita para `createStorage().getUrl()` e retorna URL absoluta `http://express-server:8080/local-report/{hash}`.
+- `patches/express-server/src/server.ts` (criado): adiciona rota `GET /local-report/*` como `express.static` servindo de `LOCAL_REPORTS_DIR` para que next-client possa buscar o JSON do relatorio.
+- `Dockerfile.express-poc`: atualizado para copiar os dois novos patches de express-server.
+
+**Resultado final verificado:** submit de relatorio de ponta a ponta funcionando -- login automatico como "citizen", pyserver gera o relatorio via Ollama, express-server salva localmente, next-client renderiza o relatorio.
