@@ -1,6 +1,7 @@
 # Research 000005 | FIX-F | 2026-05-24 21:28 UTC | Mock Firebase Auth no next-client para PoC citizen user
 
 tags: firebase-auth, mock-stub, poc, next-client, authentication
+spawned: plan-000006
 
 ## User Brief
 
