@@ -4,6 +4,10 @@ Execution log of all skill invocations.
 
 ---
 
+STARTED | 2026-05-24 00:56 UTC | plan | PoC TRL 3: Talk to the City rodando localmente com Ollama, sem dependências de cloud. source: advisory-000004
+
+---
+
 DONE | 2026-05-23 23:56 UTC | STARTED | 2026-05-23 23:49 UTC | advise | Folowing advisory3: Abri o talk to the city https://talktothe.city/ e achei bem interessante. Quero extrair toda e qualquer informação necessária para rodar o software localmente. não quero depender de serviços externos. se for muito difícil, quero saber se existe a possiblidade de extender o software. além da interface atual disponibilizada, podemos também criar novas ferramentas que os etakeholders do GaveaLab se interessam. https://github.com/aIObjectives/tttc-light-js
 
 ---
