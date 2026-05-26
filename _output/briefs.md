@@ -4,6 +4,10 @@ Execution log of all skill invocations.
 
 ---
 
+DONE | 2026-05-26 11:10 UTC | STARTED | 2026-05-26 11:06 UTC | communicate | re-write this repo readme in order to comunicate what is being done in last commits ( running talk to the city locally
+
+---
+
 DONE | 2026-05-24 23:51 UTC | STARTED | 2026-05-24 21:54 UTC | implement | plan-000006 | PLAN | 000006
 
 ---
