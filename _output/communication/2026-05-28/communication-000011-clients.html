@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Communication 000011 Clients</title>
+  <style>
+body {
+  max-width: 48em;
+  margin: 2em auto;
+  padding: 0 1em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: #222;
+}
+h1, h2, h3 { margin-top: 1.4em; }
+code { background: #f4f4f4; padding: 0.15em 0.3em; border-radius: 3px; }
+pre  { background: #f4f4f4; padding: 1em; overflow-x: auto; border-radius: 4px; }
+pre code { background: none; padding: 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #ddd; padding: 0.5em 0.75em; text-align: left; }
+th { background: #f8f8f8; }
+blockquote { border-left: 4px solid #ddd; margin: 1em 0; padding: 0.5em 1em; color: #555; }
+a { color: #0366d6; }
+
+  </style>
+</head>
+<body>
+
+<h1 id="communication-000011-clt-2026-05-28-falagavea-visao-casos-de-uso-e-inteligencia-territorial">communication-000011 | CLT | 2026-05-28 | fala.Gavea: Visao, Casos de Uso e Inteligencia Territorial</h1>
+<p>Este documento sintetiza os avancos recentes do projeto fala.Gavea para o GaveaLab e coordenadores do curso INF2921/CIS2114 na PUC-Rio. Ele consolida tres artefatos produzidos entre maio e junho de 2026 -- a validacao dos casos de uso, as reflexoes sobre o conceito de produto e a pesquisa sobre inteligencia territorial alem do pipeline T3C -- em um unico panorama orientado a decisoes. O objetivo e deixar claro o que foi decidido, o que esta sendo construido, qual e o estado atual do PoC e quais sao os proximos passos concretos. A conformidade com a LGPD e a soberania de dados do cidadao sao tratadas como restricoes de primeira classe, nao como consideracoes futuras.</p>
+<hr />
+<h2 id="1-visao-e-proposta-de-valor">1. Visao e Proposta de Valor</h2>
+<p>O fala.Gavea e uma plataforma local de participacao civica territorial. Seu objetivo central e transformar depoimentos de cidadaos em evidencia acionavel para pesquisa, gestao publica e investimento social -- sem que nenhum documento ou depoimento saia da maquina onde o sistema roda.</p>
+<p>Tres principios orientam toda a arquitetura:</p>
+<p><strong>Privacidade em primeiro lugar.</strong> Todos os embeddings, armazenamento e recuperacao de dados rodam localmente. O pipeline de LLM usa modelos locais (via Ollama), eliminando a dependencia de servicos de nuvem para o nucleo de analise. Isso nao e uma opcao tecnica -- e um compromisso com a soberania de dados dos cidadaos que contribuem seus depoimentos.</p>
+<p><strong>O dado do cidadao vira evidencia, nao ruido.</strong> O pipeline Talk to the City (T3C) transforma depoimentos textuais em arvores de temas com citacoes rastreadas. Cada claim sintetizado pode ser verificado na fonte original. Isso da legitimidade metodologica aos resultados -- requisito fundamental para publicacao academica e para uso em politicas publicas.</p>
+<p><strong>GaveaLab e o caso de uso central.</strong> O GaveaLab cria o arcabouco do projeto: sem a infraestrutura de coleta com consentimento LGPD-granular (UC3a), de sintese por IA (UC3b) e de consolidacao de perfis territoriais ao longo do tempo (UC3c), os outros casos de uso -- o cidadao contribuindo (UC1), o gestor publico priorizando (UC2a) e o investidor identificando lacunas (UC2b) -- nao tem base para operar. O GaveaLab nao e apenas usuario do sistema: e seu co-construtor institucional.</p>
+<p><strong>Relacao com o fala.BR.</strong> O nome fala.Gavea dialoga intencionalmente com o fala.BR -- plataforma federal de ouvidoria do CGU, com mais de 6 milhoes de manifestacoes e API REST aberta. O fala.BR e federal e generalista; o fala.Gavea e local, territorial e de pesquisa academica. Os dados do fala.BR sao uma das fontes de enriquecimento territorial planejadas para a plataforma, nao um concorrente.</p>
+<hr />
+<h2 id="2-casos-de-uso-validados">2. Casos de Uso Validados</h2>
+<p>Os tres casos de uso originais foram refinados, o UC1 recebeu sua clausula motivacional completa, o UC2 foi dividido em dois perfis distintos com necessidades de dados irreconciliaveis, e o UC3 foi decomposto em tres sub-fluxos com riscos de privacidade e UX proprios.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Ator</th>
+<th>Proposito</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UC1</td>
+<td>Cidadao</td>
+<td>Espaco virtual para discutir problemas e ideias sobre seu territorio -- o conhecimento local do cidadao e ouvido, sintetizado com outras vozes e se torna evidencia acionavel que influencia decisoes de gestores e pesquisadores</td>
+</tr>
+<tr>
+<td>UC2a</td>
+<td>Gestor Publico</td>
+<td>Ver problemas territoriais clusterizados por tema, localizacao e urgencia para alocar recursos e desenhar intervencoes com base em evidencia cidada</td>
+</tr>
+<tr>
+<td>UC2b</td>
+<td>Investidor Social</td>
+<td>Ver o perfil consolidado de necessidades de um territorio com dados de tendencia para identificar lacunas onde investimento cria beneficio mensuravel para a comunidade</td>
+</tr>
+<tr>
+<td>UC3a</td>
+<td>GaveaLab</td>
+<td>Coletar depoimentos de cidadaos com consentimento LGPD-granular e base legal de pesquisa academica</td>
+</tr>
+<tr>
+<td>UC3b</td>
+<td>GaveaLab</td>
+<td>Sintese de temas por IA (embed -&gt; cluster -&gt; rotular -&gt; citar) -- a arquitetura T3C e diretamente utilizavel aqui</td>
+</tr>
+<tr>
+<td>UC3c</td>
+<td>GaveaLab</td>
+<td>Consolidar e atualizar perfis de necessidades territoriais ao longo do tempo para rastrear mudancas, publicar achados e medir o impacto de intervencoes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Por que separar UC2a e UC2b importa.</strong> Gestores publicos precisam de filas de prioridade por setor censitario, lacunas de servico medidas e correlacao com orcamento investido. Investidores de impacto precisam de capacidade economica local, capital humano, alinhamento com ODS e metricas ESG. Servir os dois com a mesma saida produz um sistema que nao serve bem a nenhum -- e cria riscos diferentes de LGPD e CARE para cada perfil. A separacao tecnica das camadas de saida e uma decisao arquitetural, nao apenas de interface.</p>
+<p><strong>Por que decompor UC3.</strong> Coleta (UC3a), sintese (UC3b) e consolidacao de perfis (UC3c) tem fluxos de UX, criterios de aceitacao e perfis de risco de privacidade separados. UC3a lida com consentimento e base legal; UC3b lida com qualidade metodologica da sintese; UC3c lida com tracking longitudinal e re-consentimento. Tratar os tres como um bloco unico cria o risco de o pesquisador chegar ao meio do fluxo e descobrir que as affordances necessarias estao ausentes.</p>
+<hr />
+<h2 id="3-conceito-falagavea">3. Conceito fala.Gavea</h2>
+<p>O nome "fala.Gavea" emergiu da reflexao da equipe em maio de 2026 como sintese do posicionamento do produto: uma plataforma que escuta, amplifica e analisa a voz territorial de cidadaos, com raizes academicas na Gavea (PUC-Rio).</p>
+<h3 id="o-fluxo-de-captura-por-audio">O fluxo de captura por audio</h3>
+<p>O conceito de produto inclui uma camada de captura que vai alem de formularios textuais: o sistema recebe a gravacao de um forum presencial (ou sessao remota), extrai cidadaos unicos por ID de audio (diarizacao de locutor), transcreve cada fala e alimenta o pipeline T3C no formato <code>id, claim</code>. Isso resolve o problema pratico de que muitos cidadaos -- especialmente em comunidades de baixa renda, comunidades riberinhas e contextos amazonicos -- expressam suas necessidades muito mais naturalmente em voz do que em texto escrito.</p>
+<p>Vale registrar que o fluxo de audio (ASR + diarizacao) e de alta complexidade tecnica e esta projetado para TRL 4+. O PoC atual (TRL 3) trabalha com dados textuais do GaveaLab.</p>
+<h3 id="soberania-de-dados-centrada-no-titular">Soberania de dados centrada no titular</h3>
+<p>O principio de governanca mais inovador do fala.Gavea e a soberania do cidadao sobre o proprio ID. Cada forum gera um identificador que o cidadao detem. O cidadao decide se envia ou nao o seu depoimento para o forum virtual, e pode controlar o que esta associado ao seu ID. Isso implementa os principios CARE de Autoridade de Controle e Beneficio Coletivo: o dado nao e extraido da comunidade -- e oferecido pela comunidade, sob seus proprios termos.</p>
+<p>Esse modelo se relaciona diretamente com o "ledger de identidade pseudonima purgavel" identificado em advisory-000003: o cidadao pode revogar o consentimento e ter seu ID removido do corpus sem destruir os agregados tematicos ja produzidos.</p>
+<h3 id="base-legal-lgpd-via-pesquisa-academica">Base legal LGPD via pesquisa academica</h3>
+<p>A garantia de conformidade com a LGPD para a coleta de depoimentos e viabilizada pela inscrição formal no curso de pesquisa da PUC-Rio, que estabelece a base legal de pesquisa academica (Art. 7, IV da LGPD). Isso responde diretamente a lacuna de "base legal e consentimento" identificada em advisory-000003 (recomendacao R3). O escopo da base legal cobre o corpus de pesquisa academica -- qualquer uso adicional dos dados (por gestores ou investidores) requer base legal propria e consentimento especifico por finalidade.</p>
+<hr />
+<h2 id="4-inteligencia-territorial-alem-do-t3c">4. Inteligencia Territorial Alem do T3C</h2>
+<p>O pipeline T3C responde "o que os cidadaos dizem que precisam". Para que gestores publicos e empreendedores de impacto tomem decisoes, eles precisam de um contexto que o T3C sozinho nao fornece. A pesquisa 000010 mapeou oito camadas de dados adicionais e propos uma arquitetura de enriquecimento territorial.</p>
+<h3 id="o-que-gestores-publicos-precisam-camadas-a-d">O que Gestores Publicos precisam (Camadas A-D)</h3>
+<p><strong>Camada A -- Contexto demografico:</strong> Populacao por setor censitario (IBGE Censo 2022) para ponderar a severidade dos problemas relatados; piramide etaria para direcionar o tipo de intervencao; decil de renda para elegibilidade a subsidios; autodeclaracao racial para obrigacoes do FUNAI e INCRA.</p>
+<p><strong>Camada B -- Lacunas de servico publico:</strong> Cobertura de agua e saneamento (SNIS) para cruzar com claims de "sem agua" e distinguir falha sistemica de percepcao; cobertura de UBS e distancia (DATASUS/CNES); matricula escolar vs. populacao em idade escolar (INEP); reclamacoes no Fala.BR por municipio e tema.</p>
+<p><strong>Camada C -- Pontuacao de prioridade:</strong> Gestores nao querem dados brutos -- querem filas de acao priorizadas. O indice de severidade composto combina frequencia de tema (T3C) + populacao afetada (IBGE) + gravidade da lacuna de servico (SNIS/DATASUS/INEP). A tendencia longitudinal (o mesmo problema apareceu em multiplos ciclos?) e o delta orcamento-acao (o que foi investido vs. o que ainda aparece como nao resolvido) sao os sinais mais uteis para um gestor.</p>
+<p><strong>Camada D -- Analitica espacial:</strong> Poligonos de favelas e comunidades (IBGE + GIS municipal), isocronas de transporte (GTFS + OSM), zonas de risco ambiental (TerraBrasilis, CEMADEN).</p>
+<h3 id="o-que-empreendedores-privados-precisam-camadas-e-h">O que Empreendedores Privados precisam (Camadas E-H)</h3>
+<p><strong>Camada E -- Capacidade economica:</strong> Estimativas de economia informal (datazoom.Amazonia, PNAD Continua), fluxos de transferencia Pix por CEP (BCB), densidade de MEI (Receita Federal) -- proxy para taxa de formalizacao e atividade empreendedora local.</p>
+<p><strong>Camada F -- Capital humano:</strong> Taxa de emprego formal por territorio (RAIS/CAGED), escolaridade por coorte etaria (IBGE Censo + INEP), padroes de deslocamento para logistica e investimentos em transporte.</p>
+<p><strong>Camada G -- Necessidades de mercado nao atendidas:</strong> Este e o sinal mais valioso comercialmente -- e tambem o mais arriscado. As categorias extraiveis do corpus T3C com tagueamento correto incluem acesso a saude, acesso a alimentos, acesso a servicos financeiros, conectividade e servicos habitacionais. O design determina que esse sinal nunca seja exposto sem restricao para atores comerciais em resolucao sub-setor (ver secao LGPD abaixo).</p>
+<p><strong>Camada H -- Metricas ESG e medicao de impacto:</strong> Alinhamento aos ODS (metadados ONU + indicadores IBGE ODS), IVS (Indice de Vulnerabilidade Social do IPEA, pre-calculado e aberto), exposicao a risco ambiental (CEMADEN + TerraBrasilis), fluxos historicos de investimento (SIAFI, portal BNDES).</p>
+<h3 id="arquitetura-de-enriquecimento-territorial">Arquitetura de Enriquecimento Territorial</h3>
+<p>O enriquecimento e organizado em tres camadas sobre o pipeline T3C existente:</p>
+<pre><code>Pipeline T3C (existente)
+  Depoimento -&gt; claims -&gt; temas clusterizados -&gt; citacoes
+        |
+        v
+Camada de Enriquecimento Territorial (proposta)
+  GeoCodificador: normalizacao endereco/territorio -&gt; ID setor censitario
+  EnriquecedorEstatico: join setor -&gt; indicadores IBGE/SNIS/INEP/IVS
+  EnriquecedorDinamico: API Fala.BR, alertas TerraBrasilis
+  PontuadorPrioridade: indice composto (freq. tema + pop. + lacuna servico)
+        |
+        v
+Saida Filtrada por Persona
+  VisaoComunidade/Publica: depoimentos anonimizados + temas
+  VisaoGestorPublico: Camadas A+B+C+D (sem renda/identidade individual)
+  VisaoInvestidor: Camadas E+F+H (sem linkage a depoimento individual, agregado)
+</code></pre>
+<p><strong>Restricao critica:</strong> A saida do GeoCodificador (ID do setor censitario por depoimento) deve ser armazenada como atributo derivado separado -- nunca fundida de volta ao texto do depoimento. Isso mantem o isolamento de linhagem de dados entre o depoimento pessoal e o enriquecimento estatistico. Outputs para o Gestor Publico sao APENAS agregados tematicos -- nunca rastreaveis ao individuo. Esse e um limite tecnico, nao apenas uma politica de acesso.</p>
+<hr />
+<h2 id="5-compliance-lgpd-e-governanca-de-dados">5. Compliance LGPD e Governanca de Dados</h2>
+<h3 id="tiers-de-risco">Tiers de risco</h3>
+<p>Os dados que o fala.Gavea coleta e processa se distribuem em tres tiers de risco LGPD com tratamentos distintos:</p>
+<p><strong>Tier 1 -- Dados sensiveis (Art. 5, IX LGPD -- maxima protecao):</strong> Autodeclaracao racial via linkage censitario; claims sobre saude nos depoimentos; claims sobre pratica religiosa ou cultural; opiniao politica expressa. Esses dados exigem base legal especifica (Art. 11), consentimento explicito e separado, e controles tecnicos que impedem exposicao a qualquer camada de saida externa.</p>
+<p><strong>Tier 2 -- Dados pessoais com base legal necessaria (Art. 7):</strong> Depoimento geocodificado em nivel de endereco (base legal: Art. 7, VI -- legitimo interesse, ou Art. 7, III -- politicas publicas); linkage com CadUnico por territorio (apenas agregado/anonimizado; linkage individual requer consentimento especifico); indicadores DATASUS por setor censitario (disponiveis como dado aberto agregado).</p>
+<p><strong>Tier 3 -- Dados territoriais nao individuais (menor exposicao):</strong> Agregados IBGE, SNIS, TerraBrasilis e dados de pessoas juridicas (CNPJ) -- desde que setores com menos de 30 domicilios sejam suprimidos para evitar reidentificacao. Para contexto amazonico, o limiar sobe para 50 domicilios.</p>
+<h3 id="tres-obrigacoes-criticas-de-design">Tres obrigacoes criticas de design</h3>
+<ol>
+<li>
+<p><strong>ROPA por dataset (Art. 37 LGPD):</strong> O Registro de Operacoes de Tratamento de Dados Pessoais deve ser mantido para cada fonte de dados ingerida alem do nucleo T3C -- independentemente de o dado ser aberto ou restrito.</p>
+</li>
+<li>
+<p><strong>Consentimento especifico por finalidade (Art. 8):</strong> O formulario de consentimento nao pode usar "melhoria civica generica". Se dados serao compartilhados com gestores, isso e uma finalidade declarada separada. Se dados serao usados para perfis de investimento, e outra finalidade declarada separada.</p>
+</li>
+<li>
+<p><strong>Minimizacao de dados por persona (Art. 6, III):</strong> Cada perfil de usuario recebe apenas o conjunto de dados necessario para sua finalidade declarada. A implementacao tecnica da Saida Filtrada por Persona nao e opcional -- e a mecanica que torna o consentimento especifico operacionalizavel.</p>
+</li>
+</ol>
+<h3 id="mecanismo-de-retorno-comunitario-care-beneficio-coletivo">Mecanismo de retorno comunitario (CARE -- Beneficio Coletivo)</h3>
+<p>Qualquer relatorio de inteligencia territorial gerado a partir dos depoimentos de uma comunidade deve incluir uma versao em linguagem acessivel (nivel de leitura do 6o ano, portugues) entregue a representantes comunitarios ANTES da versao para stakeholders externos. Isso nao e um requisito etico opcional -- e a mecanica que distingue pesquisa academica responsavel de extrativismo de dados.</p>
+<p>O sistema deve auto-gerar esse artefato de retorno junto a qualquer relatorio para gestor ou investidor.</p>
+<h3 id="comunidades-indigenas-obrigacao-legal">Comunidades indigenas -- obrigacao legal</h3>
+<p>Para qualquer implantacao em territorios com povos indigenas ou comunidades tradicionais, o protocolo de Consulta Previa, Livre e Informada (CPLI -- Decreto 5.051/2004, Convencao 169 da OIT) e obrigatorio antes de qualquer coleta. Isso nao e uma consideracao etica -- e uma obrigacao legal no Brasil.</p>
+<hr />
+<h2 id="6-status-do-poc-e-proximos-passos">6. Status do PoC e Proximos Passos</h2>
+<h3 id="estado-atual-trl-3-prova-de-conceito">Estado atual (TRL 3 -- Prova de Conceito)</h3>
+<p>O PoC em execucao valida o pipeline T3C local com dados reais do GaveaLab, sem autenticacao, rodando inteiramente na maquina local com Ollama como provedor de LLM.</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Status</th>
+<th>Descricao</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Step 1</td>
+<td>Concluido</td>
+<td>Fork do T3C local com Ollama configurado e rodando</td>
+</tr>
+<tr>
+<td>Step 2</td>
+<td>Concluido</td>
+<td>Dados reais do GaveaLab carregados (6 temas: Seguranca, Governanca, Infraestrutura/esgoto, Saude, Habitacao, Meio ambiente -- segmentados em asfalto vs. favela)</td>
+</tr>
+<tr>
+<td>Step 3</td>
+<td>Concluido</td>
+<td>Pipeline T3C rodando sobre os dados do GaveaLab localmente</td>
+</tr>
+<tr>
+<td>Step 4</td>
+<td>Em andamento</td>
+<td>CSV dos 6 temas pronto; script <code>adapt_to_tttc.py</code> para adaptar o formato pendente</td>
+</tr>
+<tr>
+<td>Step 5</td>
+<td>Pendente</td>
+<td>Validacao e visualizacao dos resultados do pipeline</td>
+</tr>
+</tbody>
+</table>
+<p>O step 4 e o gargalo atual. O CSV com os dados reais dos 6 temas do diagnostico GaveaLab 2023 esta pronto; o que falta e o script de adaptacao de formato (<code>adapt_to_tttc.py</code>) que normaliza os dados para o schema de entrada do T3C.</p>
+<p>Paralelamente, o plan-000006 esta definindo o modulo de autenticacao simulada (Firebase mock) para o fluxo do cidadao no PoC -- necessario para demonstrar a soberania de ID do cidadao em condicoes controladas.</p>
+<h3 id="roadmap-imediato">Roadmap imediato</h3>
+<p><strong>Prioridade alta -- concluir TRL 3:</strong>
+- Finalizar <code>adapt_to_tttc.py</code> e completar o step 4
+- Executar o step 5 (validacao e visualizacao dos resultados)
+- Demonstrar o fluxo completo: dados GaveaLab -&gt; T3C local -&gt; relatorio com citacoes rastreadas</p>
+<p><strong>Prioridade alta -- base legal e governanca:</strong>
+- Definir ROPA inicial para os datasets do nucleo T3C + enriquecimento basico
+- Definir protocolo CPLI para eventual implantacao em territorios indigenas (se aplicavel ao escopo do GaveaLab)</p>
+<p><strong>Prioridade media -- EnriquecedorEstatico:</strong>
+- Construir o modulo de enriquecimento comecando pelos quatro datasets de menor atrito: IBGE Censo 2022, SNIS, IVS/IPEA, Fala.BR
+- Esses quatro cobrem 80% do valor de suporte a decisao para gestores publicos com 20% da complexidade de integracao</p>
+<p><strong>Prioridade media -- longitudinal e acesso diferenciado:</strong>
+- Projetar o Modulo de Engajamento Longitudinal como extensao planejada v0.2 (T3C e um pipeline sem estado -- tracking longitudinal requer extensao dedicada)
+- Definir tecnicamente os tiers de acesso diferenciado (Comunidade vs. Gestor vs. Investidor) como fronteira arquitetural de primeira classe</p>
+<hr />
+<h2 id="artefatos-de-referencia">Artefatos de Referencia</h2>
+<ul>
+<li>
+<p>advisory-000003 -- Casos de uso: espaco virtual para cidadaos e agentes publicos (2026-05-22)
+  <code>_output/advisory-logs/advisory-000003-use-cases-virtual-space-citizens-public-agents.md</code></p>
+</li>
+<li>
+<p>reflection-000009 -- fala.Gavea: redesenho T3C e ideias de produto (2026-05-26)
+  <code>_output/reflections/reflection-000009-fala-gavea-redesenho-t3c-produto.md</code></p>
+</li>
+<li>
+<p>research-000010 -- Dados sobre cidadao alem do T3C: Agentes Publicos e Empreendedores (2026-05-28)
+  <code>_output/research-logs/research-000010-dados-cidadao-alem-tttc-agentes-publicos-empreendedores.md</code></p>
+</li>
+</ul>
+
+</body>
+</html>
