@@ -38,6 +38,9 @@ htmlcov/
 *.swp
 *.swo
 
+# SQLite databases (generated, not committed)
+*.db
+
 # OS
 .DS_Store
 Thumbs.db
