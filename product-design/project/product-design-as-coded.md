@@ -10,6 +10,10 @@ designer_description: "Implementation state mirror for kb-qa — maintained by p
 
 ## Conceptual Design
 
+### 0. GaveaLab PoC (sibling project)
+
+`gavealab-poc/` is a Streamlit + Ollama citizen-claims analysis PoC, scaffolded in plan-000008. It runs independently from kb-qa (separate `pyproject.toml`, uv venv). Key components: `GaveaLabWorkspace` (SQLite persistence), `AnalysisSession` (domain object), `gavealab_poc/llm.py` (Ollama OpenAI-compatible wrapper), and stub page modules for upload, auto-topics, manual-topics, and cruxes.
+
 ### 1. Platform Purpose
 
 kb-qa is a local RAG knowledge base CLI and MCP server. It ingests `.md` and `.pdf` documents from `knowledge/` into a ChromaDB vector store, and exposes semantic search via the `query_knowledge` MCP tool and the `kb-qa ask` CLI command.

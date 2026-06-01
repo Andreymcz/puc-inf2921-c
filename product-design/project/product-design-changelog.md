@@ -6,3 +6,4 @@
 > Format: `YYYY-MM-DD | plan-NNNNNN | section | change summary`
 
 2026-05-24 | - | all | Initial as-coded snapshot created from codebase scan during /design session
+2026-06-01 | plan-000008 | §0 | Added GaveaLab PoC sibling project entry (gavealab-poc/ scaffold)

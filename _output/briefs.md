@@ -4,6 +4,22 @@ Execution log of all skill invocations.
 
 ---
 
+DONE | 2026-06-01 23:48 UTC | STARTED | 2026-06-01 23:37 UTC | implement | 8 | PLAN | 000008
+
+---
+
+DONE | 2026-06-01 23:34 UTC | STARTED | 2026-06-01 23:28 UTC | plan | quero planejar a implementaçào deste pipeline em um novo poc, usando uma stack tecnologiga mais simples com: uv, python e streamlit. | PLAN | 000013
+
+---
+
+STARTED | 2026-06-01 23:01 UTC | research | how to extract divergent opinions from text. Based on tttc-poc, i want to do a online research on how to perform crux analysis. now we send all texts to llm in order to do this. can we do without using a outsource llm and do local instead ? using a ollama model with a vector database ?
+
+---
+
+DONE | 2026-06-01 23:05 UTC | STARTED | 2026-06-01 22:44 UTC | plan | baseado no tttc-poc, quero re-implementar um fluxo de tratamento de relatos / claims de cidadaos em uma stack mais simples. quero implementar em python usando streamlit. | ROADMAP | 000007
+
+---
+
 DONE | 2026-05-24 23:51 UTC | STARTED | 2026-05-24 21:54 UTC | implement | plan-000006 | PLAN | 000006
 
 ---
