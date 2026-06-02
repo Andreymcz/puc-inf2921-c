@@ -25,7 +25,8 @@ if "session" not in st.session_state:
 
 page = st.sidebar.radio(
     "Navegacao",
-    ["Upload CSV", "Temas automaticos", "Categorizar por temas", "Opinioes divergentes"],
+    ["Upload CSV", "Temas automaticos", "Categorizar por temas",
+     "Opinioes divergentes", "Visualizar clusters"],
 )
 
 if page == "Upload CSV":
@@ -34,6 +35,8 @@ elif page == "Temas automaticos":
     from gavealab_poc.pages.auto_topics import render
 elif page == "Categorizar por temas":
     from gavealab_poc.pages.manual_topics import render
+elif page == "Visualizar clusters":
+    from gavealab_poc.pages.umap_viz import render
 else:
     from gavealab_poc.pages.cruxes import render
 
