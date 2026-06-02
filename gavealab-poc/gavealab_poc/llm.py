@@ -6,7 +6,7 @@ from openai import OpenAI
 log = logging.getLogger(__name__)
 
 OLLAMA_BASE_URL: str = os.getenv("GAVEALAB_OLLAMA_BASE_URL", "http://localhost:11434/v1")
-OLLAMA_MODEL: str = os.getenv("GAVEALAB_OLLAMA_MODEL", "qwen2.5-coder:7b")
+OLLAMA_MODEL: str = os.getenv("GAVEALAB_OLLAMA_MODEL", "qwen2.5:7b")
 
 
 def get_client() -> OpenAI:
