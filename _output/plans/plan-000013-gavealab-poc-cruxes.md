@@ -1,4 +1,5 @@
 # Plan 000013 | FEATURE-X | 2026-06-01 22:44 | GaveaLab PoC -- Divergent opinion (cruxes) detection | Review: light
+# DONE | 2026-06-02 01:00 UTC |
 plan_format_version: 1
 source: research-000014
 

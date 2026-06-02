@@ -11,3 +11,4 @@
 2026-06-02 | plan-000010 | §0 | Updated GaveaLab PoC entry: auto-topics page implemented (Ollama LLM pipeline, topic tree generation, SQLite persistence)
 2026-06-02 | plan-000011 | §0 | Updated GaveaLab PoC entry: claims extraction pipeline and UI added (pipeline/claims.py, auto_topics.py claims section)
 2026-06-02 | plan-000012 | §0 | Updated GaveaLab PoC entry: manual theme categorization tool added (pipeline/manual_categories.py, pages/manual_topics.py)
+2026-06-02 | plan-000013 | §0 | Updated GaveaLab PoC entry: divergent opinion detection added (embeddings.py singleton, pipeline/cruxes.py embedding-based crux detection, pages/cruxes.py)
