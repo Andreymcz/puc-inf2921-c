@@ -1,0 +1,4 @@
+[server]
+# Disable inotify-based watcher to avoid torchvision import errors from
+# transformers vision models that sentence-transformers pulls in indirectly.
+fileWatcherType = "none"
