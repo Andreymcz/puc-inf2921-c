@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Onboarding 000018 Bld L1 Gavealab Poc</title>
+  <style>
+body {
+  max-width: 48em;
+  margin: 2em auto;
+  padding: 0 1em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: #222;
+}
+h1, h2, h3 { margin-top: 1.4em; }
+code { background: #f4f4f4; padding: 0.15em 0.3em; border-radius: 3px; }
+pre  { background: #f4f4f4; padding: 1em; overflow-x: auto; border-radius: 4px; }
+pre code { background: none; padding: 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #ddd; padding: 0.5em 0.75em; text-align: left; }
+th { background: #f8f8f8; }
+blockquote { border-left: 4px solid #ddd; margin: 1em 0; padding: 0.5em 1em; color: #555; }
+a { color: #0366d6; }
+
+  </style>
+</head>
+<body>
+
+<h1 id="onboarding-000018-bld-l1-2026-06-02t000000z-builder-gavealab-poc">Onboarding 000018 | BLD L1 | 2026-06-02T00:00:00Z | Builder - GaveaLab PoC</h1>
+<hr />
+<h2 id="welcome">Welcome</h2>
+<p>Welcome to the INF2921-Grupo-C team. You are joining as a Builder (BLD L1) with a focus on the <strong>GaveaLab PoC</strong> sub-project -- the primary product deliverable of this course project (INF2921/CIS2114, PUC-Rio, 2026.1).</p>
+<p>GaveaLab is a citizen-feedback analysis tool: analysts upload CSV files containing citizen comments (relatos), and the application uses a locally running LLM (Ollama) to extract topics, categorize claims, detect divergent opinions between territory groups, and visualize clusters interactively. All inference is local -- no data leaves your machine.</p>
+<p>Your role as an L1 Builder is to understand the existing architecture, get the app running locally, and begin contributing through well-scoped tasks under mentor review. The first two weeks will be structured: environment first, codebase orientation second, and then your first PR. This plan gives you the concrete steps to get there.</p>
+<hr />
+<h2 id="layer-0-universal-foundation-day-1">Layer 0 -- Universal Foundation (Day 1)</h2>
+<h3 id="project-mission-and-current-phase">Project Mission and Current Phase</h3>
+<p>GaveaLab PoC is a Streamlit + Ollama proof-of-concept for citizen-claims analysis. It is inspired by Talk to the City and implements:</p>
+<ul>
+<li>CSV upload and session persistence (SQLite)</li>
+<li>AI-generated topic/subtopic taxonomy via Ollama</li>
+<li>Manual theme categorization</li>
+<li>Claims extraction per subtopic</li>
+<li>Divergent opinion detection (embedding-based cosine distance)</li>
+<li>UMAP 2D cluster visualization (Plotly)</li>
+</ul>
+<p>The project is in active PoC development. All major pipeline stages are implemented; the team is now hardening, testing, and extending existing features. Plan-000016 (UMAP visualization) is the most recent completed plan.</p>
+<p><strong>Supporting tool</strong>: <code>kb-qa</code> (a local RAG CLI + MCP server in <code>src/kb_qa/</code>) runs independently from GaveaLab. You do not need to set it up to work on GaveaLab.</p>
+<h3 id="team">Team</h3>
+<p><strong>Team members</strong>: Andrey, Mauro, Julia, Herbert, Natali, Sheila</p>
+<p>Communication norms, meeting cadence, and async channels: <em>ask your buddy/mentor on Day 1 -- these are not tracked in the repository</em>.</p>
+<h3 id="project-glossary">Project Glossary</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>relato</td>
+<td>A citizen comment/feedback entry in the CSV dataset</td>
+</tr>
+<tr>
+<td>session</td>
+<td>One analysis run: a named CSV upload stored in SQLite</td>
+</tr>
+<tr>
+<td>topic_tree</td>
+<td>AI-generated JSON taxonomy of topics and subtopics</td>
+</tr>
+<tr>
+<td>claims_tree</td>
+<td>Nested dict of claims extracted per topic/subtopic</td>
+</tr>
+<tr>
+<td>crux</td>
+<td>The core point of disagreement between two territory groups</td>
+</tr>
+<tr>
+<td>territory</td>
+<td>Optional column in the CSV identifying the citizen's region/group</td>
+</tr>
+<tr>
+<td>Ollama</td>
+<td>Local LLM inference server; exposes an OpenAI-compatible REST API</td>
+</tr>
+<tr>
+<td>UMAP</td>
+<td>Dimensionality reduction algorithm used to project claim embeddings into 2D</td>
+</tr>
+<tr>
+<td>workspace</td>
+<td><code>GaveaLabWorkspace</code> -- the single SQLite access point for all persistence</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ai-tooling-policy">AI Tooling Policy</h3>
+<ul>
+<li>Use Claude Code (this tool) for code understanding, generation, and review assistance.</li>
+<li>All LLM inference for GaveaLab itself runs through local Ollama -- no cloud LLM calls from the application code.</li>
+<li>AI-generated code must be read and understood before committing. If you cannot explain it in plain language, do not commit it.</li>
+<li>Sanctioned skills: <code>/explain</code>, <code>/research</code>, <code>/plan</code>, <code>/implement</code>, <code>/check</code>.</li>
+</ul>
+<hr />
+<h2 id="layer-1-role-specific-context-week-1">Layer 1 -- Role-Specific Context (Week 1)</h2>
+<h3 id="architecture-overview">Architecture Overview</h3>
+<p>GaveaLab PoC is a <strong>single-process Streamlit application</strong> with a clear three-layer structure:</p>
+<pre><code>+---------------------------------------------------------------+
+|                  app.py  (Streamlit entry point)             |
+|  - Sets page config, creates GaveaLabWorkspace (cached)      |
+|  - Sidebar radio: selects which page module to render        |
++---------------------------------------------------------------+
+         |                          |
+         v                          v
++-------------------+    +------------------------+
+|  gavealab_poc/    |    |  gavealab_poc/         |
+|  pages/           |    |  pipeline/             |
+|                   |    |                        |
+|  upload.py        |    |  topics.py             |
+|  auto_topics.py   |    |  claims.py             |
+|  manual_topics.py |    |  manual_categories.py  |
+|  cruxes.py        |    |  cruxes.py             |
+|  umap_viz.py      |    |  umap_viz.py           |
++-------------------+    +------------------------+
+         |                          |
+         |           +--------------+-------------+
+         v           v              v             v
++----------------+  +----------+  +-----------+  +----------+
+| workspace.py   |  | llm.py   |  |embeddings |  | (SQLite) |
+| GaveaLabWork-  |  | OllamaC- |  | .py       |  | gavealab |
+| space          |  | lient    |  | e5-large  |  | .db      |
+| AnalysisSes-   |  | (OpenAI- |  | (local)   |  |          |
+| sion           |  | compat)  |  |           |  |          |
++----------------+  +----------+  +-----------+  +----------+
+         |
+         v
++-------------------------+
+|  Ollama (local process) |
+|  qwen2.5:7b (default)   |
+|  http://localhost:11434  |
++-------------------------+
+</code></pre>
+<p><strong>Data flow for a full analysis</strong>:</p>
+<ol>
+<li>User uploads CSV -&gt; <code>pages/upload.py</code> calls <code>workspace.create_session()</code> -&gt; raw CSV stored in SQLite, <code>AnalysisSession</code> created in memory.</li>
+<li>"Temas automaticos" page -&gt; <code>pipeline/topics.py::generate_topic_tree()</code> -&gt; all comments assembled -&gt; <code>llm.chat()</code> -&gt; Ollama -&gt; JSON taxonomy parsed -&gt; <code>session.save_result("topic_tree", ...)</code> -&gt; SQLite.</li>
+<li>"Temas automaticos" page -&gt; "Extrair claims" button -&gt; <code>pipeline/claims.py::extract_claims()</code> -&gt; per-comment LLM call with taxonomy context -&gt; claims nested dict -&gt; <code>session.save_result("claims_tree", ...)</code>.</li>
+<li>"Opinioes divergentes" page -&gt; <code>pipeline/cruxes.py::detect_cruxes()</code> -&gt; all claims embedded via <code>embeddings.py::embed()</code> (multilingual-e5-large) -&gt; per-subtopic centroid cosine distance -&gt; divergent subtopics get LLM crux label -&gt; <code>session.save_result("cruxes", ...)</code>.</li>
+<li>"Visualizar clusters" page -&gt; <code>pipeline/umap_viz.py::build_umap_df()</code> -&gt; claims flattened -&gt; embeddings -&gt; UMAP 2D projection -&gt; Plotly scatter chart.</li>
+</ol>
+<h3 id="key-files-and-their-roles">Key Files and Their Roles</h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>gavealab-poc/app.py</code></td>
+<td>Streamlit entry point; page routing; <code>GaveaLabWorkspace</code> creation</td>
+</tr>
+<tr>
+<td><code>gavealab_poc/workspace.py</code></td>
+<td><code>GaveaLabWorkspace</code> (SQLite persistence); <code>AnalysisSession</code> (domain object)</td>
+</tr>
+<tr>
+<td><code>gavealab_poc/llm.py</code></td>
+<td><code>chat()</code> function; Ollama URL/model from env vars; OpenAI-compat client</td>
+</tr>
+<tr>
+<td><code>gavealab_poc/embeddings.py</code></td>
+<td><code>embed()</code> with <code>multilingual-e5-large</code>; <code>lru_cache</code> singleton model</td>
+</tr>
+<tr>
+<td><code>gavealab_poc/pipeline/topics.py</code></td>
+<td><code>generate_topic_tree()</code>; <code>_extract_json()</code> (reused across pipeline)</td>
+</tr>
+<tr>
+<td><code>gavealab_poc/pipeline/claims.py</code></td>
+<td><code>extract_claims()</code> -- per-comment LLM call with taxonomy</td>
+</tr>
+<tr>
+<td><code>gavealab_poc/pipeline/manual_categories.py</code></td>
+<td><code>categorize_by_themes()</code> -- user-supplied themes</td>
+</tr>
+<tr>
+<td><code>gavealab_poc/pipeline/cruxes.py</code></td>
+<td><code>detect_cruxes()</code> -- embedding cosine distance + LLM crux labeling</td>
+</tr>
+<tr>
+<td><code>gavealab_poc/pipeline/umap_viz.py</code></td>
+<td><code>build_umap_df()</code> -- UMAP projection; returns DataFrame for Plotly</td>
+</tr>
+<tr>
+<td><code>gavealab_poc/pages/*.py</code></td>
+<td>One file per sidebar page; each exports <code>render(workspace)</code></td>
+</tr>
+<tr>
+<td><code>gavealab-poc/pyproject.toml</code></td>
+<td>Dependency manifest for the gavealab-poc venv</td>
+</tr>
+</tbody>
+</table>
+<h3 id="constitution-constraints-you-must-know">Constitution Constraints You Must Know</h3>
+<p>These are enforced and violations block commits:</p>
+<ul>
+<li><strong>T1</strong>: All LLM calls go through <code>gavealab_poc/llm.py</code> (<code>chat()</code>). Never call httpx or openai directly in pipeline or page modules.</li>
+<li><strong>T2</strong>: All SQLite access goes through <code>GaveaLabWorkspace</code>. Pipeline and page modules call <code>session.save_result()</code> -- they never touch the database directly.</li>
+<li><strong>T3</strong>: Type annotations required on all public functions. Ollama URL and model come from env vars <code>GAVEALAB_OLLAMA_URL</code> and <code>GAVEALAB_OLLAMA_MODEL</code> only -- never hardcoded.</li>
+<li><strong>T4</strong>: <code>gavealab.db</code> is gitignored. Never commit it.</li>
+<li><strong>T5</strong>: <code>GaveaLabWorkspace</code> is created via <code>@st.cache_resource</code> in <code>app.py</code> -- exactly one instance per app process.</li>
+</ul>
+<h3 id="coding-standards">Coding Standards</h3>
+<ul>
+<li>Python 3.11+ (3.13 recommended).</li>
+<li><code>from __future__ import annotations</code> at the top of every module.</li>
+<li><code>snake_case</code> for functions and variables; <code>PascalCase</code> for classes.</li>
+<li>Module-level <code>log = logging.getLogger(__name__)</code> -- no <code>print()</code> in production code.</li>
+<li>Ruff linting: <code>uv run ruff check gavealab-poc/</code> must pass before any commit.</li>
+<li>Pyright type-check: <code>uv run pyright gavealab-poc/gavealab_poc/</code> should pass.</li>
+</ul>
+<h3 id="branch-and-pr-workflow">Branch and PR Workflow</h3>
+<ul>
+<li>Branch naming: <code>feat/&lt;short-description&gt;</code>, <code>fix/&lt;short-description&gt;</code>, <code>chore/&lt;short-description&gt;</code>.</li>
+<li>Commit messages: imperative mood, concise (e.g., <code>feat(umap): add territory color filter</code>).</li>
+<li>Open a PR against <code>main</code>; request at least one reviewer.</li>
+<li>First 5 PRs will receive detailed educational feedback -- embrace it.</li>
+</ul>
+<hr />
+<h2 id="layer-2-level-specific-depth-weeks-1-4">Layer 2 -- Level-Specific Depth (Weeks 1-4)</h2>
+<h3 id="support-structure">Support Structure</h3>
+<p>As an L1 Builder, you need a buddy for your first weeks:</p>
+<table>
+<thead>
+<tr>
+<th>Support</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Buddy/mentor</td>
+<td>Pair with an L2+ team member; daily 15-min check-in for first 2 weeks, then twice weekly for 4 weeks</td>
+</tr>
+<tr>
+<td>Pair programming</td>
+<td>At least 2 hours/week on real tasks for the first month</td>
+</tr>
+<tr>
+<td>PR review</td>
+<td>First 5 PRs reviewed with detailed, educational feedback explaining <em>why</em></td>
+</tr>
+</tbody>
+</table>
+<p><em>Ask your team lead to assign a buddy on Day 1.</em></p>
+<h3 id="suggested-first-task">Suggested First Task</h3>
+<p><strong>Fix or improve the JSON parse robustness in <code>pipeline/topics.py::_extract_json()</code>.</strong></p>
+<p>This function is reused across <code>topics.py</code>, <code>claims.py</code>, and <code>cruxes.py</code> (via import). It currently handles two cases (full parse, <code>{...}</code> block fallback) but silently returns an empty taxonomy on failure. A well-scoped first task:</p>
+<ol>
+<li>Add a third fallback: try stripping markdown code fences (<code>```json ... ```</code>) before parsing.</li>
+<li>Add a unit test in <code>tests/test_topics.py</code> covering the new case.</li>
+<li>Open a PR.</li>
+</ol>
+<p>This task is small, self-contained, tests the PR workflow, and teaches you the pipeline structure.</p>
+<h3 id="learning-path">Learning Path</h3>
+<table>
+<thead>
+<tr>
+<th>Week</th>
+<th>Focus</th>
+<th>Deliverable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Environment setup + architecture walkthrough + first task scoped</td>
+<td>First commit/PR merged</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Conventions deep-dive; read all pipeline modules; review one teammate's PR</td>
+<td>Second commit + one code review given</td>
+</tr>
+<tr>
+<td>3-4</td>
+<td>Independent task: implement a feature or fix from the team backlog</td>
+<td>Independent PR completed without architectural guidance</td>
+</tr>
+<tr>
+<td>5-8</td>
+<td>Cross-area work: explore pages layer or workspace module; contribute to test coverage</td>
+<td>Consistent contributions; decreasing review feedback</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ai-assisted-development-guidance-l1-calibration">AI-Assisted Development Guidance (L1 Calibration)</h3>
+<ul>
+<li>Use Claude Code to <strong>understand</strong> existing code: "What does <code>detect_cruxes</code> do step by step?", "How does <code>_extract_json</code> handle malformed LLM output?".</li>
+<li>Use it to <strong>generate code</strong>, but always read and understand what it produces before committing. If you cannot explain a function in plain language, do not commit it.</li>
+<li>Use it to <strong>review your own PRs before submission</strong>: "What could go wrong with this change?", "Am I missing edge cases?".</li>
+<li>Be cautious with AI suggestions about Streamlit session state -- the rerender model is subtle and AI-generated Streamlit code often introduces state bugs.</li>
+</ul>
+<h3 id="onboarding-milestones">Onboarding Milestones</h3>
+<table>
+<thead>
+<tr>
+<th>Milestone</th>
+<th>Target</th>
+<th>How to verify</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GaveaLab app running locally</td>
+<td>Day 1</td>
+<td><code>streamlit run app.py</code> shows the UI in browser</td>
+</tr>
+<tr>
+<td>Ollama running with qwen2.5:7b</td>
+<td>Day 1</td>
+<td><code>ollama run qwen2.5:7b "Hello"</code> returns output</td>
+</tr>
+<tr>
+<td>Architecture mental model</td>
+<td>Week 1-2</td>
+<td>Can draw the data-flow diagram from memory</td>
+</tr>
+<tr>
+<td>First PR merged</td>
+<td>Week 1</td>
+<td>PR approved and merged to main</td>
+</tr>
+<tr>
+<td>Convention fluency</td>
+<td>Week 2-4</td>
+<td>PRs pass with minimal style feedback</td>
+</tr>
+<tr>
+<td>Independent feature delivery</td>
+<td>Month 1-2</td>
+<td>End-to-end feature without architectural guidance</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="layer-3-living-knowledge-30-60-90-days">Layer 3 -- Living Knowledge (30-60-90 days)</h2>
+<h3 id="staying-current">Staying Current</h3>
+<ul>
+<li><strong>Briefs file</strong>: <code>_output/briefs.md</code> -- execution log of every skill invocation on this project. Read it to understand what changed and why. The most recent entries are the most relevant.</li>
+<li><strong>Plan history</strong>: <code>_output/plans/</code> -- each plan file describes a feature implementation decision. Start with plan-000016 (UMAP) and plan-000013 (cruxes) to understand the most complex pipeline stages.</li>
+<li><strong>As-coded state</strong>: <code>product-design/project/product-design-as-coded.md §0</code> -- the authoritative summary of what is implemented in GaveaLab PoC.</li>
+</ul>
+<h3 id="quality-and-review-standards">Quality and Review Standards</h3>
+<ul>
+<li>Constitution (<code>product-design/project/constitution.md</code>): read it fully in Week 1. Violations are blocking.</li>
+<li>Standards (<code>product-design/project/standards.md</code>): covers module responsibilities, naming, logging, error handling.</li>
+<li>Security checklist (<code>product-design/project/security-checklists.md</code>): relevant for any new CLI command or pipeline stage.</li>
+</ul>
+<h3 id="self-service-learning-via-skills">Self-Service Learning via Skills</h3>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Understand the codebase architecture</td>
+<td><code>/explain architecture</code></td>
+</tr>
+<tr>
+<td>Understand a specific behavior</td>
+<td><code>/explain behavior --area gavealab-poc</code></td>
+</tr>
+<tr>
+<td>Research a new topic</td>
+<td><code>/research "UMAP parameter tuning"</code></td>
+</tr>
+<tr>
+<td>See what artifacts exist</td>
+<td><code>/research --inventory</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="how-to-install-and-run-gavealab-poc-windows-powershell">How to Install and Run GaveaLab PoC (Windows, PowerShell)</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li>Python 3.11 or 3.13 installed and on PATH</li>
+<li><code>uv</code> package manager installed: <code>pip install uv</code> or <code>winget install astral-sh.uv</code></li>
+<li>Git installed</li>
+<li>Ollama installed (see section below)</li>
+</ul>
+<h3 id="step-by-step-setup">Step-by-Step Setup</h3>
+<pre><code class="language-powershell"># 1. Clone the repository (if not already done)
+git clone https://github.com/YOUR-ORG/inf2921-grupo-c.git
+cd inf2921-grupo-c
+
+# 2. Enter the gavealab-poc sub-project directory
+cd gavealab-poc
+
+# 3. Create and populate the virtual environment
+uv sync
+
+# 4. (Optional) Configure Ollama connection via environment variables
+# Defaults: http://localhost:11434/v1 and model qwen2.5:7b
+# Only set these if you want to override the defaults:
+$env:GAVEALAB_OLLAMA_BASE_URL = &quot;http://localhost:11434/v1&quot;
+$env:GAVEALAB_OLLAMA_MODEL = &quot;qwen2.5:7b&quot;
+
+# 5. Start the Streamlit app
+uv run streamlit run app.py
+</code></pre>
+<p>The app will open at <code>http://localhost:8501</code> in your default browser.</p>
+<h3 id="verifying-the-setup">Verifying the Setup</h3>
+<ul>
+<li>The sidebar shows: "Upload CSV", "Temas automaticos", "Categorizar por temas", "Opinioes divergentes", "Visualizar clusters".</li>
+<li>Upload a CSV with a <code>text</code> or <code>comment</code> column to create a session.</li>
+<li>If Ollama is not running, the "Gerar temas com IA" button will fail with a connection error -- that is expected until Ollama is set up (see next section).</li>
+</ul>
+<h3 id="sample-csv-for-testing">Sample CSV for Testing</h3>
+<p>Create a file <code>test_relatos.csv</code> with this content:</p>
+<pre><code>id,territory,text
+c1,Gavea,O transporte publico precisa de melhorias urgentes nas linhas de onibus
+c2,Botafogo,A coleta de lixo na minha rua e irregular ha meses
+c3,Gavea,Falta iluminacao nas ruas do bairro tornando as caminhadas inseguras
+c4,Ipanema,Os parques estao bem cuidados mas faltam banheiros publicos
+c5,Botafogo,O transporte esta horrivel os onibus sempre atrasam
+c6,Gavea,A seguranca publica piorou muito nos ultimos meses
+c7,Ipanema,Os calcadoes estao em otimo estado porem pouco iluminados a noite
+c8,Botafogo,Precisamos de mais areas de lazer para criancas no bairro
+</code></pre>
+<hr />
+<h2 id="how-to-install-and-run-ollama-on-windows">How to Install and Run Ollama on Windows</h2>
+<p>Ollama is the local LLM inference server that GaveaLab uses for all AI features. It must be running before you use any pipeline feature (topic generation, claims extraction, crux detection).</p>
+<h3 id="1-download-and-install-ollama">1. Download and Install Ollama</h3>
+<ol>
+<li>Go to <a href="https://ollama.com/download">https://ollama.com/download</a> and download the Windows installer (<code>OllamaSetup.exe</code>).</li>
+<li>Run the installer. Ollama installs as a background service and adds <code>ollama</code> to your PATH.</li>
+<li>After installation, Ollama starts automatically and runs in the system tray.</li>
+</ol>
+<p>Alternatively, via winget:</p>
+<pre><code class="language-powershell">winget install Ollama.Ollama
+</code></pre>
+<h3 id="2-pull-the-required-model">2. Pull the Required Model</h3>
+<p>GaveaLab defaults to <code>qwen2.5:7b</code>. Pull it after installation:</p>
+<pre><code class="language-powershell"># Pull the model (downloads ~4.7 GB on first run)
+ollama pull qwen2.5:7b
+
+# Verify the model is available
+ollama list
+</code></pre>
+<p>Expected output from <code>ollama list</code>:</p>
+<pre><code>NAME            ID              SIZE    MODIFIED
+qwen2.5:7b      ...             4.7 GB  a few seconds ago
+</code></pre>
+<h3 id="3-verify-the-ollama-service-is-running">3. Verify the Ollama Service is Running</h3>
+<pre><code class="language-powershell"># Check that the REST API is reachable
+Invoke-WebRequest -Uri &quot;http://localhost:11434&quot; -Method GET | Select-Object StatusCode
+
+# Expected: StatusCode 200
+
+# Or check the version endpoint
+Invoke-WebRequest -Uri &quot;http://localhost:11434/api/version&quot; | Select-Object -ExpandProperty Content
+</code></pre>
+<p>If Ollama is not running, start it manually:</p>
+<pre><code class="language-powershell">ollama serve
+</code></pre>
+<p>Leave that terminal open, or configure Ollama to start with Windows (it does this by default after installation).</p>
+<h3 id="4-test-the-model-directly">4. Test the Model Directly</h3>
+<pre><code class="language-powershell"># Quick smoke test
+ollama run qwen2.5:7b &quot;Responda em JSON: {\&quot;ok\&quot;: true}&quot;
+</code></pre>
+<p>Expected: Ollama returns a JSON-like response. If this works, GaveaLab pipeline calls will succeed.</p>
+<h3 id="5-how-gavealab-connects-to-ollama">5. How GaveaLab Connects to Ollama</h3>
+<p><code>gavealab_poc/llm.py</code> uses the OpenAI-compatible API exposed by Ollama at <code>http://localhost:11434/v1</code>. The connection is configured by two environment variables:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GAVEALAB_OLLAMA_BASE_URL</code></td>
+<td><code>http://localhost:11434/v1</code></td>
+<td>Ollama API base URL</td>
+</tr>
+<tr>
+<td><code>GAVEALAB_OLLAMA_MODEL</code></td>
+<td><code>qwen2.5:7b</code></td>
+<td>Model name for all LLM calls</td>
+</tr>
+</tbody>
+</table>
+<p>To use a different model (e.g., <code>llama3.2:3b</code> for faster responses on low-RAM machines):</p>
+<pre><code class="language-powershell">ollama pull llama3.2:3b
+$env:GAVEALAB_OLLAMA_MODEL = &quot;llama3.2:3b&quot;
+uv run streamlit run app.py
+</code></pre>
+<h3 id="6-embedding-model-multilingual-e5-large">6. Embedding Model (multilingual-e5-large)</h3>
+<p>The cruxes pipeline and UMAP visualization use <code>intfloat/multilingual-e5-large</code> via <code>sentence-transformers</code> (defined in <code>gavealab_poc/embeddings.py</code>). This model is downloaded automatically from HuggingFace on first use (~560 MB). No manual setup required; it runs locally via the <code>.venv</code>.</p>
+<p>First time you click "Detectar divergencias" or "Gerar visualizacao", expect a 1-3 minute delay for model download. Subsequent calls are fast (model is cached via <code>lru_cache</code>).</p>
+<hr />
+<h2 id="30-60-90-day-plan">30-60-90 Day Plan</h2>
+<h3 id="days-1-7-foundation">Days 1-7: Foundation</h3>
+<table>
+<thead>
+<tr>
+<th>Activity</th>
+<th>Done when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Clone repo, run <code>uv sync</code> in <code>gavealab-poc/</code></td>
+<td><code>.venv</code> created, no errors</td>
+</tr>
+<tr>
+<td>Install Ollama, pull <code>qwen2.5:7b</code>, verify API</td>
+<td><code>ollama list</code> shows the model; Invoke-WebRequest returns 200</td>
+</tr>
+<tr>
+<td>Run <code>uv run streamlit run app.py</code></td>
+<td>App loads in browser at localhost:8501</td>
+</tr>
+<tr>
+<td>Upload sample CSV, generate topics (end-to-end test)</td>
+<td>topic_tree rendered in "Temas automaticos"</td>
+</tr>
+<tr>
+<td>Read <code>app.py</code>, <code>workspace.py</code>, <code>llm.py</code>, <code>embeddings.py</code></td>
+<td>Can explain each file's role in one sentence</td>
+</tr>
+<tr>
+<td>Read <code>product-design/project/constitution.md</code></td>
+<td>Aware of T1-T5, Q1-Q3, S1-S4</td>
+</tr>
+<tr>
+<td>Scope first task with buddy</td>
+<td>Task defined, branch created</td>
+</tr>
+<tr>
+<td>First PR submitted</td>
+<td>PR open for review</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Checkpoint</strong>: buddy reviews environment setup and confirms architecture understanding.</p>
+<h3 id="days-8-30-building-fluency">Days 8-30: Building Fluency</h3>
+<table>
+<thead>
+<tr>
+<th>Activity</th>
+<th>Done when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>First PR merged</td>
+<td>Feedback addressed, tests pass</td>
+</tr>
+<tr>
+<td>Read all pipeline modules (<code>topics</code>, <code>claims</code>, <code>manual_categories</code>, <code>cruxes</code>, <code>umap_viz</code>)</td>
+<td>Can trace the data flow for any page end-to-end</td>
+</tr>
+<tr>
+<td>Read <code>product-design/project/standards.md</code> fully</td>
+<td>Coding standards internalized</td>
+</tr>
+<tr>
+<td>Complete second task independently</td>
+<td>PR submitted with no major architectural issues flagged</td>
+</tr>
+<tr>
+<td>Review at least one teammate PR</td>
+<td>Review feedback submitted</td>
+</tr>
+<tr>
+<td>Run ruff and pyright locally before every PR</td>
+<td>Zero linting errors in submitted PRs</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Checkpoint (Week 4)</strong>: tech lead reviews two merged PRs; confirms convention fluency.</p>
+<p><strong>Success criteria</strong>: PRs pass review with at most minor style comments; can explain any existing module's responsibility without looking at the code.</p>
+<h3 id="days-31-60-independent-contribution">Days 31-60: Independent Contribution</h3>
+<table>
+<thead>
+<tr>
+<th>Activity</th>
+<th>Done when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Complete one independent feature end-to-end</td>
+<td>Feature merged without architectural guidance</td>
+</tr>
+<tr>
+<td>Write unit tests for at least one pipeline module</td>
+<td>Tests added in <code>tests/test_&lt;module&gt;.py</code></td>
+</tr>
+<tr>
+<td>Contribute to one cross-area task (pages layer or workspace)</td>
+<td>PR in an area outside your initial focus</td>
+</tr>
+<tr>
+<td>Use <code>/explain</code> or <code>/research</code> skills for a non-trivial question</td>
+<td>Output artifact created in <code>_output/</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Checkpoint (Day 60)</strong>: buddy sync + tech lead review.</p>
+<p><strong>Success criteria</strong>: independent feature delivery; can onboard the next newcomer to the pipeline modules.</p>
+<h3 id="days-61-90-deepening">Days 61-90: Deepening</h3>
+<table>
+<thead>
+<tr>
+<th>Activity</th>
+<th>Done when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Propose one improvement to an existing module (open an issue or plan)</td>
+<td>Proposal documented</td>
+</tr>
+<tr>
+<td>Give meaningful code review feedback that catches a real issue</td>
+<td>Feedback acknowledged by PR author</td>
+</tr>
+<tr>
+<td>Complete a cross-area contribution outside the pipeline</td>
+<td>PR merged in pages, workspace, or app.py layer</td>
+</tr>
+<tr>
+<td>Understand the embedding + UMAP pipeline well enough to tune parameters</td>
+<td>Can explain UMAP <code>n_neighbors</code> and <code>min_dist</code> trade-offs</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Checkpoint (Day 90)</strong>: informal 30-min retrospective with buddy and tech lead.</p>
+<p><strong>Success criteria</strong>: recognized as a consistent, independent contributor; reviews trusted by peers.</p>
+<hr />
+<h2 id="recommended-reading-list">Recommended Reading List</h2>
+<h3 id="read-first-day-1">Read First (Day 1)</h3>
+<ol>
+<li><code>gavealab-poc/app.py</code> -- entry point and page routing (44 lines)</li>
+<li><code>gavealab-poc/gavealab_poc/workspace.py</code> -- persistence layer, <code>AnalysisSession</code> domain object</li>
+<li><code>gavealab-poc/gavealab_poc/llm.py</code> -- Ollama client wrapper; env var configuration</li>
+<li><code>product-design/project/constitution.md</code> -- immutable project principles (T1-T5 are blocking)</li>
+<li><code>gavealab-poc/pyproject.toml</code> -- dependencies for the gavealab-poc venv</li>
+</ol>
+<h3 id="read-this-week-week-1">Read This Week (Week 1)</h3>
+<ol>
+<li><code>gavealab-poc/gavealab_poc/embeddings.py</code> -- sentence-transformers singleton</li>
+<li><code>gavealab-poc/gavealab_poc/pipeline/topics.py</code> -- topic generation + <code>_extract_json</code> (reused everywhere)</li>
+<li><code>gavealab-poc/gavealab_poc/pipeline/claims.py</code> -- claims extraction</li>
+<li><code>gavealab-poc/gavealab_poc/pipeline/cruxes.py</code> -- divergence detection algorithm</li>
+<li><code>gavealab-poc/gavealab_poc/pipeline/umap_viz.py</code> -- UMAP projection</li>
+<li><code>gavealab-poc/gavealab_poc/pages/upload.py</code> -- CSV upload and session creation UI</li>
+<li><code>product-design/project/standards.md</code> -- naming, logging, error handling, testing conventions</li>
+</ol>
+<h3 id="read-this-month-month-1">Read This Month (Month 1)</h3>
+<ol>
+<li><code>gavealab-poc/gavealab_poc/pages/auto_topics.py</code> -- topics + claims UI</li>
+<li><code>gavealab-poc/gavealab_poc/pages/cruxes.py</code> -- divergence UI</li>
+<li><code>gavealab-poc/gavealab_poc/pages/umap_viz.py</code> -- cluster visualization UI</li>
+<li><code>gavealab-poc/gavealab_poc/pages/manual_topics.py</code> -- manual categorization UI</li>
+<li><code>product-design/project/product-design-as-intended.md</code> -- full design intent + decisions</li>
+<li><code>product-design/project/product-design-as-coded.md §0</code> -- current implementation state of GaveaLab PoC</li>
+<li><code>_output/plans/</code> -- plan files for the features you are working on (start with plan-000013, plan-000016)</li>
+<li><code>_output/briefs.md</code> -- execution log; understand the project's change history</li>
+</ol>
+<hr />
+<h2 id="appendix-key-contacts">Appendix: Key Contacts</h2>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Name</th>
+<th>Contact</th>
+<th>Topics</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Buddy/Mentor</td>
+<td><em>TBD</em></td>
+<td></td>
+<td>Day-to-day questions, first PR review</td>
+</tr>
+<tr>
+<td>Tech Lead</td>
+<td><em>TBD</em></td>
+<td></td>
+<td>Architecture decisions, design trade-offs</td>
+</tr>
+<tr>
+<td>Product Owner / Course Lead</td>
+<td><em>TBD</em></td>
+<td></td>
+<td>Requirements, feature priorities, course alignment</td>
+</tr>
+<tr>
+<td>QA / Testing</td>
+<td><em>TBD</em></td>
+<td></td>
+<td>Test strategy, pytest conventions</td>
+</tr>
+</tbody>
+</table>
+<p><em>Fill in this table with your team lead on Day 1.</em></p>
+<hr />
+<p><em>Generated by onboarding-generator agent | BLD L1 | gavealab-poc focus | 2026-06-02</em></p>
+
+</body>
+</html>
