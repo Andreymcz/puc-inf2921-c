@@ -16,6 +16,8 @@ designer_description: "Implementation state mirror for kb-qa — maintained by p
 
 **Upload page (plan-000009)**: `gavealab_poc/pages/upload.py` implements the full CSV upload flow: file picker, session name input, 10-row preview via pandas, validation (column presence enforced by `workspace._parse_csv`), session creation via `workspace.create_session()`, and a "Sessoes anteriores" panel listing and reloading persisted sessions from SQLite.
 
+**Auto-topics page (plan-000010)**: `gavealab_poc/pages/auto_topics.py` renders the "Temas automaticos" page. A "Gerar temas com IA" button triggers `generate_topic_tree(session)` from `gavealab_poc/pipeline/topics.py`, which assembles all comments (≥10 chars) from `session.df["text"]`, calls Ollama via `llm.chat()` with a structured JSON prompt, parses the response with `_parse_taxonomy` / `_extract_json` (best-effort JSON extraction with `{...}` block fallback), and persists the result via `session.save_result("topic_tree", tree)`. The page then renders each topic as a `st.expander` with subtopics listed as markdown bullet points. Results survive page reload (loaded from SQLite via `AnalysisSession.topic_tree`).
+
 ### 1. Platform Purpose
 
 kb-qa is a local RAG knowledge base CLI and MCP server. It ingests `.md` and `.pdf` documents from `knowledge/` into a ChromaDB vector store, and exposes semantic search via the `query_knowledge` MCP tool and the `kb-qa ask` CLI command.
