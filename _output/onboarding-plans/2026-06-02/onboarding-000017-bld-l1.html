@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Onboarding 000017 Bld L1</title>
+  <style>
+body {
+  max-width: 48em;
+  margin: 2em auto;
+  padding: 0 1em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: #222;
+}
+h1, h2, h3 { margin-top: 1.4em; }
+code { background: #f4f4f4; padding: 0.15em 0.3em; border-radius: 3px; }
+pre  { background: #f4f4f4; padding: 1em; overflow-x: auto; border-radius: 4px; }
+pre code { background: none; padding: 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #ddd; padding: 0.5em 0.75em; text-align: left; }
+th { background: #f8f8f8; }
+blockquote { border-left: 4px solid #ddd; margin: 1em 0; padding: 0.5em 1em; color: #555; }
+a { color: #0366d6; }
+
+  </style>
+</head>
+<body>
+
+<h1 id="onboarding-000017-bld-l1-2026-06-02t000000z-builder-l1-contributor">Onboarding 000017 | BLD L1 | 2026-06-02T00:00:00Z | Builder -- L1 Contributor</h1>
+<hr />
+<h2 id="welcome">Welcome</h2>
+<p>Welcome to INF2921-Grupo-C. You are joining as a Builder (BLD) at the L1 Contributor level, meaning your focus is writing, running, and iterating on code while you build familiarity with the project's conventions, architecture, and team workflow.</p>
+<p>This project has two deliverables that live in the same repository:</p>
+<ul>
+<li><strong>GaveaLab</strong> (<code>gavealab-poc/</code>) -- the primary product: a Streamlit + Ollama citizen-claims analysis tool. This is the active delivery front.</li>
+<li><strong>kb-qa</strong> (<code>src/kb_qa/</code>) -- a supporting local RAG CLI and MCP server built on ChromaDB and sentence-transformers.</li>
+</ul>
+<p>Your first weeks will be structured around getting the environment running, understanding the codebase structure, making a first small contribution, and building a mental model of how the two products relate. You will have a buddy or mentor to support you. Expect detailed feedback on your first pull requests -- it is meant to be educational, not critical.</p>
+<hr />
+<h2 id="layer-0-universal-foundation-day-1">Layer 0 -- Universal Foundation (Day 1)</h2>
+<h3 id="project-mission-and-current-phase">Project Mission and Current Phase</h3>
+<p>INF2921-Grupo-C is a course project for INF2921/CIS2114 AI Systems Design 2026.1 at PUC-Rio. Team: Andrey, Mauro, Julia, Herbert, Natali e Sheila.</p>
+<p><strong>Primary product -- GaveaLab</strong>: A citizen feedback analysis tool inspired by Talk to the City. It reads CSV datasets of citizen <code>relatos</code> (comments), runs LLM-powered topic extraction, claims analysis, divergence detection, and UMAP cluster visualization. Runs as a local Streamlit app with Ollama as the LLM backend.</p>
+<p><strong>Supporting tool -- kb-qa</strong>: A privacy-first local RAG knowledge base. Ingests <code>.md</code> and <code>.pdf</code> documents into a ChromaDB vector store and exposes semantic search via a CLI (<code>kb-qa ask</code>) and an MCP tool (<code>query_knowledge</code>) for use in Claude sessions.</p>
+<p>Current phase: active feature development on GaveaLab. The kb-qa tool is in a stable baseline state with planned v0.2 improvements (session-reuse CLI, similarity score exposure).</p>
+<h3 id="team-structure-and-communication-norms">Team Structure and Communication Norms</h3>
+<p><em>The team should fill in the following details:</em></p>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stand-up / sync cadence</td>
+<td><em>TBD</em></td>
+</tr>
+<tr>
+<td>Primary communication channel</td>
+<td><em>TBD</em></td>
+</tr>
+<tr>
+<td>PR review turnaround expectation</td>
+<td><em>TBD</em></td>
+</tr>
+<tr>
+<td>Where to ask questions</td>
+<td><em>TBD</em></td>
+</tr>
+<tr>
+<td>Sprint or milestone cadence</td>
+<td><em>TBD</em></td>
+</tr>
+</tbody>
+</table>
+<h3 id="environment-setup">Environment Setup</h3>
+<p><strong>Prerequisites</strong>: Python 3.13, <code>uv</code> package manager, Ollama (for GaveaLab LLM calls), Git.</p>
+<p><strong>Step 1: Clone and install dependencies</strong></p>
+<pre><code class="language-bash"># Clone the repository
+git clone &lt;repo-url&gt;
+cd inf2921-grupo-c
+
+# Install all dependencies (including dev) for kb-qa
+uv sync
+
+# Install GaveaLab dependencies (separate pyproject.toml)
+cd gavealab-poc
+uv sync
+cd ..
+</code></pre>
+<p><strong>Step 2: Verify kb-qa</strong></p>
+<pre><code class="language-bash"># Run all tests -- should pass with no errors
+uv run pytest
+
+# Lint check
+uv run ruff check src/
+
+# Type check
+uv run pyright src/
+</code></pre>
+<p><strong>Step 3: Verify GaveaLab</strong></p>
+<pre><code class="language-bash">cd gavealab-poc
+
+# Run the Streamlit app (requires Ollama running locally)
+uv run streamlit run gavealab_poc/app.py
+</code></pre>
+<p><strong>Step 4: Environment variables</strong></p>
+<p>GaveaLab reads two env vars for Ollama configuration. Set them in your shell or a local <code>.env</code> file (never commit <code>.env</code>):</p>
+<pre><code>GAVEALAB_OLLAMA_URL=http://localhost:11434
+GAVEALAB_OLLAMA_MODEL=&lt;model-name&gt;
+</code></pre>
+<p><strong>Step 5: Ingest sample documents into kb-qa (optional)</strong></p>
+<pre><code class="language-bash"># Place .md or .pdf files in knowledge/
+# Then ingest:
+uv run kb-qa ingest
+
+# Check status
+uv run kb-qa status
+</code></pre>
+<p>Target: clone to passing tests under 5 minutes (first run will download the <code>nomic-ai/nomic-embed-text-v1</code> embedding model, ~274 MB -- this is normal and happens only once).</p>
+<h3 id="project-glossary">Project Glossary</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>GaveaLab</strong></td>
+<td>The primary Streamlit-based citizen feedback analysis product in <code>gavealab-poc/</code></td>
+</tr>
+<tr>
+<td><strong>kb-qa</strong></td>
+<td>The local RAG CLI and MCP supporting tool in <code>src/kb_qa/</code></td>
+</tr>
+<tr>
+<td><strong>relato</strong></td>
+<td>A citizen comment/feedback entry; the atomic input unit in GaveaLab CSV datasets</td>
+</tr>
+<tr>
+<td><strong>KnowledgeDocument</strong></td>
+<td>A <code>.md</code> or <code>.pdf</code> file placed in <code>knowledge/</code> for ingestion into kb-qa</td>
+</tr>
+<tr>
+<td><strong>Chunk</strong></td>
+<td>A text segment extracted from a KnowledgeDocument; the atomic unit stored in ChromaDB</td>
+</tr>
+<tr>
+<td><strong>VectorStore</strong></td>
+<td>ChromaDB <code>PersistentClient</code> collection named <code>kb-qa-docs</code> at <code>knowledge/vectorstore/</code></td>
+</tr>
+<tr>
+<td><strong>MCP tool</strong></td>
+<td><code>query_knowledge</code> -- the FastMCP tool exposed by <code>agents/mcp_server.py</code></td>
+</tr>
+<tr>
+<td><strong>GaveaLabWorkspace</strong></td>
+<td>The SQLite persistence layer for GaveaLab sessions and results</td>
+</tr>
+<tr>
+<td><strong>AnalysisSession</strong></td>
+<td>A GaveaLab domain object representing one analysis run over a CSV dataset</td>
+</tr>
+<tr>
+<td><strong>topic tree</strong></td>
+<td>Hierarchical topic/subtopic taxonomy extracted by LLM from citizen comments</td>
+</tr>
+<tr>
+<td><strong>claim</strong></td>
+<td>An atomic assertion extracted per-comment, linked to a topic/subtopic</td>
+</tr>
+<tr>
+<td><strong>crux</strong></td>
+<td>A detected point of divergence between territory groups (cosine distance &gt; 0.25)</td>
+</tr>
+<tr>
+<td><strong>UMAP</strong></td>
+<td>Dimensionality reduction algorithm used for cluster visualization of claim embeddings</td>
+</tr>
+<tr>
+<td><strong>OllamaClient</strong></td>
+<td>The centralized LLM wrapper in <code>gavealab_poc/llm.py</code> -- all LLM calls go through here</td>
+</tr>
+<tr>
+<td><strong>content-addressable ID</strong></td>
+<td>MD5 of <code>source + text[:200]</code> used to deduplicate Chunks during ingestion</td>
+</tr>
+<tr>
+<td><strong>nomic-embed-text-v1</strong></td>
+<td>The sentence-transformers embedding model used by kb-qa for multilingual semantic search</td>
+</tr>
+<tr>
+<td><strong>multilingual-e5-large</strong></td>
+<td>The sentence-transformers model used by GaveaLab's <code>embeddings.py</code> for claim embeddings</td>
+</tr>
+<tr>
+<td><strong>plan</strong></td>
+<td>A numbered artifact (<code>plan-NNNNNN</code>) describing an implementation step; stored in <code>_output/plans/</code></td>
+</tr>
+</tbody>
+</table>
+<p>Also see <code>product-design/project/product-design-as-intended.md §3</code> for domain-specific concept definitions.</p>
+<h3 id="ai-tooling-policy-and-sanctioned-tools">AI Tooling Policy and Sanctioned Tools</h3>
+<ul>
+<li><strong>Claude Code</strong> (claude-sonnet-4-6) is the primary AI assistant and is used via the <code>/onboard</code>, <code>/implement</code>, <code>/explain</code>, <code>/research</code>, <code>/plan</code>, <code>/check</code>, and <code>/document</code> skills in <code>.claude/skills/</code>.</li>
+<li><strong>Ollama</strong> (local) is the LLM backend for GaveaLab analysis pipelines.</li>
+<li>AI-generated code must be read and understood before committing. Never treat AI output as a black box.</li>
+<li>Constitution invariants (T1-T4, Q1-Q3, S1-S3) are enforced -- AI suggestions that violate them must be rejected or adjusted.</li>
+<li>If AI generates a hardcoded path, model name, or API key: reject it and use the constants/env-var pattern instead.</li>
+</ul>
+<hr />
+<h2 id="layer-1-role-specific-context-week-1">Layer 1 -- Role-Specific Context (Week 1)</h2>
+<h3 id="architecture-overview">Architecture Overview</h3>
+<p>The repository contains two independent Python packages:</p>
+<pre><code>inf2921-grupo-c/
+|-- gavealab-poc/              # Primary product -- Streamlit app
+|   |-- gavealab_poc/
+|   |   |-- app.py             # Sidebar + page routing
+|   |   |-- llm.py             # OllamaClient -- ALL LLM calls go here (T1)
+|   |   |-- embeddings.py      # SentenceTransformer singleton (multilingual-e5-large)
+|   |   |-- workspace.py       # GaveaLabWorkspace -- ALL SQLite access here (T2)
+|   |   |-- pipeline/
+|   |   |   |-- topics.py      # LLM-powered topic tree generation
+|   |   |   |-- claims.py      # Per-comment claim extraction
+|   |   |   |-- manual_categories.py  # User-defined theme categorization
+|   |   |   |-- cruxes.py      # Divergence detection (embeddings + LLM labels)
+|   |   |   `-- umap_viz.py    # UMAP 2D embedding and Plotly chart
+|   |   `-- pages/
+|   |       |-- upload.py      # CSV upload + session management
+|   |       |-- auto_topics.py # Topic tree + claim extraction UI
+|   |       |-- manual_topics.py  # Manual theme categorization UI
+|   |       |-- cruxes.py      # Divergence detection UI
+|   |       `-- umap_viz.py    # UMAP cluster visualization UI
+|   `-- pyproject.toml         # Separate uv venv for GaveaLab
+|
+|-- src/kb_qa/                 # Supporting tool -- kb-qa CLI and MCP
+|   |-- cli.py                 # Click commands: ingest, status, ask
+|   |-- constants.py           # All constants (model name, paths, collection name)
+|   |-- loader.py              # Document loading (.md + .pdf) via pymupdf
+|   |-- ingest.py              # Embedding pipeline + ChromaDB upsert
+|   |-- query.py               # Cosine similarity retrieval; KbQa session class
+|   `-- __init__.py / __main__.py
+|-- agents/
+|   `-- mcp_server.py          # FastMCP server exposing query_knowledge
+|-- tests/                     # pytest tests for kb-qa
+|-- knowledge/                 # User-managed .md/.pdf source documents
+|   `-- vectorstore/           # ChromaDB database -- gitignored (S2)
+`-- product-design/            # Design intent, as-coded state, conventions
+</code></pre>
+<p><strong>Data flow for GaveaLab (happy path)</strong>:
+1. User uploads CSV via <code>pages/upload.py</code> -&gt; <code>workspace.create_session()</code> stores in SQLite
+2. User generates topics via <code>pages/auto_topics.py</code> -&gt; <code>pipeline/topics.py</code> -&gt; <code>llm.chat()</code> -&gt; persisted via <code>session.save_result()</code>
+3. User extracts claims -&gt; <code>pipeline/claims.py</code> -&gt; same pattern
+4. User runs UMAP viz -&gt; <code>pipeline/umap_viz.py</code> -&gt; <code>embeddings.embed()</code> -&gt; <code>umap.UMAP</code> -&gt; Plotly scatter</p>
+<p><strong>Data flow for kb-qa</strong>:
+1. <code>kb-qa ingest</code> -&gt; <code>loader.load_all()</code> -&gt; <code>ingest.ingest()</code> -&gt; <code>SentenceTransformer.encode()</code> -&gt; ChromaDB upsert
+2. <code>kb-qa ask</code> or MCP <code>query_knowledge</code> -&gt; <code>query.retrieve()</code> -&gt; <code>SentenceTransformer.encode(question)</code> -&gt; ChromaDB cosine query</p>
+<h3 id="coding-conventions">Coding Conventions</h3>
+<p>Key rules to internalize on Day 1:</p>
+<table>
+<thead>
+<tr>
+<th>Convention</th>
+<th>Rule</th>
+<th>Where enforced</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>All LLM calls</td>
+<td>Must go through <code>gavealab_poc/llm.py</code> (OllamaClient) -- never direct httpx</td>
+<td>Constitution T1</td>
+</tr>
+<tr>
+<td>All SQLite access</td>
+<td>Must go through <code>GaveaLabWorkspace</code> -- never direct DB access in pipeline/page modules</td>
+<td>Constitution T2</td>
+</tr>
+<tr>
+<td>Type annotations</td>
+<td>Required on all public functions</td>
+<td>Constitution T3 / pyright</td>
+</tr>
+<tr>
+<td>No hardcoded paths or model names</td>
+<td>Use <code>constants.py</code> (kb-qa) or env vars (GaveaLab)</td>
+<td>Constitution T3 / T5</td>
+</tr>
+<tr>
+<td><code>gavealab.db</code> and <code>knowledge/vectorstore/</code></td>
+<td>Never committed to git</td>
+<td>Constitution T4 / S2</td>
+</tr>
+<tr>
+<td>Logging</td>
+<td>Use <code>logging</code> module -- no <code>print()</code> in operational code</td>
+<td><code>product-design/project/standards.md §5</code></td>
+</tr>
+<tr>
+<td>Naming</td>
+<td><code>snake_case</code> for modules/functions, <code>PascalCase</code> for classes, <code>UPPER_SNAKE_CASE</code> for constants</td>
+<td><code>product-design/project/standards.md §6</code></td>
+</tr>
+<tr>
+<td>Tests</td>
+<td><code>tmp_path</code> fixture for all filesystem operations in tests -- never touch real <code>knowledge/vectorstore/</code></td>
+<td><code>product-design/project/standards.md § Testing</code></td>
+</tr>
+</tbody>
+</table>
+<p>Read <code>product-design/project/standards.md</code> in full during Week 1.</p>
+<h3 id="branching-and-pr-workflow">Branching and PR Workflow</h3>
+<p><em>The team should document specifics; defaults below:</em></p>
+<ul>
+<li>Branch naming: <code>&lt;type&gt;/&lt;short-description&gt;</code> (e.g., <code>fix/upload-validation</code>, <code>feat/score-visibility</code>)</li>
+<li>Commit messages: imperative mood, present tense (e.g., "add similarity score to ask output")</li>
+<li>PRs: request review from at least one team member before merge</li>
+<li>First 5 PRs will receive detailed, educational review feedback -- expect comments explaining <em>why</em>, not just <em>what</em></li>
+</ul>
+<h3 id="cicd-pipeline">CI/CD Pipeline</h3>
+<p><em>The team should document CI setup. Current state:</em></p>
+<ul>
+<li>Linting: <code>uv run ruff check src/</code></li>
+<li>Type checking: <code>uv run pyright src/</code></li>
+<li>Tests: <code>uv run pytest</code></li>
+<li>Deployment: local / personal NAS -- no automated deployment pipeline documented yet</li>
+</ul>
+<p>Run all three locally before pushing any branch.</p>
+<h3 id="ai-assisted-development-workflow">AI-Assisted Development Workflow</h3>
+<ol>
+<li>Use AI to <strong>explore</strong> the codebase: "What does <code>_doc_id()</code> do?", "How does the cruxes pipeline work?"</li>
+<li>Use AI to <strong>accelerate context</strong>: "Explain the data flow for topic extraction", "What are the naming conventions for this project?"</li>
+<li>Use AI to <strong>generate and review code</strong> -- but always run <code>ruff</code>, <code>pyright</code>, and <code>pytest</code> on the result</li>
+<li>Read every line of AI-generated code before committing -- if you cannot explain it in plain language, do not commit it</li>
+<li>Check AI suggestions against constitution invariants T1-T5 -- reject any suggestion that adds direct DB calls, hardcoded model names, or inline file paths</li>
+</ol>
+<hr />
+<h2 id="layer-2-level-specific-depth-weeks-1-4">Layer 2 -- Level-Specific Depth (Weeks 1-4)</h2>
+<h3 id="support-structure">Support Structure</h3>
+<p>You are an L1 Contributor. The right support depends on your experience level:</p>
+<table>
+<thead>
+<tr>
+<th>Support type</th>
+<th>Newcomer (0-2 yrs)</th>
+<th>Practitioner (2-5 yrs)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Buddy/mentor</td>
+<td>Pair with an L2+ team member; daily 15-min check-ins for 2 weeks, then twice weekly</td>
+<td>Weekly 30-min sync with an L2+ for first month</td>
+</tr>
+<tr>
+<td>Pair programming</td>
+<td>Minimum 2 hrs/week for first month on real tasks</td>
+<td>1-hr architecture walkthrough with a senior on key design decisions</td>
+</tr>
+<tr>
+<td>PR review style</td>
+<td>First 5 PRs get detailed educational feedback explaining the <em>why</em></td>
+<td>1-hr domain session with a team member on user goals and product direction</td>
+</tr>
+</tbody>
+</table>
+<h3 id="concrete-first-task-suggestion">Concrete First Task Suggestion</h3>
+<p>The project's <code>product-design/project/product-design-as-intended.md §0</code> lists planned v0.2 improvements for kb-qa:</p>
+<p><strong>Recommended first task</strong>: Add an explicit "Downloading embedding model..." message before the first <code>SentenceTransformer()</code> call in <code>src/kb_qa/ingest.py</code> (or <code>src/kb_qa/query.py</code>), or check whether the model is cached and inform the user. This addresses the observed friction in <code>ux-research-results.md § JM-E-001</code>.</p>
+<p>Why this is a good first task:
+- It is well-scoped (one function, one file)
+- It does not require changing the architecture
+- It gives you hands-on experience with the ingestion pipeline
+- You will learn how <code>SentenceTransformer</code> caching works
+- It has a clear acceptance criterion: a message appears on first run and is suppressed on subsequent runs</p>
+<p>Alternative first task: expose similarity scores in the <code>ask</code> command output (planned v0.2 feature in <code>§0</code>) -- slightly larger scope but still well-contained in <code>src/kb_qa/cli.py</code> and <code>src/kb_qa/query.py</code>.</p>
+<h3 id="learning-path">Learning Path</h3>
+<table>
+<thead>
+<tr>
+<th>Week</th>
+<th>Focus</th>
+<th>Deliverable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Environment setup + first commit</td>
+<td>Tests pass locally; first PR submitted (model-download message or score visibility)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Read <code>standards.md</code> + <code>product-design-as-coded.md</code> in full; trace GaveaLab upload-to-topics flow in code</td>
+<td>Second commit + one code review given</td>
+</tr>
+<tr>
+<td>3-4</td>
+<td>Independent task: pick a well-scoped item from the backlog or <code>product-design-as-intended.md §0</code> planned changes</td>
+<td>Independent PR merged with minimal style feedback</td>
+</tr>
+<tr>
+<td>5-8</td>
+<td>Cross-area exploration: contribute to either GaveaLab pipeline or kb-qa; participate in one architecture discussion</td>
+<td>Consistent contributions; begin reviewing others' PRs substantively</td>
+</tr>
+</tbody>
+</table>
+<h3 id="onboarding-milestones">Onboarding Milestones</h3>
+<table>
+<thead>
+<tr>
+<th>Milestone</th>
+<th>Target</th>
+<th>How to verify</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Environment running</td>
+<td>Day 1</td>
+<td><code>uv run pytest</code> passes locally</td>
+</tr>
+<tr>
+<td>First commit merged</td>
+<td>Week 1</td>
+<td>PR approved and merged by buddy/mentor</td>
+</tr>
+<tr>
+<td>Architecture mental model</td>
+<td>Week 1-2</td>
+<td>Can sketch the GaveaLab pipeline (upload -&gt; topics -&gt; claims -&gt; cruxes -&gt; UMAP) from memory</td>
+</tr>
+<tr>
+<td>Convention fluency</td>
+<td>Week 2-4</td>
+<td>PRs pass review without type annotation, naming, or import boundary comments</td>
+</tr>
+<tr>
+<td>Independent feature delivery</td>
+<td>Month 1-2</td>
+<td>End-to-end feature without architectural guidance</td>
+</tr>
+<tr>
+<td>Meaningful code reviews</td>
+<td>Month 2-3</td>
+<td>Review comments catch real issues (not just style)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="material-format-guidance">Material Format Guidance</h3>
+<ul>
+<li><strong>Newcomers</strong>: start with the step-by-step setup above; read one file at a time from the reading list; ask your buddy before reading architecture docs</li>
+<li><strong>Practitioners</strong>: read <code>standards.md</code> and <code>product-design-as-coded.md §0</code> on Day 1; trace the data flow code yourself; use the reading list as a checklist</li>
+</ul>
+<h3 id="ai-assisted-development-l1-reminders">AI-Assisted Development -- L1 Reminders</h3>
+<ul>
+<li>Red flag: if you cannot explain a code block in one sentence, do not commit it</li>
+<li>Use Claude to understand existing code before writing new code</li>
+<li>When AI suggests a pattern, ask yourself: does this match <code>standards.md</code>? Does it violate any constitution principle?</li>
+<li>Run <code>uv run ruff check src/</code> and <code>uv run pyright src/</code> after every AI-assisted edit</li>
+</ul>
+<hr />
+<h2 id="layer-3-living-knowledge-30-60-90-days">Layer 3 -- Living Knowledge (30-60-90 Days)</h2>
+<h3 id="decision-context">Decision Context</h3>
+<p>As you work, you will encounter design decisions. Read <code>product-design/project/product-design-as-intended.md §§ Decisions</code> for the rationale behind key choices (ChromaDB, MCP via FastMCP, nomic-embed-text-v1). These explain <em>why</em> the architecture is the way it is -- read them before proposing changes.</p>
+<h3 id="review-perspectives-framework">Review Perspectives Framework</h3>
+<p>Quality standards are encoded in <code>.claude/references/general/review-perspectives/</code>. When you are ready to review PRs yourself (Month 2-3), familiarize yourself with the <code>dx.md</code> perspective (developer experience standards). Your buddy can guide you to the right perspectives for your area.</p>
+<h3 id="skill-system-for-self-service-learning">Skill System for Self-Service Learning</h3>
+<p>The project uses Claude Code skills for structured analysis and generation. As you become comfortable:</p>
+<ul>
+<li><code>/explain behavior &lt;topic&gt;</code> -- get an explanation of how a specific feature or pipeline works</li>
+<li><code>/explain architecture</code> -- generate an architecture overview if one does not exist</li>
+<li><code>/explain data-model</code> -- generate a data model explanation</li>
+<li><code>/research &lt;topic&gt;</code> -- run a structured research session on a technical question</li>
+<li><code>/research --inventory</code> -- see all available research logs</li>
+</ul>
+<p>To invoke: type <code>/skill-name</code> in your Claude Code session. Skills handle the full lifecycle including reading project context.</p>
+<h3 id="plan-history">Plan History</h3>
+<p>All implementation plans are in <code>_output/plans/</code>. Reading recent plans (e.g., <code>plan-000016</code> for the UMAP cluster visualization) gives you a window into <em>how</em> features were designed and implemented, including trade-offs considered. This is the best way to understand the "why" behind recent code changes.</p>
+<hr />
+<h2 id="30-60-90-day-plan">30-60-90 Day Plan</h2>
+<h3 id="days-1-30-foundation">Days 1-30: Foundation</h3>
+<table>
+<thead>
+<tr>
+<th>Week</th>
+<th>Activity</th>
+<th>Success Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Day 1</td>
+<td>Environment setup: clone, <code>uv sync</code>, <code>uv run pytest</code> passes, GaveaLab Streamlit app launches</td>
+<td>All tests green; app renders in browser</td>
+</tr>
+<tr>
+<td>Day 1</td>
+<td>Read: <code>CLAUDE.md</code>, <code>product-design/conventions.md</code>, <code>product-design/project/constitution.md</code></td>
+<td>Can state the 5 technical principles from memory</td>
+</tr>
+<tr>
+<td>Week 1</td>
+<td>Read <code>product-design/project/standards.md</code> in full</td>
+<td>Aware of module responsibilities and naming rules</td>
+</tr>
+<tr>
+<td>Week 1</td>
+<td>Trace the GaveaLab upload flow in code: <code>pages/upload.py</code> -&gt; <code>workspace.py</code></td>
+<td>Can explain the flow verbally</td>
+</tr>
+<tr>
+<td>Week 1</td>
+<td>Submit first PR (model-download message or score visibility)</td>
+<td>PR approved by buddy</td>
+</tr>
+<tr>
+<td>Week 2</td>
+<td>Read <code>product-design/project/product-design-as-coded.md</code> fully</td>
+<td>Can describe both products and their relationship</td>
+</tr>
+<tr>
+<td>Week 2</td>
+<td>Trace GaveaLab topics -&gt; claims -&gt; cruxes pipeline in code</td>
+<td>Can explain each pipeline step</td>
+</tr>
+<tr>
+<td>Week 3-4</td>
+<td>Independent task from backlog</td>
+<td>PR merged with minimal feedback</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Checkpoint</strong>: End of Month 1 -- 30-min sync with buddy/mentor. Can the new contributor explain the architecture, name the key modules, and describe their first two PRs?</p>
+<h3 id="days-31-60-growing-independence">Days 31-60: Growing Independence</h3>
+<table>
+<thead>
+<tr>
+<th>Activity</th>
+<th>Success Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Second independent feature or meaningful bug fix</td>
+<td>PR merged without architectural guidance</td>
+</tr>
+<tr>
+<td>Give substantive code review on one PR</td>
+<td>Review identifies a real issue or improvement</td>
+</tr>
+<tr>
+<td>Read <code>product-design/project/product-design-as-intended.md §§ 0, 13, 14</code></td>
+<td>Understands planned improvements and user stories</td>
+</tr>
+<tr>
+<td>Explore <code>agents/mcp_server.py</code> and run the MCP server locally</td>
+<td>Understands the MCP tool boundary</td>
+</tr>
+<tr>
+<td>Begin cross-area exploration (if started on kb-qa: look at GaveaLab; if GaveaLab: look at kb-qa)</td>
+<td>Can describe both codebases at a module level</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Checkpoint</strong>: End of Month 2 -- team lead review. PRs passing with minimal feedback? Contributing meaningfully to reviews?</p>
+<h3 id="days-61-90-contribution-and-context">Days 61-90: Contribution and Context</h3>
+<table>
+<thead>
+<tr>
+<th>Activity</th>
+<th>Success Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Contribution outside initial area</td>
+<td>Successful PR in an area not originally assigned</td>
+</tr>
+<tr>
+<td>Use <code>/explain</code> or <code>/research</code> skill autonomously</td>
+<td>Produces a useful explanation or research log</td>
+</tr>
+<tr>
+<td>Participate in a design or planning discussion</td>
+<td>Offers an informed opinion grounded in project conventions</td>
+</tr>
+<tr>
+<td>Read recent plan history (<code>_output/plans/</code> latest 3 plans)</td>
+<td>Can trace a feature from plan to code</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Checkpoint</strong>: End of Month 3 -- structured review with buddy or team lead. Is the contributor independently productive? Are PRs approved with zero or minimal style/convention feedback?</p>
+<hr />
+<h2 id="recommended-reading-list">Recommended Reading List</h2>
+<h3 id="read-first-day-1-5-files">Read First (Day 1) -- 5 files</h3>
+<ol>
+<li><code>CLAUDE.md</code> -- project overview, stack, build commands, key conventions</li>
+<li><code>product-design/project/constitution.md</code> -- immutable principles; understand T1-T5, Q1-Q3, S1-S3</li>
+<li><code>product-design/conventions.md</code> -- all directory variables and source paths used by skills and references</li>
+<li><code>product-design/project/standards.md</code> -- engineering standards: module responsibilities, naming, logging, testing</li>
+<li><code>product-design/project/product-design-as-coded.md §0 and §1</code> -- GaveaLab PoC overview and kb-qa platform purpose</li>
+</ol>
+<h3 id="read-this-week-week-1-7-files">Read This Week (Week 1) -- 7 files</h3>
+<ol>
+<li><code>product-design/project/product-design-as-intended.md §§ 1-3, 8, 13</code> -- design philosophy, entity hierarchy, UX patterns, user stories</li>
+<li><code>src/kb_qa/constants.py</code> -- single source of truth for all kb-qa constants</li>
+<li><code>src/kb_qa/ingest.py</code> -- ingestion pipeline; see <code>_doc_id()</code> and the upsert loop</li>
+<li><code>src/kb_qa/query.py</code> -- retrieval logic; see <code>KbQa</code> class and <code>retrieve()</code></li>
+<li><code>gavealab-poc/gavealab_poc/llm.py</code> -- OllamaClient; understand the single LLM entry point</li>
+<li><code>gavealab-poc/gavealab_poc/workspace.py</code> -- <code>GaveaLabWorkspace</code>; understand the single DB entry point</li>
+<li><code>agents/mcp_server.py</code> -- FastMCP server; understand the MCP tool boundary and <code>n_results</code> cap</li>
+</ol>
+<h3 id="read-this-month-month-1-additional-depth">Read This Month (Month 1) -- additional depth</h3>
+<ol>
+<li><code>gavealab-poc/gavealab_poc/pipeline/topics.py</code> -- topic tree generation; study <code>_extract_json</code> and <code>_parse_taxonomy</code></li>
+<li><code>gavealab-poc/gavealab_poc/pipeline/claims.py</code> -- claim extraction pipeline</li>
+<li><code>gavealab-poc/gavealab_poc/pipeline/cruxes.py</code> -- divergence detection; study the embedding + centroid + LLM pattern</li>
+<li><code>gavealab-poc/gavealab_poc/pipeline/umap_viz.py</code> -- UMAP cluster visualization; study <code>build_umap_df</code></li>
+<li><code>src/kb_qa/loader.py</code> -- document loading; understand the <code>.md</code> and <code>.pdf</code> paths</li>
+<li><code>tests/</code> -- all test files; understand the <code>tmp_path</code> fixture pattern and mock strategy</li>
+<li><code>product-design/project/product-design-as-intended.md §§ Decisions</code> -- D-001 through D-003: ChromaDB, MCP, embedding model choices</li>
+<li><code>_output/plans/</code> -- read the most recent 2-3 plans to understand how implementation decisions are documented</li>
+</ol>
+<hr />
+<h2 id="appendix-key-contacts">Appendix: Key Contacts</h2>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Name</th>
+<th>Contact</th>
+<th>Topics</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Buddy/Mentor</td>
+<td><em>TBD</em></td>
+<td></td>
+<td>Day-to-day questions, first PR reviews</td>
+</tr>
+<tr>
+<td>Tech Lead</td>
+<td><em>TBD</em></td>
+<td></td>
+<td>Architecture decisions, design trade-offs</td>
+</tr>
+<tr>
+<td>Product Owner</td>
+<td><em>TBD</em></td>
+<td></td>
+<td>Requirements, priorities, user goals</td>
+</tr>
+<tr>
+<td>QA Lead</td>
+<td><em>TBD</em></td>
+<td></td>
+<td>Testing strategy, quality gates</td>
+</tr>
+<tr>
+<td>Course Instructor</td>
+<td><em>TBD</em></td>
+<td></td>
+<td>Academic requirements, course milestones</td>
+</tr>
+</tbody>
+</table>
+
+</body>
+</html>
