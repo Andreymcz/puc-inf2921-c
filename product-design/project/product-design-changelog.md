@@ -12,3 +12,4 @@
 2026-06-02 | plan-000011 | §0 | Updated GaveaLab PoC entry: claims extraction pipeline and UI added (pipeline/claims.py, auto_topics.py claims section)
 2026-06-02 | plan-000012 | §0 | Updated GaveaLab PoC entry: manual theme categorization tool added (pipeline/manual_categories.py, pages/manual_topics.py)
 2026-06-02 | plan-000013 | §0 | Updated GaveaLab PoC entry: divergent opinion detection added (embeddings.py singleton, pipeline/cruxes.py embedding-based crux detection, pages/cruxes.py)
+2026-06-02 | plan-000016 | §0 | Updated GaveaLab PoC entry: UMAP 2D cluster visualization added (pipeline/umap_viz.py, pages/umap_viz.py, sidebar page "Visualizar clusters")

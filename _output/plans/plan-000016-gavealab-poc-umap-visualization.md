@@ -1,4 +1,5 @@
 # Plan 000016 | FEATURE-X | 2026-06-02 02:19 | GaveaLab PoC -- UMAP cluster visualization | Review: light
+# DONE | 2026-06-02 02:32 UTC |
 plan_format_version: 1
 
 ## Brief (verbatim)
@@ -32,7 +33,7 @@ These are reasonable defaults for a small dataset (tens to low hundreds of point
 
 ### Step 1 — pyproject.toml: add umap-learn and plotly
 
-- [ ] Done
+- [x] Done
 
 Add to `[project] dependencies`:
 ```
@@ -48,7 +49,7 @@ Add to `[project] dependencies`:
 
 ### Step 2 — gavealab_poc/pipeline/umap_viz.py
 
-- [ ] Done
+- [x] Done
 
 Create the pipeline module that takes a `claims_tree` dict and returns a DataFrame ready for
 Plotly, plus the UMAP reducer.
@@ -115,7 +116,7 @@ def build_umap_df(
 
 ### Step 3 — gavealab_poc/pages/umap_viz.py
 
-- [ ] Done
+- [x] Done
 
 Create the Streamlit page. Key design choices:
 - Sliders for `n_neighbors` (5–50, default 15) and `min_dist` (0.01–0.5, default 0.1) in a
@@ -195,7 +196,7 @@ def render(workspace: GaveaLabWorkspace) -> None:
 
 ### Step 4 — app.py: add "Visualizar clusters" to sidebar
 
-- [ ] Done
+- [x] Done
 
 ```python
 # Add to the radio options list:
