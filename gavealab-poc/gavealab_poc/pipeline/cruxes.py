@@ -8,7 +8,7 @@ from gavealab_poc.pipeline.topics import _extract_json
 
 # Cosine distance threshold above which a subtopic is considered divergent.
 # (distance = 1 - cosine_similarity; 0.25 ~= moderate divergence)
-DIVERGENCE_THRESHOLD = 0.25
+DIVERGENCE_THRESHOLD = 0.10
 
 SYSTEM_PROMPT = (
     "You are a JSON generator. You MUST respond with ONLY valid JSON. "
@@ -25,7 +25,7 @@ LABEL_PROMPT_TMPL = (
 )
 
 
-def detect_cruxes(session: AnalysisSession) -> list[dict]:
+def detect_cruxes(session: AnalysisSession) -> tuple[list[dict], list[dict]]:
     """Detect crux claims using embedding-based divergence detection.
 
     Algorithm:
@@ -34,18 +34,25 @@ def detect_cruxes(session: AnalysisSession) -> list[dict]:
     3. If cosine distance between centroids > DIVERGENCE_THRESHOLD, flag as divergent.
     4. For divergent subtopics only, ask Ollama for a one-sentence crux label.
 
-    Persists result via session.save_result and returns the list.
+    Returns (cruxes, diagnostics). Persists cruxes via session.save_result.
     Each crux dict: {topic, subtopic, cruxClaim, explanation, agree, disagree, cosine_distance}
+    Each diagnostics dict: {topic, subtopic, cosine_distance, groups, divergent}
     """
     if not session.claims_tree:
         raise ValueError("Extraia os claims primeiro ('Extrair claims').")
 
     cruxes: list[dict] = []
+    diagnostics: list[dict] = []
 
     for topic, subtopics in session.claims_tree.items():
         for subtopic, claims in subtopics.items():
             groups = _build_groups(claims)
             if len(groups) < 2:
+                diagnostics.append({
+                    "topic": topic, "subtopic": subtopic,
+                    "cosine_distance": None, "groups": list(groups.keys()),
+                    "divergent": False, "reason": "single group",
+                })
                 continue
 
             group_names = list(groups.keys())
@@ -55,8 +62,15 @@ def detect_cruxes(session: AnalysisSession) -> list[dict]:
             claims_b = [c["claim"] for c in groups[g_b]]
 
             dist = _group_cosine_distance(claims_a, claims_b)
-            if dist < DIVERGENCE_THRESHOLD:
-                continue  # groups are semantically similar — no crux
+            divergent = dist >= DIVERGENCE_THRESHOLD
+            diagnostics.append({
+                "topic": topic, "subtopic": subtopic,
+                "cosine_distance": round(dist, 4), "groups": [g_a, g_b],
+                "divergent": divergent, "reason": f"dist={dist:.4f} threshold={DIVERGENCE_THRESHOLD}",
+            })
+
+            if not divergent:
+                continue
 
             crux = _label_crux(topic, subtopic, g_a, claims_a, g_b, claims_b)
             if crux:
@@ -70,7 +84,7 @@ def detect_cruxes(session: AnalysisSession) -> list[dict]:
                 cruxes.append(crux)
 
     session.save_result("cruxes", cruxes)
-    return cruxes
+    return cruxes, diagnostics
 
 
 def _build_groups(claims: list[dict]) -> dict[str, list[dict]]:

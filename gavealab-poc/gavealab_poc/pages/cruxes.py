@@ -22,11 +22,28 @@ def render(workspace: GaveaLabWorkspace) -> None:
         with st.spinner("Calculando embeddings e identificando divergencias..."):
             try:
                 from gavealab_poc.pipeline.cruxes import detect_cruxes
-                detect_cruxes(session)
+                _, diagnostics = detect_cruxes(session)
                 st.session_state.session = session
+                st.session_state.crux_diagnostics = diagnostics
             except Exception as exc:
                 st.error(f"Erro: {exc}")
                 return
+
+    diagnostics = st.session_state.get("crux_diagnostics", [])
+    if diagnostics:
+        with st.expander("🔍 Diagnóstico de distâncias (todos os subtópicos)", expanded=not session.cruxes):
+            import pandas as pd
+            df_diag = pd.DataFrame([
+                {
+                    "tópico": d["topic"],
+                    "subtópico": d["subtopic"],
+                    "grupos": ", ".join(d["groups"]),
+                    "distância coseno": d["cosine_distance"],
+                    "divergente": "✅" if d["divergent"] else "❌",
+                }
+                for d in diagnostics
+            ])
+            st.dataframe(df_diag, use_container_width=True)
 
     if not session.cruxes:
         st.info("Clique no botao para detectar opinioes divergentes.")
