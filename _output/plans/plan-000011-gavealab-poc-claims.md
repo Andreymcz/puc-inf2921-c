@@ -1,4 +1,5 @@
 # Plan 000011 | FEATURE-X | 2026-06-01 22:44 | GaveaLab PoC -- Claims extraction | Review: light
+# DONE | 2026-06-02 00:41 UTC |
 plan_format_version: 1
 
 ## Revision note
