@@ -35,3 +35,4 @@
 | 2026-04-24 01:18 UTC | QA Log |  | advisory-000002 | 2026-04-24 01:18 UTC | Atlas Digital Georreferenciado Amazoni… |  | [advisory-000002-qa-atlas-georreferenciado-amazonia-ia.md](advisory-logs/advisory-000002-qa-atlas-georreferenciado-amazonia-ia.md) |
 | 2026-04-24 01:12 UTC | Advisory | 000002 | Atlas Digital Georreferenciado Amazonia IA | DONE | [advisory-000002-atlas-georreferenciado-amazonia-ia.md](advisory-logs/advisory-000002-atlas-georreferenciado-amazonia-ia.md) |
 | 2026-06-02 15:01 UTC | RESERVED | 000018 | onboarding: bld-l1-gavealab-poc | RESERVED | |
+| 2026-06-02 15:10 UTC | RESERVED | 000019 | onboarding: bld-l1-gavealab-poc-quickstart | RESERVED | |
