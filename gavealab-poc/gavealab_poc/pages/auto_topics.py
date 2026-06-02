@@ -33,3 +33,28 @@ def render(workspace: GaveaLabWorkspace) -> None:
                 st.markdown(
                     f"- **{sub['subtopicName']}**: {sub.get('subtopicShortDescription', '')}"
                 )
+
+    st.divider()
+    st.subheader("Claims por subtema")
+
+    if st.button("Extrair claims (pode demorar)"):
+        with st.spinner("Extraindo claims comentario por comentario..."):
+            try:
+                from gavealab_poc.pipeline.claims import extract_claims
+                extract_claims(session)
+                st.session_state.session = session
+            except Exception as exc:
+                st.error(f"Erro: {exc}")
+                return
+
+    if not session.claims_tree:
+        st.info("Gere os temas e depois clique em 'Extrair claims'.")
+        return
+
+    import pandas as pd
+    for topic, subtopics in session.claims_tree.items():
+        st.markdown(f"### {topic}")
+        for subtopic, claims in subtopics.items():
+            with st.expander(f"{subtopic} ({len(claims)} claims)"):
+                cols = ["claim", "quote", "territory"] if claims and "territory" in claims[0] else ["claim", "quote"]
+                st.dataframe(pd.DataFrame(claims)[cols], use_container_width=True)
