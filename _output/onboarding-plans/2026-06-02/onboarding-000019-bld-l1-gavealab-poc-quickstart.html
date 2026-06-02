@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Onboarding 000019 Bld L1 Gavealab Poc Quickstart</title>
+  <style>
+body {
+  max-width: 48em;
+  margin: 2em auto;
+  padding: 0 1em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: #222;
+}
+h1, h2, h3 { margin-top: 1.4em; }
+code { background: #f4f4f4; padding: 0.15em 0.3em; border-radius: 3px; }
+pre  { background: #f4f4f4; padding: 1em; overflow-x: auto; border-radius: 4px; }
+pre code { background: none; padding: 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #ddd; padding: 0.5em 0.75em; text-align: left; }
+th { background: #f8f8f8; }
+blockquote { border-left: 4px solid #ddd; margin: 1em 0; padding: 0.5em 1em; color: #555; }
+a { color: #0366d6; }
+
+  </style>
+</head>
+<body>
+
+<h1 id="onboarding-000019-bld-l1-gavealab-poc-quickstart-2026-06-02-0000-utc">Onboarding 000019 | BLD L1 | gavealab-poc Quickstart | 2026-06-02 00:00 UTC</h1>
+<hr />
+<h2 id="section-1-tech-stack">Section 1: Tech Stack</h2>
+<p>This document covers the <code>gavealab-poc</code> sub-project: a Streamlit web application for citizen feedback analysis (topic extraction, claim categorization, divergence detection, and UMAP cluster visualization). It is the primary product of INF2921-Grupo-C and lives under <code>gavealab-poc/</code>.</p>
+<h3 id="runtime-and-package-management">Runtime and Package Management</h3>
+<table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>What it is</th>
+<th>Why it is used here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Python 3.11+</strong></td>
+<td>General-purpose programming language</td>
+<td>Project baseline; <code>gavealab-poc/pyproject.toml</code> sets <code>requires-python = "&gt;=3.11"</code></td>
+</tr>
+<tr>
+<td><strong>uv</strong></td>
+<td>Fast Python package manager and virtual-environment tool</td>
+<td>Manages dependencies via <code>pyproject.toml</code> + <code>uv.lock</code>; replaces pip/venv for consistent, reproducible installs across the team</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ui-framework">UI Framework</h3>
+<table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>What it is</th>
+<th>Why it is used here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Streamlit &gt;= 1.35</strong></td>
+<td>Python-native web UI framework that turns scripts into interactive apps</td>
+<td>Provides the entire browser-based UI with zero frontend code -- sidebar navigation, file upload widget, charts, and result tables are all written in Python</td>
+</tr>
+</tbody>
+</table>
+<h3 id="data-handling">Data Handling</h3>
+<table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>What it is</th>
+<th>Why it is used here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>pandas &gt;= 2.2</strong></td>
+<td>DataFrame library for tabular data manipulation</td>
+<td>Loads and normalizes the citizen-relatos CSV files; the <code>_parse_csv</code> function in <code>workspace.py</code> canonicalizes column names and filters short entries</td>
+</tr>
+<tr>
+<td><strong>SQLite (stdlib)</strong></td>
+<td>Embedded relational database, accessed via Python's built-in <code>sqlite3</code> module</td>
+<td><code>GaveaLabWorkspace</code> in <code>gavealab_poc/workspace.py</code> persists sessions and analysis results to <code>gavealab.db</code> so work survives browser refreshes</td>
+</tr>
+<tr>
+<td><strong>numpy &gt;= 1.26</strong></td>
+<td>N-dimensional array library</td>
+<td>Used by the embeddings layer to store and manipulate embedding vectors before passing them to UMAP</td>
+</tr>
+</tbody>
+</table>
+<h3 id="embeddings">Embeddings</h3>
+<table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>What it is</th>
+<th>Why it is used here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>sentence-transformers &gt;= 3.0</strong></td>
+<td>Library for computing dense sentence/paragraph embeddings using pre-trained transformer models</td>
+<td>Drives all semantic similarity computations -- topic clustering and claim categorization both depend on embedding citizen relatos into vector space</td>
+</tr>
+<tr>
+<td><strong>intfloat/multilingual-e5-large</strong></td>
+<td>A multilingual embedding model (~560MB, supports 100+ languages including pt-BR)</td>
+<td>Chosen for strong multilingual quality so that Portuguese citizen comments embed accurately alongside English metadata; model name is hardcoded in <code>gavealab_poc/embeddings.py</code> as <code>EMBED_MODEL</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="local-llm-inference">Local LLM Inference</h3>
+<table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>What it is</th>
+<th>Why it is used here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Ollama</strong></td>
+<td>A local LLM runtime that serves open-source models (Llama, Qwen, Mistral, etc.) via an OpenAI-compatible REST API on <code>http://localhost:11434</code></td>
+<td>Provides LLM-powered topic extraction, claim analysis, and divergence detection without sending citizen data to any cloud provider -- aligns with the project's privacy-first principle</td>
+</tr>
+<tr>
+<td><strong>openai &gt;= 1.30 (SDK)</strong></td>
+<td>Python client for the OpenAI API</td>
+<td>Used as the HTTP client to talk to Ollama's OpenAI-compatible endpoint (<code>/v1/chat/completions</code>); no actual OpenAI account or key is needed</td>
+</tr>
+<tr>
+<td><strong>qwen2.5:7b</strong> (default model)</td>
+<td>A 7-billion-parameter instruction-tuned LLM from Alibaba, quantized for local CPU/GPU inference</td>
+<td>Default configured in <code>gavealab_poc/llm.py</code>; override via <code>GAVEALAB_OLLAMA_MODEL</code> env var. The <code>extra_body={"think": False}</code> flag disables chain-of-thought mode for faster responses</td>
+</tr>
+</tbody>
+</table>
+<h3 id="visualization">Visualization</h3>
+<table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>What it is</th>
+<th>Why it is used here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>umap-learn &gt;= 0.5</strong></td>
+<td>Implements UMAP (Uniform Manifold Approximation and Projection), a dimensionality reduction algorithm</td>
+<td>Reduces the high-dimensional embedding vectors (1024-dim for multilingual-e5-large) to 2D coordinates so claim clusters can be plotted on a scatter chart</td>
+</tr>
+<tr>
+<td><strong>plotly &gt;= 5.0</strong></td>
+<td>Interactive charting library with browser-native zoom/pan/hover</td>
+<td>Renders the 2D UMAP scatter plot in the "Visualizar clusters" page; hover tooltips display the original citizen comment text</td>
+</tr>
+</tbody>
+</table>
+<h3 id="source-layout">Source Layout</h3>
+<pre><code>gavealab-poc/
+  app.py                          # Streamlit entry point -- page router
+  gavealab.db                     # SQLite database (auto-created on first run)
+  pyproject.toml                  # Project dependencies and metadata
+  gavealab_poc/
+    embeddings.py                 # embed() -- wraps multilingual-e5-large
+    llm.py                        # chat() -- wraps Ollama via openai SDK
+    workspace.py                  # GaveaLabWorkspace + AnalysisSession (SQLite persistence)
+    pages/
+      upload.py                   # Page: Upload CSV
+      auto_topics.py              # Page: Temas automaticos (LLM topic extraction)
+      manual_topics.py            # Page: Categorizar por temas
+      cruxes.py                   # Page: Opinioes divergentes (divergence detection)
+      umap_viz.py                 # Page: Visualizar clusters (UMAP + Plotly)
+    pipeline/
+      claims.py                   # Claim extraction pipeline
+      cruxes.py                   # Divergence detection pipeline
+      manual_categories.py        # Manual categorization pipeline
+      topics.py                   # Automatic topic extraction pipeline
+      umap_viz.py                 # UMAP dimensionality reduction pipeline
+</code></pre>
+<hr />
+<h2 id="section-2-how-to-run-the-system">Section 2: How to Run the System</h2>
+<h3 id="step-1-prerequisites">Step 1 -- Prerequisites</h3>
+<p>Before you start, verify you have the following installed:</p>
+<ul>
+<li><strong>Python 3.11 or later</strong>: <code>python --version</code></li>
+<li><strong>uv</strong>: <code>uv --version</code> -- if missing, install with:
+  <code>powershell
+  winget install astral-sh.uv</code>
+  or download the installer from https://docs.astral.sh/uv/getting-started/installation/</li>
+<li><strong>Git</strong>: <code>git --version</code></li>
+</ul>
+<h3 id="step-2-clone-and-install-dependencies">Step 2 -- Clone and Install Dependencies</h3>
+<pre><code class="language-powershell">git clone https://github.com/&lt;your-org&gt;/inf2921-grupo-c.git
+cd inf2921-grupo-c
+
+# Install all dependencies for gavealab-poc into an isolated virtual environment
+cd gavealab-poc
+uv sync
+</code></pre>
+<p><code>uv sync</code> reads <code>pyproject.toml</code> and <code>uv.lock</code> and installs exact pinned versions. The first run also downloads the <code>intfloat/multilingual-e5-large</code> model (~560MB) from Hugging Face the first time you launch the app, so expect a delay on first startup.</p>
+<h3 id="step-3-install-and-start-ollama">Step 3 -- Install and Start Ollama</h3>
+<p>Ollama provides the local LLM inference backend. The app will fail to perform any LLM-powered analysis without it.</p>
+<p><strong>3a. Install Ollama</strong></p>
+<p>Option A -- winget (recommended):</p>
+<pre><code class="language-powershell">winget install Ollama.Ollama
+</code></pre>
+<p>Option B -- direct installer:
+Download from https://ollama.com/download/windows and run the <code>.exe</code> installer.</p>
+<p><strong>3b. Start the Ollama server</strong></p>
+<p>After installation, Ollama may start automatically as a system tray application. If not, start it explicitly:</p>
+<pre><code class="language-powershell">ollama serve
+</code></pre>
+<p>Leave this terminal open, or verify it is running in the tray.</p>
+<p><strong>3c. Pull the default model</strong></p>
+<pre><code class="language-powershell">ollama pull qwen2.5:7b
+</code></pre>
+<p>This downloads the model (~4.7GB). Wait for the download to complete before running the app.</p>
+<p><strong>3d. Verify Ollama is responding</strong></p>
+<pre><code class="language-powershell">Invoke-WebRequest -Uri http://localhost:11434/api/tags -UseBasicParsing | Select-Object -ExpandProperty Content
+</code></pre>
+<p>Expected: a JSON response listing available models including <code>qwen2.5:7b</code>.</p>
+<h3 id="step-4-set-environment-variables">Step 4 -- Set Environment Variables</h3>
+<p>The app reads two optional environment variables. If not set, defaults are used (<code>http://localhost:11434/v1</code> and <code>qwen2.5:7b</code>).</p>
+<pre><code class="language-powershell"># Set for the current PowerShell session
+$env:GAVEALAB_OLLAMA_BASE_URL = &quot;http://localhost:11434/v1&quot;
+$env:GAVEALAB_OLLAMA_MODEL    = &quot;qwen2.5:7b&quot;
+</code></pre>
+<p>To use a different Ollama model (for example, a lighter <code>llama3.2:3b</code> for faster responses on CPU-only machines):</p>
+<pre><code class="language-powershell">ollama pull llama3.2:3b
+$env:GAVEALAB_OLLAMA_MODEL = &quot;llama3.2:3b&quot;
+</code></pre>
+<h3 id="step-5-launch-the-streamlit-app">Step 5 -- Launch the Streamlit App</h3>
+<p>Run the following from the repository root:</p>
+<pre><code class="language-powershell">uv run streamlit run gavealab-poc/app.py
+</code></pre>
+<p>Or, if you are already inside <code>gavealab-poc/</code>:</p>
+<pre><code class="language-powershell">uv run streamlit run app.py
+</code></pre>
+<p>Streamlit will print something like:</p>
+<pre><code>  Local URL: http://localhost:8501
+  Network URL: http://192.168.x.x:8501
+</code></pre>
+<p>Open http://localhost:8501 in your browser.</p>
+<h3 id="step-6-what-to-expect-in-the-browser">Step 6 -- What to Expect in the Browser</h3>
+<p>The app opens to a sidebar with five pages:</p>
+<table>
+<thead>
+<tr>
+<th>Page</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Upload CSV</strong></td>
+<td>Upload a citizen-relatos CSV file. Required column: <code>text</code> or <code>comment</code>. Optional: <code>id</code>, <code>territory</code>. Creates a named analysis session persisted in <code>gavealab.db</code>.</td>
+</tr>
+<tr>
+<td><strong>Temas automaticos</strong></td>
+<td>Calls Ollama to extract a topic hierarchy from the uploaded relatos using LLM-based analysis. Results are saved to the session.</td>
+</tr>
+<tr>
+<td><strong>Categorizar por temas</strong></td>
+<td>Manually assign relatos to topics; uses embeddings to suggest category matches.</td>
+</tr>
+<tr>
+<td><strong>Opinioes divergentes</strong></td>
+<td>Detects claims where citizens hold strongly opposing views (divergence/crux detection).</td>
+</tr>
+<tr>
+<td><strong>Visualizar clusters</strong></td>
+<td>Runs UMAP on the claim embeddings and displays an interactive 2D scatter plot with Plotly. Hover over a point to read the original relato text.</td>
+</tr>
+</tbody>
+</table>
+<p>The workflow is sequential: upload a CSV first, then run automatic topics, then explore clusters or divergences. All results are persisted in <code>gavealab.db</code> -- you can reload a session without reprocessing.</p>
+<hr />
+<p><em>Generated by onboarding-generator | Onboarding 000019 | 2026-06-02 00:00 UTC</em></p>
+
+</body>
+</html>
