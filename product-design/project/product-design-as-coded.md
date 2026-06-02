@@ -12,7 +12,9 @@ designer_description: "Implementation state mirror for kb-qa — maintained by p
 
 ### 0. GaveaLab PoC (sibling project)
 
-`gavealab-poc/` is a Streamlit + Ollama citizen-claims analysis PoC, scaffolded in plan-000008. It runs independently from kb-qa (separate `pyproject.toml`, uv venv). Key components: `GaveaLabWorkspace` (SQLite persistence), `AnalysisSession` (domain object), `gavealab_poc/llm.py` (Ollama OpenAI-compatible wrapper), and stub page modules for upload, auto-topics, manual-topics, and cruxes.
+`gavealab-poc/` is a Streamlit + Ollama citizen-claims analysis PoC, scaffolded in plan-000008. It runs independently from kb-qa (separate `pyproject.toml`, uv venv). Key components: `GaveaLabWorkspace` (SQLite persistence), `AnalysisSession` (domain object), `gavealab_poc/llm.py` (Ollama OpenAI-compatible wrapper), and page modules for upload (plan-000009), auto-topics, manual-topics, and cruxes (stubs).
+
+**Upload page (plan-000009)**: `gavealab_poc/pages/upload.py` implements the full CSV upload flow: file picker, session name input, 10-row preview via pandas, validation (column presence enforced by `workspace._parse_csv`), session creation via `workspace.create_session()`, and a "Sessoes anteriores" panel listing and reloading persisted sessions from SQLite.
 
 ### 1. Platform Purpose
 
