@@ -1,6 +1,13 @@
 from __future__ import annotations
+import logging
 import streamlit as st
 from gavealab_poc.workspace import GaveaLabWorkspace
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+    datefmt="%H:%M:%S",
+)
 
 st.set_page_config(page_title="GaveaLab -- Analise de Relatos", layout="wide")
 st.title("GaveaLab -- Analise de Relatos de Cidadaos")
