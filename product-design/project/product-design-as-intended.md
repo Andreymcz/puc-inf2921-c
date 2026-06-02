@@ -1,4 +1,4 @@
-# DESIGN INTENT — INF2921-Grupo-C / kb-qa
+# DESIGN INTENT — INF2921-Grupo-C / GaveaLab
 
 <!-- maintained-by: human (designer); Human (markers) classification since SEJA 2.8.3 -->
 
@@ -8,31 +8,85 @@
 
 ## 0. Planned Changes
 
+> **gavealab-poc** is the primary product. kb-qa remains in the repository as a supporting RAG tool for document retrieval during AI sessions, but new feature development is focused on gavealab-poc.
+
+### gavealab-poc
+
 | Target Version | Change Summary | Motivation / Rationale |
 |---|---|---|
-| v0.2 | Session-reuse CLI: avoid reloading SentenceTransformer on every call | Improve CLI startup time; the `KbQa` class already exists as a session-reuse wrapper |
-| v0.2 | Expose similarity scores in `ask` command output | Give users confidence signals; currently raw chunks are returned with no relevance indication |
+| current | UMAP 2D cluster visualization of claim embeddings (Plotly) | Help users see how opinions cluster spatially across topics |
+| next | Export analysis results to CSV/JSON | Allow researchers to share or archive results outside the app |
+| next | Filter clusters by topic or territory in UMAP view | Make cluster view actionable for geographic or thematic drill-down |
+| future | Multi-session comparison view | Compare analysis across different datasets or time periods |
+
+### kb-qa (supporting tool — maintenance only)
+
+| Target Version | Change Summary | Motivation / Rationale |
+|---|---|---|
+| v0.2 | Expose similarity scores in `ask` command output | Give users confidence signals |
 | v0.3 | LLM answer synthesis in CLI (`ask --synthesize`) | Provide direct answers via Claude, not just raw chunks |
 
 ---
 
 ## 1. Platform Purpose
 
-kb-qa is a local RAG (Retrieval-Augmented Generation) knowledge base designed for the INF2921/CIS2114 AI Systems Design course at PUC-Rio (2026.1). It enables researchers, students, and AI developers to ingest their own `.md` and `.pdf` documents into a local ChromaDB vector store and query them semantically — without sending document content to any cloud service.
+GaveaLab is a local citizen feedback analysis tool designed as the capstone product for the INF2921/CIS2114 AI Systems Design course at PUC-Rio (2026.1). It enables researchers, civic organizations, and course teams to upload CSV datasets of citizen relatos (open-ended survey responses or public consultation comments) and analyze them through LLM-powered pipelines — without sending data to any cloud service.
 
-The core problem it solves: when working with Claude or other AI tools, researchers frequently lack a way to inject private or course-specific documents (lecture notes, papers, research notes) into the AI's context without copy-pasting. kb-qa bridges this gap by exposing a `query_knowledge` MCP tool that any MCP-enabled AI client can call to retrieve relevant chunks from the local knowledge base.
+The core problem it solves: when civic researchers or labs collect hundreds of qualitative comments from citizens, there is no lightweight tool that can automatically identify discussion topics, extract the key claims within each topic, surface points of genuine disagreement (cruxes), and visualize how opinions cluster spatially. Existing tools (Talk to the City, Polis) are complex to deploy or require cloud infrastructure. GaveaLab provides the same analytical power as a self-contained local Streamlit application.
 
-The project is designed to be a greenfield course demonstration while remaining general-purpose enough for adoption by other teams. Its defining principle is privacy-first: all embedding, storage, and retrieval runs locally.
+The project is inspired by the [Talk to the City](https://github.com/AIObjectives/talk-to-the-city-reports) methodology and a local PoC (`tttc-poc/`) developed by the team. GaveaLab simplifies and extends that approach with a more accessible UI, persistent analysis sessions, and UMAP-based cluster visualization.
 
 ### Design Philosophy
 
-Privacy-first local RAG. Documents never leave the machine. The system does one thing well: accept a natural-language query and return the most semantically relevant chunks from the user's own documents. There is no user account, no cloud sync, no telemetry. The minimal API surface (one CLI group, one MCP tool) is intentional — simplicity enables trust.
+Accessible local AI for civic research. Citizen data never leaves the analyst's machine. The system guides the user through a structured analysis pipeline — upload → topics → claims → divergence → visualization — but allows manual overrides at each step. Simplicity over configurability: sensible LLM defaults, single-click analysis steps, and immediate visual feedback enable researchers who are not engineers to use the tool effectively.
+
+### Role of kb-qa
+
+kb-qa (`src/kb_qa/`, `agents/`) continues to function as a supporting RAG tool. It is used by the team to query course documents (lecture notes, papers) via the MCP integration in Claude Code sessions. It is not the primary product of the course deliverable and receives maintenance-only updates.
 
 ---
 
 ## 2. Entity Hierarchy
 
-<!-- REQ-ENT-001 -->
+### GaveaLab (primary product)
+
+```
+AnalysisSession        (one uploaded CSV dataset + all derived results)
+├── Comment            (one row from the CSV — the atomic input unit)
+├── TopicTree          (LLM-generated hierarchy of topics and subtopics)
+│   └── Topic          (a discovered or user-defined discussion topic)
+│       └── Claim      (a distilled statement extracted from Comments under a Topic)
+│           └── Crux   (a pair or group of Claims that represent a point of divergence)
+└── ClusterMap         (UMAP 2D projection of Claim embeddings for visualization)
+```
+
+### AnalysisSession
+
+Created when the user uploads a CSV file. Persisted in SQLite (`gavealab.db`) via `GaveaLabWorkspace`. Holds the raw CSV and all derived results as JSON blobs (`topic_tree`, `claims_tree`, `cruxes`, `manual_categories`). Sessions are independent — re-uploading a file creates a new session; old sessions remain accessible. Identified by an auto-incremented integer ID.
+
+### Comment
+
+One row from the uploaded CSV. Required column: `text` (or `comment`, normalized on load). Optional columns: `id` (auto-generated if absent), `territory`, and any additional metadata columns kept as-is. Comments shorter than 10 characters are dropped at load time. Identified by the `id` string value.
+
+### Topic
+
+A discussion theme. Either LLM-generated (auto-topics pipeline) or user-defined (manual categorization). Each topic may have subtopics (nested structure from the LLM). Topics group Comments for downstream analysis.
+
+### Claim
+
+A distilled, third-person statement representing a point made by one or more Comments within a Topic. Extracted by the LLM claims pipeline. Each Claim has: `claim` (statement text), `quote` (supporting excerpt from the original comment), `comment_id`, `topic`, `subtopic`. Claims are the core unit of analysis.
+
+### Crux
+
+A point of genuine disagreement between Claims within the same Topic. Identified by the LLM cruxes pipeline. Each Crux describes the two opposing positions and cites the Claims supporting each side.
+
+### ClusterMap
+
+A 2D UMAP projection of Claim embeddings (computed via `nomic-ai/nomic-embed-text-v1`). Stored as coordinate arrays associated with the session. Used by the visualization page to render an interactive Plotly scatter plot where spatial proximity indicates semantic similarity.
+
+---
+
+### kb-qa (supporting tool)
 
 ```
 KnowledgeDocument  (.md or .pdf file in knowledge/)
@@ -42,29 +96,33 @@ KnowledgeDocument  (.md or .pdf file in knowledge/)
 VectorStore        (ChromaDB persistent collection — holds all Chunks)
 ```
 
-### KnowledgeDocument
-
-A source file (`.md` or `.pdf`) placed by the user in the `knowledge/` directory. Not stored directly in the system — only its derived Chunks are indexed. Visibility: local filesystem only. Ownership: whoever places the file. No soft-delete semantics (the file simply exists or does not). Identified by its filesystem path.
-
-### Chunk
-
-The atomic unit of content. A text segment extracted from a KnowledgeDocument during ingestion. Each Chunk carries metadata: `type` (md | pdf), `name` (filename without extension), `source` (absolute file path), and a content-addressable ID (MD5 hash of `source + first 200 chars of text`). Chunks are idempotent: re-ingesting the same document skips existing Chunk IDs unless `--force` is used.
-
-### VectorStore
-
-A ChromaDB `PersistentClient` collection named `kb-qa-docs`, stored at `knowledge/vectorstore/`. Holds all Chunks as cosine-similarity embeddings produced by the `nomic-ai/nomic-embed-text-v1` model. Not gitignored from the design perspective — it is the derived index that must exist before queries can be served.
+See historical design intent for entity details. kb-qa entity model is stable and not the focus of current development.
 
 ---
 
 ## 3. Domain-Specific Concepts
 
-**Content-addressable chunking**: Each Chunk is identified by an MD5 hash of its source path + first 200 characters of text. This enables incremental ingestion — only new or changed chunks are added on re-ingest, without requiring a full wipe and rebuild.
+### GaveaLab
 
-**Embedding model**: `nomic-ai/nomic-embed-text-v1` via `sentence-transformers`. Chosen for strong multilingual performance and permissive licensing. The model name is centralized in `constants.py` to enable future upgrades without scattered changes.
+**Relato**: A citizen's open-ended response to a public consultation or survey question. The raw input material. Stored as a `Comment` in the system.
 
-**Cosine similarity search**: Queries are embedded using the same model and compared against all Chunk embeddings using cosine distance (`hnsw:space: cosine`). The `n_results` parameter controls how many top chunks are returned.
+**LLM pipeline**: A sequential chain of stateless LLM calls that transforms Comments into increasingly structured insight: auto-topics (topic tree discovery) → claims extraction (distilled statements per topic) → cruxes detection (points of divergence). Each step is independently re-runnable.
 
-**MCP tool boundary**: The system exposes retrieval via the `query_knowledge` MCP tool (FastMCP). The tool is stateless with respect to conversation — each call is an independent retrieval, not a session. The MCP boundary is the only external surface: it accepts a question string and returns a list of chunk dicts.
+**Topic tree**: A two-level hierarchy (topic → subtopic) generated by the LLM from the full comment corpus. Represents the major discussion themes found in the dataset. Can be replaced by a user-defined flat list of themes (manual categorization mode).
+
+**Claim**: A compressed, third-person statement of a point made in one or more comments. Retains a supporting quote and link back to the original comment ID. Claims are the smallest unit that carries interpretive meaning.
+
+**Crux**: A point of genuine disagreement between two or more Claims on the same topic. Not merely different opinions — a crux is a statement where understanding whether it is true would change people's minds. Concept borrowed from the rationalist tradition and the Talk to the City methodology.
+
+**UMAP projection**: A 2D dimensionality reduction of Claim embeddings using UMAP (Uniform Manifold Approximation and Projection). Enables visual inspection of how opinion clusters relate spatially. Spatial proximity indicates semantic similarity; clusters that appear near each other are discussing related ideas.
+
+**Ollama**: Local LLM inference server running at `http://localhost:11434`. Default model: `qwen3:8b` (configurable via `GAVEALAB_OLLAMA_MODEL`). All LLM calls use the OpenAI-compatible `/v1/chat/completions` endpoint.
+
+### kb-qa (supporting tool)
+
+**Content-addressable chunking**: Each Chunk is identified by an MD5 hash of its source path + first 200 characters of text. Enables incremental ingestion.
+
+**MCP tool boundary**: `query_knowledge` (FastMCP) is the only external surface — accepts a question string, returns relevant chunks. Stateless per call.
 
 ---
 
@@ -113,17 +171,19 @@ Not supported. The vector store is a local derived index; no export functionalit
 
 ### Target Community
 
-Graduate students and researchers in the INF2921/CIS2114 AI Systems Design course (PUC-Rio, 2026.1). Team members: Andrey, Mauro, Julia, Herbert, Natali. Domain expertise: AI/ML research and software engineering. Language mix: Portuguese (pt-BR) native, English (en-US) technical.
+Graduate students and researchers in the INF2921/CIS2114 AI Systems Design course (PUC-Rio, 2026.1). Team members: Andrey, Mauro, Julia, Herbert, Natali. Primary use case: analyzing pt-BR civic consultation datasets (relatos de cidadãos) from organizations such as GaveaLab. Domain expertise: AI/ML research and software engineering.
 
 ### Localization Design
 
 | Aspect | Primary | Secondary |
 |--------|---------|-----------|
 <!-- REQ-I18N-001 -->
-| UI default language | pt-BR (knowledge documents) | en-US (CLI interface, code, MCP tool) |
-| Backend error default | en-US | — |
+| UI language | pt-BR (Streamlit labels, sidebar navigation, page titles) | — |
+| LLM prompt language | pt-BR (all system and user prompts in gavealab_poc/pipeline/) | en-US (fallback) |
+| Code and comments | en-US | — |
+| Backend error messages | en-US | — |
 
-The CLI interface and MCP tool responses are English-only. Knowledge documents can be in any language — the embedding model handles multilingual content. No frontend localization applies.
+The Streamlit UI and all LLM prompts are in pt-BR to match the target dataset language and the user's native language. The embedding model (`nomic-ai/nomic-embed-text-v1`) handles multilingual content without additional configuration.
 
 ---
 
@@ -131,13 +191,23 @@ The CLI interface and MCP tool responses are English-only. Knowledge documents c
 
 <!-- REQ-UX-001 -->
 
-**Ingest-then-query workflow**: The user places documents in `knowledge/`, runs `kb-qa ingest`, then queries via `kb-qa ask` or through the MCP tool in their AI session. The two phases (ingestion and retrieval) are intentionally decoupled — ingestion is a one-time or periodic operation, querying is interactive.
+### GaveaLab
 
-**Incremental ingestion**: Repeated `kb-qa ingest` runs are fast and idempotent — only new chunks are added. Users can add documents to `knowledge/` and re-run ingest without losing existing indexed content. The `--force` flag bypasses this for full reingest.
+**Upload-then-analyze workflow**: The user uploads a CSV file on the "Upload CSV" page, naming the analysis session. The session is persisted immediately. All subsequent pages operate on the active session selected from the sidebar. The upload step is a one-time operation per dataset; analysis steps can be re-run independently.
 
-**CLI status visibility**: The `kb-qa status` command shows chunk counts by document type and a delta between the knowledge directory and the vector store, so users can see at a glance whether re-ingestion is needed.
+**Sequential pipeline with manual override**: The natural flow is upload → auto-topics → claims → cruxes → visualization. However, the user may skip auto-topics and proceed directly to manual topic categorization if they already know the topic structure. Each pipeline step writes its results to the SQLite session and makes them available to downstream steps.
 
-**MCP passthrough design**: The `query_knowledge` tool returns raw chunks with `text`, `type`, `name`, and `source` metadata. The AI client (Claude, Copilot) is responsible for synthesizing the answer — kb-qa's job is retrieval only. This keeps the tool composable with any MCP consumer.
+**Idempotent re-runs**: Each analysis page shows a "Re-run" button that discards and replaces the previous result for that step. Results are stored per session and per result type; re-running one step does not affect others.
+
+**Session persistence across page navigations**: Streamlit's `st.session_state` holds the current `AnalysisSession` reference. The Streamlit app caches the `GaveaLabWorkspace` singleton. Navigating between pages does not lose analysis results — they are reloaded from SQLite on session resume.
+
+**UMAP visualization as insight layer**: The cluster map page is not a pipeline step — it is a read-only visualization of Claims already computed. It provides spatial context: comments that generated semantically similar claims appear near each other, regardless of topic assignment.
+
+**Progressive disclosure of complexity**: Simple actions (upload, run auto-topics) require one click. Advanced actions (manual category definition, crux inspection) are on dedicated pages. The sidebar navigation reflects the natural analysis flow.
+
+### kb-qa (supporting tool)
+
+**Ingest-then-query**: Documents placed in `knowledge/`, run `kb-qa ingest`, then query via CLI or MCP. Decoupled from the gavealab-poc analysis flow.
 
 ---
 
@@ -161,12 +231,24 @@ Not applicable. Internal academic project.
 
 <!-- REQ-VAL-001 -->
 
+### GaveaLab
+
 | Constant | Value | Domain Rationale |
 |----------|-------|-----------------|
-| `n_results` max | 20 | Prevents excessive token usage in downstream LLM consumers; ChromaDB performance degrades past this for typical knowledge bases |
-| `EMBED_BATCH_SIZE` | 256 | Balance between GPU/CPU memory and throughput during model.encode() |
+| Minimum comment length | 10 chars | Drops noise entries (single words, punctuation-only) |
+| Default LLM model | `qwen3:8b` | Good quality/speed balance for local inference; configurable via `GAVEALAB_OLLAMA_MODEL` |
+| Ollama base URL | `http://localhost:11434/v1` | Local inference; configurable via `GAVEALAB_OLLAMA_URL` |
+| UMAP `n_components` | 2 | 2D projection for Plotly scatter visualization |
+| UMAP `n_neighbors` | 15 | Default UMAP parameter; controls local vs. global structure balance |
 
-These constants are defined in `src/kb_qa/constants.py`. No frontend counterpart — this is a CLI/MCP-only tool.
+### kb-qa (supporting tool)
+
+| Constant | Value | Domain Rationale |
+|----------|-------|-----------------|
+| `n_results` max | 20 | Prevents excessive token usage in MCP consumers |
+| `EMBED_BATCH_SIZE` | 256 | Balance between GPU/CPU memory and throughput |
+
+Constants defined in `src/kb_qa/constants.py`.
 
 ---
 
@@ -176,9 +258,9 @@ These constants are defined in `src/kb_qa/constants.py`. No frontend counterpart
 
 <!-- REQ-MC-001 -->
 
-I know you are a researcher or AI developer who needs instant, semantic access to your own documents during work or study sessions. Therefore, I have designed a local knowledge base that lets you ingest your own `.md` and `.pdf` files and query them through Claude and other AI tools — without sending your documents to any cloud service.
+I know you are a civic researcher or graduate student who collects qualitative feedback from citizens — open-ended survey responses, public consultation comments, neighborhood meeting notes — and struggles to make sense of hundreds of individual voices without losing the nuance in each one. Therefore, I have designed GaveaLab: a local tool that lets you upload your dataset, discover the discussion topics your citizens actually raised, extract the key claims within each topic, surface the points where citizens genuinely disagree, and see how opinions cluster visually — all running on your own machine, without sending citizen data to any cloud service.
 
-*Generated by the design agent based on specifications defined in the design session on 2026-05-24.*
+*Updated by the design agent on 2026-06-02 to reflect the project's evolution from RAG tool (kb-qa) to GaveaLab citizen feedback analysis as the primary course deliverable.*
 
 ---
 
@@ -186,47 +268,47 @@ I know you are a researcher or AI developer who needs instant, semantic access t
 
 1. Analysis (understanding needs and defining requirements)
    1.1. What do I know or don't know about (all of) you and how?
-   I know you are a graduate student or researcher at PUC-Rio enrolled in INF2921/CIS2114, working with AI systems and natural language processing tools. I know you work with course materials, papers, and research notes that you cannot easily inject into AI sessions. I do not know the specific document types or languages you work with most, or whether you use the MCP interface through Claude Code or another client.
+   I know you are a graduate student or researcher at PUC-Rio (INF2921/CIS2114 team), working on a capstone project for an AI Systems Design course. I know you want to demonstrate the application of LLM pipelines to a real civic problem — analyzing citizen relatos. I know your team has already built a tttc-poc (local Talk to the City adaptation) and iterated through several plan cycles toward a full Streamlit product. I do not know the exact size or sensitivity of the citizen datasets you plan to analyze in the course demonstration.
    > For detailed persona profiles and problem scenarios, see `project/ux-research-results.md §1-§4`.
    1.2. What do I know or don't know about affected others and how?
-   The primary affected party is the document owner (you). No other users are affected since this is a single-user local tool. I do not know whether course documents are shared among team members or whether each person maintains an independent knowledge base.
+   The citizen data (relatos) represents real people's opinions and concerns. I know the team handles this data locally (no cloud upload). I do not know whether the datasets come from real public consultations or are synthetic for course purposes.
    1.3. What do I know or don't know about the intended (and other anticipated) contexts of use?
-   Intended: AI-assisted study sessions, research note retrieval during writing, course material lookup during Claude conversations. Anticipated but not primary: batch document processing, integration with note-taking tools. I do not know the typical session length or document volume.
+   Intended: course demonstration of an AI-powered civic tech tool; analysis of pt-BR citizen feedback datasets; GaveaLab organization use case. Anticipated extension: adapting the tool for other public consultation contexts beyond the course.
    1.4. *What ethical questions can be raised by what I have learned? Why?
-   The tool processes documents that may contain sensitive research data, personal notes, or proprietary information. The privacy-first design (local-only storage) mitigates this, but users should be aware that MCP client queries — including the retrieved text — pass through the AI provider's inference infrastructure.
+   (1) Citizen relatos may contain personally identifiable information or sensitive opinions. Local-only processing mitigates external exposure, but the team should ensure datasets are anonymized or appropriately consented. (2) LLM-generated claims and cruxes may misrepresent or flatten nuanced opinions — the tool should always allow the analyst to inspect and override LLM outputs. (3) The clustering visualization may create an illusion of consensus or disagreement that is an artifact of the embedding model, not a reflection of reality.
 
 2. Design
    2.1. What have I designed for you?
-   A CLI tool and MCP server for local semantic search over your own documents. The CLI provides `ingest`, `status`, and `ask` commands. The MCP server exposes `query_knowledge` to any MCP-compatible AI client.
+   A local Streamlit web application for structured analysis of citizen feedback datasets. Five analysis pages: CSV upload, auto topic discovery, manual topic categorization, divergence detection (cruxes), and UMAP cluster visualization. All LLM calls run through a local Ollama server.
    2.2. Which of your goals have I designed the system to support?
-   (1) Quick retrieval of relevant content from a personal document corpus without manual search. (2) Integration with AI tools (Claude, Copilot) via MCP without copy-pasting document content. (3) Privacy: no documents uploaded to third-party services.
+   (1) Transform a raw CSV of citizen comments into structured insight (topics → claims → cruxes) without manual coding. (2) Visualize semantic clustering of opinions to support qualitative analysis. (3) Keep citizen data local — no cloud upload. (4) Demonstrate LLM pipeline design as a course deliverable.
    2.3. In what situations/contexts do I intend/accept you will use the system to achieve each goal? Why?
-   During AI-assisted writing or research sessions when you need to ground the AI's responses in your own documents. During course study when you want to quickly find relevant lecture notes or papers.
+   During course demonstrations and development iterations. For analyzing pt-BR civic consultation datasets (real or synthetic). As a local research tool for the GaveaLab organization use case.
    > For detailed solution representations, see Section 13 below.
    2.4. How should you use the system to achieve each goal, according to my design?
-   Place documents in `knowledge/`, run `kb-qa ingest`, then either use `kb-qa ask "your question"` directly or configure the MCP server in your Claude Code settings and let Claude call `query_knowledge` automatically.
+   Upload a CSV with a `text` (or `comment`) column. Run auto-topics to let the LLM discover discussion themes. Review and optionally override topics. Run claims to extract distilled statements per topic. Run cruxes to surface disagreements. Navigate to the cluster view to inspect spatial opinion patterns.
    2.5. For what purposes do I not want you to use the system?
-   As a replacement for a proper full-text search engine on large corpora (ChromaDB at this scale is not optimized for millions of documents). As a multi-user service. As a system that makes write decisions — it is read-only at the MCP boundary.
+   As a replacement for rigorous qualitative research methodology — LLM outputs are a starting point for analysis, not a final result. As a real-time or multi-user platform (the PoC is single-user local). As a tool for making policy decisions without human review of LLM-generated claims and cruxes.
    2.6. *What ethical principles influenced my design decisions?
-   Data sovereignty: your documents stay on your machine. Minimal surface: the tool does one thing. Transparency: open source, no telemetry.
+   Data sovereignty: citizen data stays on the analyst's machine. Human oversight: every LLM output is displayed for review before being treated as a result. Transparency: the LLM model and prompts are configurable and inspectable.
    2.7. *How is the system I designed for you aligned with those ethical considerations?
-   The vector store is local and gitignored. The MCP tool is read-only. There are no analytics calls or external API dependencies beyond the embedding model (which runs locally).
+   SQLite stores all data locally. The Streamlit UI shows all LLM outputs inline — no hidden processing. The Ollama model is configurable via env var so the analyst controls which model processes their data.
 
 3. Prototyping, implementation, and formative evaluation
    3.1. How have I built the system to support my design vision?
-   Python 3.13 + ChromaDB (local PersistentClient) + sentence-transformers (nomic-embed-text-v1, local inference) + FastMCP + click CLI. All compute runs locally.
+   Python 3.13 + Streamlit + SQLite (GaveaLabWorkspace) + Ollama (OpenAI-compatible API, qwen3:8b) + sentence-transformers (nomic-embed-text-v1) + UMAP + Plotly. All compute runs locally.
    3.2. What have I built into the system to prevent undesirable uses and consequences?
-   `n_results` cap at 20. Read-only MCP tool. No write endpoints exposed.
+   Minimum comment length filter (10 chars). No write endpoints exposed externally. LLM outputs stored per session and always reviewable. No auto-send to external services.
    3.3. What have I built into the system to help identify and remedy unanticipated negative effects?
-   `kb-qa status` reports chunk counts and delta; logging at INFO level during ingestion; error messages surfaced to the CLI user.
+   All pipeline results are displayed in the UI for human review. Sessions are persistent — the analyst can return to previous results. Re-run buttons allow regenerating any step if the output is unsatisfactory.
    3.4. *What ethical scenarios have I used to evaluate the system?
-   (1) A user inadvertently exposes sensitive documents via git — mitigated by gitignoring `knowledge/vectorstore/`. (2) An MCP client uses `query_knowledge` to exfiltrate document content — mitigated by the local-only deployment model (content only leaves via the MCP query response, which the user explicitly configured).
+   (1) A dataset contains PII — mitigated by local-only storage; analyst is responsible for dataset anonymization. (2) LLM produces a biased or incorrect topic tree — mitigated by manual categorization mode as an alternative. (3) UMAP projection creates misleading clusters — the visualization includes claim text on hover so the analyst can verify cluster content directly.
 
 4. Continuous, post-deployment evaluation and monitoring
    4.1. How much of my vision is reflected in the system's actual use?
-   To be evaluated after the course team adopts the MCP integration in their Claude Code sessions.
+   To be evaluated after the course demonstration with the GaveaLab dataset.
    4.2. What unanticipated uses have been made? By whom? Why?
-   TBD — early-stage project.
+   TBD — active development.
    4.3. What anticipated and unanticipated effects have resulted from its use? Whom do they affect? Why?
    TBD.
    4.4. *What ethical issues need to be handled through system redesign, redevelopment, policy, or even decommissioning?
@@ -236,33 +318,65 @@ I know you are a researcher or AI developer who needs instant, semantic access t
 
 ## 13. Solution Representations
 
-### Option B: User Stories
+### GaveaLab User Stories
 
-#### US-001: Ingest course materials
+#### US-GL-001: Analisar relatos de cidadãos a partir de um CSV
+
+- **Story:** Como pesquisadora do GaveaLab, quero fazer upload de um CSV com relatos de cidadãos e obter uma análise estruturada dos temas discutidos, para que eu possa entender rapidamente os principais pontos levantados sem ler cada comentário individualmente.
+- **Acceptance Criteria:**
+  - A página "Upload CSV" aceita arquivos com coluna `text` ou `comment`
+  - A sessão é nomeada pelo usuário e persiste no banco SQLite
+  - Após o upload, a página exibe quantos comentários foram carregados
+  - Sessões anteriores são acessíveis via seletor na sidebar
+
+#### US-GL-002: Descobrir temas automaticamente com LLM
+
+- **Story:** Como pesquisador, quero que o sistema identifique automaticamente os temas discutidos nos relatos, para que eu não precise fazer codificação temática manual.
+- **Acceptance Criteria:**
+  - A página "Temas automáticos" gera uma árvore de tópicos/subtópicos via LLM
+  - O resultado é exibido na UI para revisão antes de ser salvo
+  - O botão "Re-run" permite regerar os temas se o resultado não for satisfatório
+  - O resultado é salvo na sessão e fica disponível para os passos seguintes
+
+#### US-GL-003: Categorizar comentários por temas manuais
+
+- **Story:** Como pesquisadora, quero definir meus próprios temas e pedir ao sistema que categorize cada comentário, para que eu possa aplicar uma taxonomia de análise existente.
+- **Acceptance Criteria:**
+  - A página "Categorizar por temas" aceita uma lista de temas digitados pelo usuário
+  - O LLM atribui cada comentário ao tema mais relevante
+  - O resultado mostra a distribuição de comentários por tema
+
+#### US-GL-004: Identificar pontos de divergência (cruxes)
+
+- **Story:** Como pesquisador, quero ver onde os cidadãos genuinamente discordam, para que eu possa identificar as questões mais controversas da consulta.
+- **Acceptance Criteria:**
+  - A página "Opiniões divergentes" exibe cruxes identificados pelo LLM
+  - Cada crux apresenta as duas posições opostas e cita os claims que as sustentam
+  - O resultado é vinculado às claims já extraídas na sessão
+
+#### US-GL-005: Visualizar clusters de opiniões
+
+- **Story:** Como pesquisadora, quero ver um mapa visual de como as opiniões se agrupam semanticamente, para que eu possa identificar padrões que não aparecem na análise textual.
+- **Acceptance Criteria:**
+  - A página "Visualizar clusters" exibe um scatter plot 2D (Plotly) das claims embedadas via UMAP
+  - Cada ponto mostra o texto da claim e o tópico ao passar o mouse
+  - Pontos são coloridos por tópico para facilitar a leitura
+
+### kb-qa User Stories (supporting tool — stable)
+
+#### US-KQ-001: Ingerir materiais de curso
 
 - **Story:** As a course team member, I want to ingest my lecture PDFs and notes so that I can query them through Claude without copy-pasting.
-- **Goals:** G-001 (quick retrieval), G-003 (privacy)
 - **Acceptance Criteria:**
-  - Running `kb-qa ingest` processes all `.md` and `.pdf` files in `knowledge/`
-  - Running it again on unchanged files does not duplicate chunks
+  - `kb-qa ingest` processes all `.md` and `.pdf` files in `knowledge/`
+  - Re-running on unchanged files does not duplicate chunks
   - Progress is visible via a progress bar
 
-#### US-002: Query knowledge base via MCP
+#### US-KQ-002: Consultar base de conhecimento via MCP
 
 - **Story:** As a researcher, I want Claude to automatically retrieve relevant chunks from my knowledge base so that its answers are grounded in my own documents.
-- **Goals:** G-001 (quick retrieval), G-002 (AI integration)
 - **Acceptance Criteria:**
-  - The MCP server is running and configured in `.claude/settings.json`
-  - Claude calls `query_knowledge` with my question and receives relevant chunks
-  - The result includes `text`, `type`, `name`, and `source` for each chunk
-
-#### US-003: Check indexing status
-
-- **Story:** As a team member, I want to know whether my documents are up to date in the vector store without re-ingesting everything.
-- **Goals:** G-001 (quick retrieval)
-- **Acceptance Criteria:**
-  - `kb-qa status` shows chunk counts by type (md, pdf)
-  - It shows a delta between knowledge directory and vector store
+  - MCP server configured in `.claude/settings.json`; Claude calls `query_knowledge` and receives relevant chunks with `text`, `type`, `name`, `source`
 
 ---
 
@@ -271,10 +385,14 @@ I know you are a researcher or AI developer who needs instant, semantic access t
 | Feature / Flow | Designer Intent | Priority | Source | Last Synced |
 |---|---|---|---|---|
 <!-- REQ-MC-002 -->
-| Document ingestion (kb-qa ingest) | I have designed ingestion to be incremental and idempotent so that you can add documents at any time without disrupting the existing index | P0 | human | 2026-05-24 00:00 UTC |
-| Semantic query (kb-qa ask / query_knowledge) | I have designed retrieval to return the most relevant chunks with source metadata so that you can trace every result back to its original document | P0 | human | 2026-05-24 00:00 UTC |
-| Status check (kb-qa status) | I have designed the status command to show you exactly how many chunks are indexed and whether re-ingestion is needed, so you always know the state of your knowledge base | P1 | human | 2026-05-24 00:00 UTC |
-| MCP integration | I have designed the MCP server as a passthrough so that any AI tool can call query_knowledge and receive grounded context from your documents without any modification to your workflow | P0 | human | 2026-05-24 00:00 UTC |
+| CSV upload + session persistence | I have designed upload to create a persistent session immediately so that you can always return to a previous analysis without re-uploading your data | P0 | human | 2026-06-02 00:00 UTC |
+| Auto topic discovery | I have designed auto-topics as a starting point, not a final answer — you can re-run, override, or replace it with manual categorization so that the LLM's topic structure never locks you in | P0 | human | 2026-06-02 00:00 UTC |
+| Claims extraction | I have designed claims as the core analysis unit so that you are reasoning about distilled statements, not raw noisy text — but every claim retains a quote link back to the original comment | P0 | human | 2026-06-02 00:00 UTC |
+| Cruxes detection | I have designed cruxes detection to identify genuine disagreement, not just different opinions, so that you can focus facilitation or policy attention on the points that actually divide people | P1 | human | 2026-06-02 00:00 UTC |
+| UMAP cluster visualization | I have designed the cluster view as an exploratory layer — it shows you spatial patterns across all claims, not a conclusion — so that you can discover themes that cut across the LLM's topic assignments | P1 | human | 2026-06-02 00:00 UTC |
+| Manual topic categorization | I have designed manual categorization as a parallel path to auto-topics so that analysts who already have a coding framework can apply it without being overridden by the LLM | P1 | human | 2026-06-02 00:00 UTC |
+| Document ingestion (kb-qa ingest) | I have designed ingestion to be incremental and idempotent so that you can add documents at any time without disrupting the existing index | P2 (maintenance) | human | 2026-05-24 00:00 UTC |
+| MCP integration (kb-qa) | I have designed the MCP server as a passthrough so that any AI tool can call query_knowledge and receive grounded context from your documents without any modification to your workflow | P2 (maintenance) | human | 2026-05-24 00:00 UTC |
 
 ---
 
@@ -303,6 +421,30 @@ User has a working local knowledge base integrated with Claude. Future ingestion
 
 ---
 
+### JM-TB-002: Análise completa de relatos de cidadãos com GaveaLab
+
+- **Persona:** R-P-GL-001 (Pesquisadora civic tech / GaveaLab)
+- **Goal:** Transformar um CSV bruto de relatos em insight estruturado: temas → claims → cruxes → visualização
+- **Pre-conditions:** `streamlit run gavealab-poc/app.py` rodando; Ollama com `qwen3:8b` disponível em `localhost:11434`
+
+#### Steps
+
+| # | Action | Touchpoint | User Emotion | Pain Point | Opportunity |
+| - | ------ | ---------- | ------------ | ---------- | ----------- |
+| 1 | Abre o app no browser; vê sidebar com as 5 páginas | Streamlit UI | Orientada | Nenhuma — navegação clara | — |
+| 2 | Vai para "Upload CSV"; nomeia a sessão e faz upload do arquivo | Página Upload | Confiante | Nenhuma — feedback imediato de quantos comentários foram carregados | Mostrar prévia das primeiras linhas |
+| 3 | Vai para "Temas automáticos"; clica em "Gerar temas" | Página Auto-topics | Curiosa | LLM demora ~30s para datasets grandes; sem barra de progresso | Mostrar spinner com mensagem de progresso |
+| 4 | Revisa a árvore de tópicos gerada; decide aceitar | Página Auto-topics | Satisfeita | Tópicos ocasionalmente muito genéricos | Botão "Re-run" com prompt personalizado |
+| 5 | Vai para "Visualizar clusters"; explora o scatter plot 2D | Página UMAP | Deleitada | Primeiro run calcula embeddings — pode ser lento | Cache de embeddings por sessão |
+| 6 | Hover sobre pontos no mapa; identifica um cluster de reclamações sobre transporte | Plotly scatter | Insightful | — | Filtro por tópico diretamente no gráfico |
+| 7 | Vai para "Opiniões divergentes"; lê os cruxes identificados | Página Cruxes | Reflexiva | Cruxes às vezes repetem o que foi dito, não o ponto de conflito real | Melhorar prompt de cruxes com exemplos few-shot |
+
+#### Post-conditions / Outcomes
+
+Pesquisadora tem uma análise completa da consulta: temas identificados, claims organizados por tema, pontos de divergência explicitados, e mapa visual de clusters. Pode voltar à sessão a qualquer momento sem re-processar.
+
+---
+
 # Part III — Delta from As-Coded
 
 ## 16. Conceptual Design Delta
@@ -312,14 +454,15 @@ User has a working local knowledge base integrated with Claude. Future ingestion
 | Section | Element | Description |
 |---|---|---|
 <!-- REQ-DELTA-001 -->
-| §0 | Planned v0.2 improvements | Session-reuse CLI + score visibility not yet implemented |
-| §14 | Synthesize intent | `ask --synthesize` not yet implemented |
+| §0 | Export analysis results | CSV/JSON export not yet implemented |
+| §0 | Filter by topic/territory in UMAP | Cluster view filter not yet implemented |
+| §13 | US-GL-004 | Cruxes page implemented but full divergence quality needs improvement (see JM-TB-002 step 7) |
 
 ### Changed (differs between as-coded and as-intended)
 
 | Section | Element | As-Coded | As-Intended |
 |---|---|---|---|
-| — | — | — | — |
+| §1 | Primary product | kb-qa (RAG tool) was original product | GaveaLab is the primary course deliverable |
 
 ### Removed (in as-coded but not in as-intended)
 
@@ -335,8 +478,11 @@ User has a working local knowledge base integrated with Claude. Future ingestion
 
 | Feature / Flow | Designer Intent | Priority |
 |---|---|---|
-| Score visibility in ask output | Show cosine distance alongside each result chunk | P1 |
-| LLM synthesis in ask command | Offer `--synthesize` flag to call Claude and return a direct answer | P2 |
+| Export results (CSV/JSON) | Allow researchers to share or archive session results outside the app | P1 |
+| UMAP topic filter | Filter cluster view by topic to focus spatial analysis | P1 |
+| Progress indicators for LLM steps | Show spinner + estimated time for auto-topics and claims steps | P1 |
+| Score visibility in kb-qa ask output | Show cosine distance alongside each result chunk | P2 |
+| LLM synthesis in kb-qa ask command | Offer `--synthesize` flag to call Claude and return a direct answer | P3 |
 
 ### Changed Intentions (implementation differs from intent)
 
@@ -389,6 +535,26 @@ User has a working local knowledge base integrated with Claude. Future ingestion
 
 ---
 
+### D-004: Use Streamlit + SQLite for the GaveaLab frontend and persistence layer
+
+**Context**: The primary product (gavealab-poc) needs a lightweight web UI for a local, single-user analysis tool. Options considered: FastAPI + React (too much overhead for a course PoC), Gradio (limited multi-page support), Streamlit (native Python, multi-page, easy session state, fast to iterate).
+
+**Decision**: Use Streamlit for the UI and SQLite (via Python's built-in `sqlite3`) for session persistence. No ORM — direct SQL via `GaveaLabWorkspace` which owns all DB access.
+
+**Consequences**: Zero infrastructure overhead. Streamlit's session state model requires care around `@st.cache_resource` for the workspace singleton. SQLite limits concurrent write access, acceptable for single-user local deployment. Streamlit's rerun-on-interaction model makes progress feedback for long LLM calls require explicit spinners.
+
+---
+
+### D-005: Use Ollama as the LLM backend for GaveaLab
+
+**Context**: The LLM pipeline (topics, claims, cruxes) needs a local inference server. Options: Ollama (simple API, many models, OpenAI-compatible), llama.cpp (lower-level), cloud API (violates privacy principle). The tttc-poc already used Ollama successfully.
+
+**Decision**: Use Ollama at `http://localhost:11434/v1` with the OpenAI-compatible endpoint. Default model: `qwen3:8b`. Model is configurable via `GAVEALAB_OLLAMA_MODEL` env var.
+
+**Consequences**: Requires Ollama to be running as a separate process. Model download is a one-time operation. `qwen3:8b` provides good quality/speed balance on CPU; teams with GPU can swap to a larger model via env var. All LLM calls go through `gavealab_poc/llm.py` to centralize model configuration.
+
+---
+
 ## CHANGELOG
 
 <!-- Append-only. Format: YYYY-MM-DD | <id> | added|revised|revoked|superseded | plan-NNNNNN | <note> -->
@@ -396,3 +562,6 @@ User has a working local knowledge base integrated with Claude. Future ingestion
 2026-05-24 | D-001 | added | - | ChromaDB vector store decision
 2026-05-24 | D-002 | added | - | MCP tool exposure decision
 2026-05-24 | D-003 | added | - | nomic-embed-text-v1 embedding model decision
+2026-06-02 | D-004 | added | - | Streamlit + SQLite for GaveaLab UI and persistence
+2026-06-02 | D-005 | added | - | Ollama as LLM backend for GaveaLab pipeline
+2026-06-02 | design-update | revised | - | §1 §2 §3 §7 §8 §10 §11 §12 §13 §14 §15 §16 §17 updated to reflect GaveaLab as primary product; kb-qa repositioned as supporting tool

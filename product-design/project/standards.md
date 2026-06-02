@@ -1,12 +1,12 @@
 ---
-designer_description: "Engineering standards for kb-qa — Python CLI/MCP library project conventions, testing, logging, and dependency management."
+designer_description: "Engineering standards for INF2921-Grupo-C — GaveaLab (Streamlit) primary product and kb-qa (CLI/MCP) supporting tool."
 ---
 
-# ENGINEERING STANDARDS — INF2921-Grupo-C / kb-qa
+# ENGINEERING STANDARDS — INF2921-Grupo-C / GaveaLab + kb-qa
 
-> **Stack**: Python 3.13 · click · ChromaDB · sentence-transformers · FastMCP · pymupdf · uv
+> **Primary product stack**: Python 3.13 · Streamlit · SQLite · Ollama (OpenAI-compatible) · sentence-transformers · UMAP · Plotly · uv
 >
-> This is a CLI/library project with no web framework and no frontend. Web-specific sections (HTTP, auth, CSRF, ORM, migrations, frontend) are intentionally omitted.
+> **Supporting tool stack**: Python 3.13 · click · ChromaDB · sentence-transformers · FastMCP · pymupdf · uv
 
 ---
 
@@ -207,4 +207,86 @@ def test_ingest_creates_chunks(tmp_path):
 
 ## i18n
 
-Not applicable. The CLI interface and MCP tool are English-only. Knowledge documents may be in any language — the embedding model (`nomic-ai/nomic-embed-text-v1`) handles multilingual content without additional configuration. No i18n framework is used.
+**kb-qa**: Not applicable. CLI and MCP tool are English-only. Knowledge documents may be in any language.
+
+**GaveaLab**: UI labels, sidebar navigation, page titles, and all LLM prompts are in pt-BR. Code and error messages are in English. No i18n framework — strings are inline in Streamlit components and prompt templates. The embedding model handles multilingual content without additional configuration.
+
+---
+
+## GaveaLab-Specific Standards
+
+### Directory Layout
+
+```
+gavealab-poc/
+  app.py                        # Streamlit entry point — only page dispatch and workspace init
+  gavealab_poc/
+    __init__.py
+    llm.py                      # OllamaClient — all LLM calls go here
+    workspace.py                # GaveaLabWorkspace + AnalysisSession — all SQLite access goes here
+    embeddings.py               # Embedding computation (sentence-transformers)
+    pipeline/
+      topics.py                 # Step 1: comments → topic tree
+      claims.py                 # Step 2: comments + tree → claims
+      cruxes.py                 # Step 3: claims → crux analysis
+      manual_categories.py      # Step 4 (alt): manual theme categorization
+      umap_viz.py               # UMAP projection of claim embeddings
+    pages/
+      upload.py                 # Page: CSV upload + session management
+      auto_topics.py            # Page: auto topic analysis
+      manual_topics.py          # Page: manual theme categorization
+      cruxes.py                 # Page: divergence view
+      umap_viz.py               # Page: UMAP cluster visualization
+  pyproject.toml                # dependencies: streamlit, pandas, sentence-transformers, umap-learn, plotly
+```
+
+### Module Responsibilities
+
+| Module | Responsibility | May import |
+|--------|---------------|-----------|
+| `app.py` | Page dispatch, `@st.cache_resource` workspace | `workspace`, `pages.*` |
+| `llm.py` | `OllamaClient` — POST to Ollama, parse JSON, return structured output | httpx or openai |
+| `workspace.py` | `GaveaLabWorkspace` (SQLite), `AnalysisSession` (dataclass) | sqlite3, pandas |
+| `embeddings.py` | `embed_claims()` — batch embedding via sentence-transformers | sentence_transformers |
+| `pipeline/*.py` | Stateless pipeline steps — accept session data, return structured results | `llm`, `workspace` (read), `embeddings` |
+| `pages/*.py` | Streamlit page render — call pipeline, call `session.save_result()`, display results | `pipeline.*`, `workspace` |
+
+### Streamlit Conventions
+
+- `@st.cache_resource` is used **only** for `GaveaLabWorkspace` (singleton across rerenders). Never use it for pipeline results — those live in the session via `st.session_state`.
+- Long-running LLM calls must be wrapped in `with st.spinner("...")` to provide user feedback.
+- Each page module exports a single `render(workspace: GaveaLabWorkspace) -> None` function. No Streamlit calls outside this function.
+- `st.session_state.session` holds the active `AnalysisSession` (or `None` if no session loaded). All pages check for `None` and redirect to upload page if no session is active.
+
+### SQLite Schema
+
+```sql
+CREATE TABLE sessions (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    name       TEXT NOT NULL,
+    csv_raw    TEXT NOT NULL,
+    created_at TEXT NOT NULL          -- ISO-8601 UTC
+);
+CREATE TABLE results (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    session_id  INTEGER NOT NULL REFERENCES sessions(id),
+    result_type TEXT NOT NULL,        -- 'topic_tree' | 'claims_tree' | 'cruxes' | 'manual_categories'
+    result_json TEXT NOT NULL,        -- JSON blob
+    created_at  TEXT NOT NULL
+);
+```
+
+`GaveaLabWorkspace.save_result()` deletes and reinserts on re-run (upsert semantics). This is intentional — only one result per `(session_id, result_type)` is kept.
+
+### LLM Pipeline Conventions
+
+- All pipeline functions are **pure** with respect to the database: they accept data as arguments and return structured Python objects. `save_result()` is called by the **page** module, not the pipeline module.
+- Prompts are defined as module-level constants (not inline strings) in each `pipeline/*.py` file.
+- LLM responses are always parsed as JSON. If parsing fails, pipeline functions raise a descriptive `ValueError` rather than returning partial data.
+- Thinking mode is disabled (`/nothink` or equivalent) for speed in interactive sessions.
+
+### Error Handling
+
+- Page modules catch `Exception` from pipeline calls and display `st.error(str(e))` — never let exceptions surface as Streamlit tracebacks to the user.
+- `OllamaClient` raises `RuntimeError` if Ollama is unreachable, with a message that includes the configured URL, so the user knows what to check.
+- `GaveaLabWorkspace` raises `ValueError` for missing sessions with a descriptive message.

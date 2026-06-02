@@ -13,7 +13,7 @@ designer_description: "Single source of truth for directory structure, stack, te
 | Variable | Value | Description |
 |----------|-------|-------------|
 | `PROJECT_NAME` | INF2921-Grupo-C | Project display name |
-| `PROJECT_DESCRIPTION` | Generic RAG knowledge base — ingest .md and .pdf files into ChromaDB and expose query_knowledge via MCP | One-line project description |
+| `PROJECT_DESCRIPTION` | GaveaLab — citizen feedback analysis tool inspired by Talk to the City; LLM-powered topic extraction, claims analysis, divergence detection and UMAP visualization over CSV datasets of citizen relatos | One-line project description |
 | `PROJECT_MODE` | brownfield | Project mode: brownfield (existing codebase) |
 
 ---
@@ -104,11 +104,12 @@ designer_description: "Single source of truth for directory structure, stack, te
 
 ## Source Directories
 
-> CLI/library project — no backend web framework, no frontend.
+> Primary product: Streamlit web app (gavealab-poc). Supporting tool: kb-qa CLI/MCP (src/kb_qa).
 
 | Variable | Value | Description |
 |----------|-------|-------------|
-| `SRC_DIR` | `src/kb_qa` | Main package source root |
+| `SRC_DIR` | `gavealab-poc/gavealab_poc` | Main package source root (gavealab-poc) |
+| `KB_QA_SRC_DIR` | `src/kb_qa` | Supporting RAG tool source root (kb-qa) |
 
 ---
 
@@ -117,7 +118,7 @@ designer_description: "Single source of truth for directory structure, stack, te
 | Variable | Value | Description |
 |----------|-------|-------------|
 | `TESTING_STACK` | pytest | Testing technology summary |
-| `DEPLOYMENT_STACK` | local / NAS pessoal | Deployment technology summary |
+| `DEPLOYMENT_STACK` | local (Streamlit dev server + Ollama at localhost:11434) | Deployment technology summary |
 
 ---
 
@@ -125,11 +126,11 @@ designer_description: "Single source of truth for directory structure, stack, te
 
 | Variable | Value | Description |
 |----------|-------|-------------|
-| `ARCHITECTURE_DESCRIPTION` | Python CLI tool (click) + MCP server exposing query_knowledge over a ChromaDB vector store built from .md and .pdf documents via sentence-transformers | High-level architecture description |
-| `ARCHITECTURE_PATTERN` | Module-based CLI + MCP adapter | Architecture pattern |
-| `CONVENTION_1` | All document ingestion goes through src/kb_qa/ingestion/ — no ad-hoc file reading elsewhere | Key project convention #1 |
-| `CONVENTION_2` | The vector store lives at knowledge/vectorstore/ and is gitignored | Key project convention #2 |
-| `CONVENTION_3` | Type annotations required on all public functions; no hardcoded paths | Key project convention #3 |
+| `ARCHITECTURE_DESCRIPTION` | GaveaLab: Streamlit web app + SQLite workspace (GaveaLabWorkspace) + Ollama LLM pipeline (topics → claims → cruxes) + UMAP/Plotly cluster visualization. Supporting tool: kb-qa CLI + FastMCP server over ChromaDB. | High-level architecture description |
+| `ARCHITECTURE_PATTERN` | Streamlit multi-page app with session-scoped SQLite persistence and stateless LLM pipeline steps | Architecture pattern |
+| `CONVENTION_1` | All LLM calls go through gavealab_poc/llm.py (OllamaClient) — no direct httpx/openai calls in pipeline or page modules | Key project convention #1 |
+| `CONVENTION_2` | All persistence goes through GaveaLabWorkspace — page and pipeline modules never access SQLite directly | Key project convention #2 |
+| `CONVENTION_3` | Type annotations required on all public functions; LLM model and Ollama URL come from env vars only | Key project convention #3 |
 
 ---
 
@@ -138,7 +139,7 @@ designer_description: "Single source of truth for directory structure, stack, te
 | Variable | Value | Description |
 |----------|-------|-------------|
 | `SECRETS_EXTRA_SKIP_PATTERNS` | | Additional filename substrings to skip during secret scanning |
-| `SECRETS_EXTRA_SKIP_DIRS` | knowledge/vectorstore | Additional directory names to skip during secret scanning |
+| `SECRETS_EXTRA_SKIP_DIRS` | knowledge/vectorstore,gavealab-poc/.venv | Additional directory names to skip during secret scanning |
 | `SECRETS_EXTRA_SKIP_EXTENSIONS` | | Additional file extensions to skip |
 | `SECRETS_EXTRA_FALSE_POSITIVES` | | Additional false-positive regex patterns |
 | `SECRETS_EXTRA_PATTERNS` | | Additional secret-detection regex patterns |
