@@ -13,3 +13,4 @@
 2026-06-02 | plan-000012 | §0 | Updated GaveaLab PoC entry: manual theme categorization tool added (pipeline/manual_categories.py, pages/manual_topics.py)
 2026-06-02 | plan-000013 | §0 | Updated GaveaLab PoC entry: divergent opinion detection added (embeddings.py singleton, pipeline/cruxes.py embedding-based crux detection, pages/cruxes.py)
 2026-06-02 | plan-000016 | §0 | Updated GaveaLab PoC entry: UMAP 2D cluster visualization added (pipeline/umap_viz.py, pages/umap_viz.py, sidebar page "Visualizar clusters")
+2026-06-10 | plan-000021 | §0 | Added all-studies dashboard page (pages/all_sessions.py), modern st.navigation() multipage nav in app.py, GaveaLabWorkspace.get_sessions_summary(), upload page simplified (removed inline session list)
