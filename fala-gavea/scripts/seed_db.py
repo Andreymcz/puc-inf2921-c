@@ -10,7 +10,7 @@ import uuid
 import httpx
 
 API_URL = os.environ.get("FALA_GAVEA_API_URL", "http://localhost:8000")
-DATA_FILE = pathlib.Path(__file__).parent.parent.parent / "data" / "sample-gavealab-1000.csv"
+DATA_FILE = pathlib.Path(__file__).parent.parent.parent / "data" / "sample-gavealab.csv"
 
 TERRITORY_MAP: dict[str, tuple[str, str]] = {
     "comunidade":    ("Comunidade da Gávea", "neighborhood"),
@@ -19,7 +19,7 @@ TERRITORY_MAP: dict[str, tuple[str, str]] = {
     "favela":        ("Favela da Gávea",      "neighborhood"),
 }
 
-LIKES_PER_AUTHOR = 50
+LIKES_PER_AUTHOR = 10
 
 
 def load_csv() -> list[dict]:
