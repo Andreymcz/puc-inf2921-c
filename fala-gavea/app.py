@@ -150,7 +150,7 @@ def page_label_feedback() -> None:
 def page_dashboard() -> None:
     st.header("📊 Dashboard")
     try:
-        posts = api_get("/citizen_posts/", limit=500)
+        posts = api_get("/citizen_posts/", limit=1500)
     except Exception as e:
         st.error(f"Erro ao carregar dados: {e}")
         return
@@ -165,9 +165,11 @@ def page_dashboard() -> None:
 
     col1, col2, col3 = st.columns(3)
     col1.metric("Total de postagens", len(df))
-    col2.metric("Total de likes", int(df["likes_count"].sum()) if "likes_count" in df else 0)
+    total_likes = int(df["likes_count"].sum()) if "likes_count" in df else 0
+    col2.metric("Total de likes", total_likes)
+    avg_likes = round(total_likes / len(df), 1) if len(df) else 0
+    col3.metric("Média de likes por post", avg_likes)
     posts_with_labels = df[df["ai_labels"].apply(lambda x: len(x) > 0)] if "ai_labels" in df else pd.DataFrame()
-    col3.metric("Posts com labels IA", len(posts_with_labels))
 
     st.subheader("Top posts por likes")
     top = df.nlargest(10, "likes_count")[["text", "territory_name", "territory_level", "likes_count"]]
@@ -178,6 +180,24 @@ def page_dashboard() -> None:
     st.subheader("Distribuição por território")
     by_territory = df.groupby("territory_name").size().reset_index(name="posts")
     st.bar_chart(by_territory.set_index("territory_name"))
+
+    # ── Timeline de postagens ─────────────────────────────────────────────────
+    if "created_at" in df:
+        st.subheader("Postagens por dia")
+        df["date"] = pd.to_datetime(df["created_at"]).dt.date
+        timeline = df.groupby("date").size().reset_index(name="posts")
+        st.line_chart(timeline.set_index("date"))
+
+    # ── Histograma de likes ───────────────────────────────────────────────────
+    if total_likes > 0:
+        st.subheader("Distribuição de likes por post")
+        bins = [0, 1, 2, 4, 7, 11, 20, 50, 100]
+        labels_hist = ["0", "1", "2-3", "4-6", "7-10", "11-19", "20-49", "50+"]
+        df["likes_bucket"] = pd.cut(
+            df["likes_count"], bins=bins, right=False, labels=labels_hist
+        )
+        hist = df["likes_bucket"].value_counts().sort_index()
+        st.bar_chart(hist)
 
     if not posts_with_labels.empty:
         st.subheader("Feedback de labels")
