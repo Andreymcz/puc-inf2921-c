@@ -10,6 +10,18 @@ designer_description: "Implementation state mirror for kb-qa — maintained by p
 
 ## Conceptual Design
 
+### 0b. Fala Gávea — Streamlit frontend (plan-000030)
+
+`fala-gavea/app.py` is a single-file Streamlit app that consumes the Fala Gávea FastAPI backend (`fala-gavea/src/`). The API base URL defaults to `http://localhost:8000`, overridable via `FALA_GAVEA_API_URL`. A `user_id` UUID is generated once per session and stored in `st.session_state`.
+
+**Four pages** (dispatched via sidebar radio):
+- **📋 Postagens**: lists all posts with like counter; clicking ❤️ toggles a like (second click removes it via the backend toggle logic).
+- **✍️ Nova Postagem**: form to create a new post (text + territory level/name); calls `POST /citizen_posts/`.
+- **🏷️ Validar Labels**: shows posts that have `ai_labels`; per-label 👍/👎 buttons call `POST /citizen_posts/{id}/label_feedback`.
+- **📊 Dashboard**: summary metrics (total posts, likes, posts with AI labels), top-10 posts by likes table, bar chart of posts by territory, and label feedback summary table.
+
+**API helpers**: `api_get(path, **params)` and `api_post(path, body)` call the backend synchronously via `httpx` with a 10-second timeout and raise on 4xx/5xx.
+
 ### 0. GaveaLab PoC (sibling project)
 
 `gavealab-poc/` is a Streamlit + Ollama citizen-claims analysis PoC, scaffolded in plan-000008. It runs independently from kb-qa (separate `pyproject.toml`, uv venv). Key components: `GaveaLabWorkspace` (SQLite persistence), `AnalysisSession` (domain object), `gavealab_poc/llm.py` (Ollama OpenAI-compatible wrapper), and page modules for upload (plan-000009), auto-topics, manual-topics, and cruxes (stubs).

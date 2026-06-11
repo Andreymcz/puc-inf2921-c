@@ -1,4 +1,5 @@
 # Plan 000030 | FEATURE-F | 2026-06-11 03:42 UTC | fala-gavea: app Streamlit consumindo API REST | Review: light
+# DONE | 2026-06-11 04:03 UTC |
 plan_format_version: 1
 
 source: roadmap-000028 -- W1-1
@@ -223,7 +224,7 @@ with st.sidebar:
 PAGES[selection]()
 ```
 
-- [ ] Done
+- [x] Done
 
 **Tests:** N/A (UI — validação manual descrita nos Acceptance Criteria)
 **Verify:**
