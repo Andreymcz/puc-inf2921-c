@@ -91,13 +91,19 @@ def page_posts() -> None:
                     except Exception as e:
                         st.error(str(e))
                 if likes > 0:
+                    cache_key = f"likers_{post['id']}"
                     with st.expander("Ver quem curtiu"):
-                        try:
-                            likes_data = api_get(f"/citizen_posts/{post['id']}/likes")
-                            for liker in likes_data.get("likers", []):
+                        if cache_key not in st.session_state:
+                            if st.button("Carregar curtidas", key=f"load_likes_{post['id']}"):
+                                try:
+                                    likes_data = api_get(f"/citizen_posts/{post['id']}/likes")
+                                    st.session_state[cache_key] = likes_data.get("likers", [])
+                                    st.rerun()
+                                except Exception as e:
+                                    st.error(f"Erro ao carregar likes: {e}")
+                        else:
+                            for liker in st.session_state[cache_key]:
                                 st.caption(f"👤 {citizen_name(liker['user_id'])}")
-                        except Exception as e:
-                            st.error(f"Erro ao carregar likes: {e}")
 
     # pagination controls
     col_prev, col_info, col_next = st.columns([1, 2, 1])

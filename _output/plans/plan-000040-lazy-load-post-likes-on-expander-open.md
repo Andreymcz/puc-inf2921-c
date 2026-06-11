@@ -1,3 +1,4 @@
+# DONE | 2026-06-11 19:47 UTC |
 # Plan 000040 | feat(fala-gavea) | 2026-06-11 19:35 UTC | lazy-load post likes on expander open | Review: light
 plan_format_version: 1
 
@@ -72,7 +73,14 @@ if likes > 0:
 - **Interface**: N/A
 - **Verify**: Start the Streamlit app and the FastAPI backend; open "Postagens"; confirm no network calls to `/citizen_posts/{id}/likes` appear until a "Carregar curtidas" button is clicked; confirm likers appear after clicking; confirm re-navigating pages does not re-fetch for already-loaded posts.
 - **Tests**: N/A (UI-only change; no unit-testable logic added)
-- [ ] Done
+- [x] Done
+
+## Implementation Summary
+
+- **Steps completed**: 1/1
+- **Iterations used**: 1
+- **Files modified**: `fala-gavea/app.py`
+- **Change**: Replaced eager `api_get` inside `st.expander("Ver quem curtiu")` with a button-gated fetch cached in `st.session_state[f"likers_{post_id}"]`. Before: every page rerender fired up to 20 API calls to `GET /citizen_posts/{id}/likes`. After: zero API calls on page load; one call per post per session, triggered by user clicking "Carregar curtidas" inside the expander.
 
 ## Review Log
 
