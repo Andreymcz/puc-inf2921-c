@@ -16,3 +16,4 @@
 2026-06-10 | plan-000021 | §0 | Added all-studies dashboard page (pages/all_sessions.py), modern st.navigation() multipage nav in app.py, GaveaLabWorkspace.get_sessions_summary(), upload page simplified (removed inline session list)
 2026-06-11 | plan-000025 | harness | Added /python-scaffold SEJA skill: generates clean-arch Python REST API project (FastAPI + SQLAlchemy + SQLite + Pydantic v2 + pytest, 18 tests). No GaveaLab/kb-qa domain changes.
 2026-06-11 | plan-000030 | §0b | Added Fala Gávea Streamlit frontend (fala-gavea/app.py): 4-page app consuming FastAPI backend — Postagens (likes), Nova Postagem, Validar Labels (AI label feedback), Dashboard (metrics + charts)
+2026-06-11 | plan-000033 | §0b | Updated Fala Gávea: like traceability (GET /citizen_posts/{id}/likes, LikeRecord domain, GetPostLikes use case), label feedback user attribution (user_id stored in label_feedback JSON), Streamlit "Ver quem curtiu" expander and dashboard traceability tables

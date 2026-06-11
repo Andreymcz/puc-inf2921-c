@@ -10,17 +10,22 @@ designer_description: "Implementation state mirror for kb-qa — maintained by p
 
 ## Conceptual Design
 
-### 0b. Fala Gávea — Streamlit frontend (plan-000030)
+### 0b. Fala Gávea — Streamlit frontend (plan-000030, plan-000033)
 
 `fala-gavea/app.py` is a single-file Streamlit app that consumes the Fala Gávea FastAPI backend (`fala-gavea/src/`). The API base URL defaults to `http://localhost:8000`, overridable via `FALA_GAVEA_API_URL`. A `user_id` UUID is generated once per session and stored in `st.session_state`.
 
 **Four pages** (dispatched via sidebar radio):
-- **📋 Postagens**: lists all posts with like counter; clicking ❤️ toggles a like (second click removes it via the backend toggle logic).
+- **📋 Postagens**: lists all posts with like counter; clicking ❤️ toggles a like. When `likes_count > 0`, a `st.expander("Ver quem curtiu")` appears — on expansion it calls `GET /citizen_posts/{id}/likes` and lists liker `user_id`s.
 - **✍️ Nova Postagem**: form to create a new post (text + territory level/name); calls `POST /citizen_posts/`.
-- **🏷️ Validar Labels**: shows posts that have `ai_labels`; per-label 👍/👎 buttons call `POST /citizen_posts/{id}/label_feedback`.
-- **📊 Dashboard**: summary metrics (total posts, likes, posts with AI labels), top-10 posts by likes table, bar chart of posts by territory, and label feedback summary table.
+- **🏷️ Validar Labels**: shows posts that have `ai_labels`; per-label 👍/👎 buttons call `POST /citizen_posts/{id}/label_feedback`. Vote state reads from `label_feedback[label]["approved"]` (new dict structure).
+- **📊 Dashboard**: summary metrics, top-10 posts by likes, bar chart of posts by territory, label feedback summary table, and two new traceability subsections: "Rastreabilidade de likes" (on-demand bulk fetch via "Carregar rastreabilidade" button — shows post_id, text, likers) and "Rastreabilidade de labels" (reads `label_feedback` dict — shows label, aprovado, usuario).
 
 **API helpers**: `api_get(path, **params)` and `api_post(path, body)` call the backend synchronously via `httpx` with a 10-second timeout and raise on 4xx/5xx.
+
+**Like and label traceability (plan-000033)**:
+- `GET /citizen_posts/{id}/likes` returns `PostLikesResponse{post_id, likers: [{user_id, created_at}]}` — implemented by `GetPostLikes` use case and `SQLAlchemyCitizenPostRepository.get_likes`.
+- `label_feedback` JSON column stores `{label: {"approved": bool, "user_id": str}}` — `set_label_feedback` persists `user_id` alongside the flag.
+- `LikeRecord` domain dataclass: `user_id: str, created_at: datetime`. `CitizenPostRepository` exposes `get_likes(post_id) -> list[LikeRecord]`.
 
 ### 0. GaveaLab PoC (sibling project)
 
