@@ -16,6 +16,7 @@ dependencies = [
     "scikit-learn>=1.5",
     "plotly>=5.0",
     "einops>=0.8",
+    "torchvision>=0.20",
 ]
 
 [project.optional-dependencies]
