@@ -14,11 +14,24 @@ designer_description: "Implementation state mirror for kb-qa — maintained by p
 
 `fala-gavea/app.py` is a single-file Streamlit app that consumes the Fala Gávea FastAPI backend (`fala-gavea/src/`). The API base URL defaults to `http://localhost:8000`, overridable via `FALA_GAVEA_API_URL`. A `user_id` UUID is generated once per session and stored in `st.session_state`.
 
-**Four pages** (dispatched via sidebar radio):
+**Five pages** (dispatched via sidebar radio):
 - **📋 Postagens**: paginated list of posts (20 per page, controlled by `st.session_state.posts_page`); prev/next controls fetch `POSTS_PER_PAGE=20` posts at the correct `offset`. Author displayed as a human-readable Brazilian first name via `citizen_name()` instead of a truncated UUID. When `likes_count > 0`, a `st.expander("Ver quem curtiu")` appears — likers also shown as names.
 - **✍️ Nova Postagem**: form to create a new post (text + territory level/name); calls `POST /citizen_posts/`.
 - **🏷️ Validar Labels**: shows posts that have `ai_labels`; per-label 👍/👎 buttons call `POST /citizen_posts/{id}/label_feedback`. Vote state reads from `label_feedback[label]["approved"]` (new dict structure).
 - **📊 Dashboard**: summary metrics (total posts, total likes, avg likes per post), top-10 posts by likes, bar chart of posts by territory, "Postagens por dia" timeline (line chart on `created_at`), "Distribuição de likes por post" histogram (bucketed by `pd.cut` into 8 ranges ending at `float("inf")`), label feedback summary table, and two traceability subsections: "Rastreabilidade de likes" (on-demand bulk fetch; likers shown as names via `citizen_name()`) and "Rastreabilidade de labels" (reads `label_feedback` dict; user shown as name). Limit raised to 1500 to accommodate the seed dataset (plan-000032).
+- **🗺️ Explorar Clusters (plan-000039)**: two-button layout — "Gerar Clusters" triggers the full pipeline; "Salvar Labels" persists results via API (disabled until clusters are generated). Results cached in `st.session_state.cluster_df`. Shows an interactive Plotly scatter plot (UMAP-1/UMAP-2 axes, color by `cluster_label`, hover shows `text` and `territory_name`) plus a summary table grouped by cluster label with post count and first example.
+
+**UMAP cluster pipeline (plan-000039)** — `fala-gavea/src/fala_gavea/pipeline/`:
+- `embeddings.py`: `embed_and_store(posts, vectorstore_dir?)` encodes post texts with `nomic-ai/nomic-embed-text-v1` (prefix `search_document:`, `trust_remote_code=True`, cosine similarity) and upserts to ChromaDB `PersistentClient` at `fala-gavea/vectorstore/` (collection `fala-gavea-posts`). Idempotent (upsert by post ID). `get_embeddings(post_ids)` retrieves stored vectors. Both model and collection are `lru_cache(maxsize=1)` singletons.
+- `cluster.py`: `build_cluster_df(posts, vectorstore_dir?, n_neighbors=15, min_dist=0.1, min_cluster_size=5)` embeds posts, projects to 2D via `umap.UMAP` (cosine, `random_state=42`, `n_neighbors` clamped to `min(n_neighbors, len(posts)-1)`), and clusters with `sklearn.cluster.HDBSCAN` (`min_cluster_size` clamped to `max(2, len(posts)//10)`). Returns a DataFrame with `post_id, text, territory_name, author_id, x, y, cluster_id, cluster_label`. Noise points have `cluster_id = -1`.
+- `label_clusters.py`: `label_clusters(df) -> dict[int, str]` calls Ollama (`FALA_GAVEA_OLLAMA_URL`, default `http://localhost:11434/v1`; `FALA_GAVEA_OLLAMA_MODEL`, default `qwen3:8b`) once per cluster with a pt-BR prompt and 5 representative posts (closest to centroid in UMAP space). Noise cluster (-1) maps to `"Não classificado"`. Falls back to `"Cluster N"` on LLM failure.
+
+**`set_ai_labels` domain method (plan-000039)**:
+- `CitizenPostRepository.set_ai_labels(post_id, labels)` — abstract method added.
+- `SQLAlchemyCitizenPostRepository.set_ai_labels` — replaces `ai_labels` JSON column and commits; raises `CitizenPostNotFoundError` on missing post.
+- `SetAiLabels` use case in `application/use_cases/set_ai_labels.py` — `execute(SetAiLabelsInput(post_id, labels))`.
+- `POST /citizen_posts/{id}/ai_labels` — body `{"labels": ["label1"]}`, response `CitizenPostResponse`.
+- `AiLabelsRequest(labels: list[str])` schema added to `citizen_post_schemas.py`.
 
 **Citizen name helper (plan-000036)**: `citizen_name(user_id: str) -> str` maps any UUID to a deterministic Brazilian first name using MD5 hash modulo 30. `_CITIZEN_NAMES` is a 30-entry list of common Brazilian first names. Used everywhere UUIDs were previously displayed (`author_id`, `user_id` in likes, dashboard traceability columns).
 
