@@ -7,6 +7,7 @@ from fala_gavea.application.use_cases.create_citizen_post import (
 )
 from fala_gavea.application.use_cases.delete_citizen_post import DeleteCitizenPost
 from fala_gavea.application.use_cases.get_citizen_post import GetCitizenPost
+from fala_gavea.application.use_cases.get_post_likes import GetPostLikes, GetPostLikesInput
 from fala_gavea.application.use_cases.list_citizen_posts import ListCitizenPosts
 from fala_gavea.application.use_cases.toggle_like import ToggleLike, ToggleLikeInput
 from fala_gavea.domain.entities.citizen_post import CitizenPost, LikeRecord
@@ -239,3 +240,19 @@ def test_get_likes_returns_likers() -> None:
     assert len(likes) == 2
     user_ids = {r.user_id for r in likes}
     assert user_ids == {"alice", "bob"}
+
+
+# ── GetPostLikes ───────────────────────────────────────────────────────────
+
+
+def test_get_post_likes_returns_records() -> None:
+    repo = FakeRepository()
+    post = CreateCitizenPost(repo).execute(VALID_INPUT)
+    ToggleLike(repo).execute(ToggleLikeInput(post_id=post.id, user_id="alice"))
+    ToggleLike(repo).execute(ToggleLikeInput(post_id=post.id, user_id="bob"))
+    result = GetPostLikes(repo).execute(GetPostLikesInput(post_id=post.id))
+    assert len(result) == 2
+    user_ids = {r.user_id for r in result}
+    assert user_ids == {"alice", "bob"}
+    for record in result:
+        assert record.created_at is not None
