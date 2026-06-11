@@ -27,7 +27,7 @@ class CitizenPostResponse(BaseModel):
     author_id: str
     created_at: datetime
     ai_labels: list[str]
-    label_feedback: dict[str, bool]
+    label_feedback: dict[str, dict]
     likes_count: int
 
     model_config = {"from_attributes": True}

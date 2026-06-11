@@ -89,4 +89,5 @@ def test_add_label_feedback(client: TestClient) -> None:
     )
     assert response.status_code == 200
     data = response.json()
-    assert data["label_feedback"]["iluminação"] is True
+    assert data["label_feedback"]["iluminação"]["approved"] is True
+    assert data["label_feedback"]["iluminação"]["user_id"] == "u1"

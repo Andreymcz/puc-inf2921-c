@@ -82,12 +82,12 @@ class SQLAlchemyCitizenPostRepository(CitizenPostRepository):
             for like in likes
         ]
 
-    def set_label_feedback(self, post_id: str, label: str, approved: bool) -> CitizenPost:
+    def set_label_feedback(self, post_id: str, label: str, approved: bool, user_id: str) -> CitizenPost:
         post = self._session.get(CitizenPostModel, post_id)
         if post is None:
             raise ValueError(f"Post {post_id} not found")
         feedback = dict(post.label_feedback or {})
-        feedback[label] = approved
+        feedback[label] = {"approved": approved, "user_id": user_id}
         post.label_feedback = feedback
         self._session.commit()
         self._session.refresh(post)

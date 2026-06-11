@@ -11,6 +11,7 @@ class AddLabelFeedbackInput:
     post_id: str
     label: str
     approved: bool
+    user_id: str
 
 
 class AddLabelFeedback:
@@ -18,4 +19,4 @@ class AddLabelFeedback:
         self._repo = repo
 
     def execute(self, inp: AddLabelFeedbackInput) -> CitizenPost:
-        return self._repo.set_label_feedback(inp.post_id, inp.label, inp.approved)
+        return self._repo.set_label_feedback(inp.post_id, inp.label, inp.approved, inp.user_id)

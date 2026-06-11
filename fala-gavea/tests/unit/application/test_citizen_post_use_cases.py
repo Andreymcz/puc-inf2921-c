@@ -9,7 +9,7 @@ from fala_gavea.application.use_cases.delete_citizen_post import DeleteCitizenPo
 from fala_gavea.application.use_cases.get_citizen_post import GetCitizenPost
 from fala_gavea.application.use_cases.list_citizen_posts import ListCitizenPosts
 from fala_gavea.application.use_cases.toggle_like import ToggleLike, ToggleLikeInput
-from fala_gavea.domain.entities.citizen_post import CitizenPost
+from fala_gavea.domain.entities.citizen_post import CitizenPost, LikeRecord
 from fala_gavea.domain.exceptions import (
     CitizenPostNotFoundError,
     InvalidInputError,
@@ -23,6 +23,7 @@ class FakeRepository(CitizenPostRepository):
     def __init__(self) -> None:
         self._store: dict[str, CitizenPost] = {}
         self._likes: set[tuple[str, str]] = set()
+        self._like_records: list[LikeRecord] = []
 
     def save(self, entity: CitizenPost) -> CitizenPost:
         self._store[entity.id] = entity
@@ -45,8 +46,10 @@ class FakeRepository(CitizenPostRepository):
         return (post_id, user_id) in self._likes
 
     def add_like(self, post_id: str, user_id: str) -> CitizenPost:
+        from datetime import UTC, datetime
         post = self._store[post_id]
         self._likes.add((post_id, user_id))
+        self._like_records.append(LikeRecord(user_id=user_id, created_at=datetime.now(UTC)))
         updated = CitizenPost(
             id=post.id, text=post.text, territory_level=post.territory_level,
             territory_name=post.territory_name, author_id=post.author_id,
@@ -68,10 +71,13 @@ class FakeRepository(CitizenPostRepository):
         self._store[post_id] = updated
         return updated
 
-    def set_label_feedback(self, post_id: str, label: str, approved: bool) -> CitizenPost:
+    def get_likes(self, post_id: str) -> list[LikeRecord]:
+        return [r for r in self._like_records]
+
+    def set_label_feedback(self, post_id: str, label: str, approved: bool, user_id: str) -> CitizenPost:
         post = self._store[post_id]
         feedback = dict(post.label_feedback)
-        feedback[label] = approved
+        feedback[label] = {"approved": approved, "user_id": user_id}
         updated = CitizenPost(
             id=post.id, text=post.text, territory_level=post.territory_level,
             territory_name=post.territory_name, author_id=post.author_id,
@@ -209,6 +215,27 @@ def test_add_label_feedback_calls_set_label_feedback() -> None:
     repo = FakeRepository()
     post = CreateCitizenPost(repo).execute(VALID_INPUT)
     result = AddLabelFeedback(repo).execute(
-        AddLabelFeedbackInput(post_id=post.id, label="iluminação", approved=True)
+        AddLabelFeedbackInput(post_id=post.id, label="iluminação", approved=True, user_id="u1")
     )
-    assert result.label_feedback["iluminação"] is True
+    assert result.label_feedback["iluminação"]["approved"] is True
+
+
+def test_set_label_feedback_stores_user_id() -> None:
+    repo = FakeRepository()
+    post = CreateCitizenPost(repo).execute(VALID_INPUT)
+    result = AddLabelFeedback(repo).execute(
+        AddLabelFeedbackInput(post_id=post.id, label="segurança", approved=False, user_id="reviewer-99")
+    )
+    assert result.label_feedback["segurança"]["user_id"] == "reviewer-99"
+    assert result.label_feedback["segurança"]["approved"] is False
+
+
+def test_get_likes_returns_likers() -> None:
+    repo = FakeRepository()
+    post = CreateCitizenPost(repo).execute(VALID_INPUT)
+    ToggleLike(repo).execute(ToggleLikeInput(post_id=post.id, user_id="alice"))
+    ToggleLike(repo).execute(ToggleLikeInput(post_id=post.id, user_id="bob"))
+    likes = repo.get_likes(post.id)
+    assert len(likes) == 2
+    user_ids = {r.user_id for r in likes}
+    assert user_ids == {"alice", "bob"}

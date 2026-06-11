@@ -98,7 +98,7 @@ def add_label_feedback(
 ) -> CitizenPostResponse:
     try:
         entity = AddLabelFeedback(repo).execute(
-            AddLabelFeedbackInput(post_id=id, label=body.label, approved=body.approved)
+            AddLabelFeedbackInput(post_id=id, label=body.label, approved=body.approved, user_id=body.user_id)
         )
         return CitizenPostResponse(**entity.__dict__)
     except (CitizenPostNotFoundError, ValueError) as e:
