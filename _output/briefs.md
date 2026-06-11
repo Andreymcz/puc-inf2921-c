@@ -4,6 +4,10 @@ Execution log of all skill invocations.
 
 ---
 
+STARTED | 2026-06-11 03:42 UTC | plan | fala-gavea Streamlit frontend + novos endpoints likes/label_feedback
+
+---
+
 DONE | 2026-06-11 03:11 UTC | STARTED | 2026-06-11 03:08 UTC | plan | --roadmap implementar app em fala-gavea, app streamlit para servir de visualização do app esboçado em research 23. O app streamlit mostra as postagens, permite usuário dar like em outras postagens, com a condição que um usuário só pode dar um like para cada post de outro usuário. Um dashboard vai mostrar todos os dados relativos ao feedback humano (likes, posts com mais likes, filtros etc). também tem feedback humano para os labels gerados por IA. o dashboard também mostra isso. | ROADMAP | 000026
 
 ---
