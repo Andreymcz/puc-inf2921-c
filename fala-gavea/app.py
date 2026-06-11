@@ -357,14 +357,22 @@ def page_clusters() -> None:
         fig.update_traces(marker=dict(size=6, opacity=0.7))
         st.plotly_chart(fig, use_container_width=True)
 
-        st.subheader("Resumo dos clusters")
-        summary = (
-            df.groupby("cluster_label")
-            .agg(posts=("post_id", "count"), exemplo=("text", "first"))
-            .reset_index()
-            .rename(columns={"cluster_label": "Cluster", "posts": "Posts", "exemplo": "Exemplo"})
-        )
-        st.dataframe(summary, use_container_width=True)
+        st.subheader("Posts por Cluster")
+
+        cluster_groups = df.groupby("cluster_label")
+        counts = cluster_groups.size().reset_index(name="n")
+        noise_label = "Nao classificado"
+        main = counts[counts["cluster_label"] != noise_label].sort_values("n", ascending=False)
+        noise = counts[counts["cluster_label"] == noise_label]
+        ordered = pd.concat([main, noise]).reset_index(drop=True)
+
+        for _, row in ordered.iterrows():
+            label = row["cluster_label"]
+            n = row["n"]
+            cluster_posts = df[df["cluster_label"] == label][["text", "territory_name"]].copy()
+            cluster_posts.columns = ["Relato", "Territorio"]
+            with st.expander(f"{label}  ({n} posts)", expanded=False):
+                st.dataframe(cluster_posts, use_container_width=True)
 
         if save_btn:
             with st.spinner("Salvando labels nos posts..."):
