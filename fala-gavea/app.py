@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import os
 import uuid
 
@@ -7,6 +8,7 @@ import httpx
 import streamlit as st
 
 API_URL = os.environ.get("FALA_GAVEA_API_URL", "http://localhost:8000")
+POSTS_PER_PAGE = 20
 
 st.set_page_config(page_title="Fala Gavea", page_icon="🗣️", layout="wide")
 
@@ -14,6 +16,21 @@ if "user_id" not in st.session_state:
     st.session_state.user_id = str(uuid.uuid4())
 
 USER_ID: str = st.session_state.user_id
+
+_CITIZEN_NAMES: list[str] = [
+    "Ana", "Carlos", "Fernanda", "João", "Mariana",
+    "Pedro", "Luciana", "Rafael", "Beatriz", "Rodrigo",
+    "Camila", "Diego", "Patricia", "André", "Juliana",
+    "Marcos", "Vanessa", "Felipe", "Sandra", "Gustavo",
+    "Renata", "Bruno", "Tatiana", "Eduardo", "Cristina",
+    "Thiago", "Adriana", "Henrique", "Priscila", "Leonardo",
+]
+
+
+def citizen_name(user_id: str) -> str:
+    """Deterministic human-readable name from a UUID."""
+    idx = int(hashlib.md5(user_id.encode()).hexdigest(), 16) % len(_CITIZEN_NAMES)
+    return _CITIZEN_NAMES[idx]
 
 
 # -- helpers ------------------------------------------------------------------
@@ -36,13 +53,20 @@ def api_post(path: str, body: dict) -> dict:
 
 def page_posts() -> None:
     st.header("📋 Postagens")
+
+    if "posts_page" not in st.session_state:
+        st.session_state.posts_page = 0
+
+    page: int = st.session_state.posts_page
+    offset = page * POSTS_PER_PAGE
+
     try:
-        posts = api_get("/citizen_posts/", limit=100)
+        posts = api_get("/citizen_posts/", limit=POSTS_PER_PAGE, offset=offset)
     except Exception as e:
         st.error(f"Erro ao carregar postagens: {e}")
         return
 
-    if not posts:
+    if not posts and page == 0:
         st.info("Nenhuma postagem ainda. Crie a primeira!")
         return
 
@@ -54,7 +78,7 @@ def page_posts() -> None:
                 st.write(post["text"])
                 if post.get("ai_labels"):
                     st.caption("Labels: " + ", ".join(post["ai_labels"]))
-                st.caption(f"👤 {post['author_id'][:8]}...  ·  {post['created_at'][:10]}")
+                st.caption(f"👤 {citizen_name(post['author_id'])}  ·  {post['created_at'][:10]}")
             with col2:
                 likes = post.get("likes_count", 0)
                 if st.button(f"❤️ {likes}", key=f"like_{post['id']}"):
@@ -68,9 +92,26 @@ def page_posts() -> None:
                         try:
                             likes_data = api_get(f"/citizen_posts/{post['id']}/likes")
                             for liker in likes_data.get("likers", []):
-                                st.caption(f"👤 {liker['user_id'][:8]}...")
+                                st.caption(f"👤 {citizen_name(liker['user_id'])}")
                         except Exception as e:
                             st.error(f"Erro ao carregar likes: {e}")
+
+    # pagination controls
+    col_prev, col_info, col_next = st.columns([1, 2, 1])
+    with col_prev:
+        if page > 0:
+            if st.button("← Anterior"):
+                st.session_state.posts_page -= 1
+                st.rerun()
+    with col_info:
+        start = offset + 1
+        end = offset + len(posts)
+        st.caption(f"Postagens {start}–{end} · página {page + 1}")
+    with col_next:
+        if len(posts) == POSTS_PER_PAGE:
+            if st.button("Próxima →"):
+                st.session_state.posts_page += 1
+                st.rerun()
 
 
 def page_new_post() -> None:
@@ -228,7 +269,7 @@ def page_dashboard() -> None:
                     likes_rows.append({
                         "post_id": post["id"][:8],
                         "texto": post["text"][:40],
-                        "curtidores": ", ".join(u[:8] for u in likers),
+                        "curtidores": ", ".join(citizen_name(u) for u in likers),
                     })
                 except Exception:
                     pass
@@ -246,7 +287,7 @@ def page_dashboard() -> None:
                 label_trace_rows.append({
                     "label": label,
                     "aprovado": info.get("approved"),
-                    "usuario": str(info.get("user_id", ""))[:8],
+                    "usuario": citizen_name(str(info.get("user_id", "") or "")),
                 })
     if label_trace_rows:
         st.dataframe(pd.DataFrame(label_trace_rows), use_container_width=True)

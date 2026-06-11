@@ -24,7 +24,7 @@ LIKES_PER_AUTHOR = 50
 
 def load_csv() -> list[dict]:
     rows = []
-    with open(DATA_FILE, encoding="latin-1") as f:
+    with open(DATA_FILE, encoding="utf-8") as f:
         for row in csv.DictReader(f):
             territory_raw = row["territory"].strip().lower()
             if territory_raw not in TERRITORY_MAP:
