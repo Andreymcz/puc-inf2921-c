@@ -191,7 +191,7 @@ def page_dashboard() -> None:
     # ── Histograma de likes ───────────────────────────────────────────────────
     if total_likes > 0:
         st.subheader("Distribuição de likes por post")
-        bins = [0, 1, 2, 4, 7, 11, 20, 50, 100]
+        bins = [0, 1, 2, 4, 7, 11, 20, 50, float("inf")]
         labels_hist = ["0", "1", "2-3", "4-6", "7-10", "11-19", "20-49", "50+"]
         df["likes_bucket"] = pd.cut(
             df["likes_count"], bins=bins, right=False, labels=labels_hist
