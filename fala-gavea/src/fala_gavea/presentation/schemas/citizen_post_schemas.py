@@ -49,6 +49,10 @@ class LabelFeedbackRequest(BaseModel):
     user_id: str
 
 
+class AiLabelsRequest(BaseModel):
+    labels: list[str]
+
+
 class LikeRecordResponse(BaseModel):
     user_id: str
     created_at: datetime

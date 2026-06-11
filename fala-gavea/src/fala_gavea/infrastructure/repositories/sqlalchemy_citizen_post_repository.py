@@ -94,6 +94,15 @@ class SQLAlchemyCitizenPostRepository(CitizenPostRepository):
         self._session.refresh(post)
         return self._to_entity(post)
 
+    def set_ai_labels(self, post_id: str, labels: list[str]) -> CitizenPost:
+        post = self._session.get(CitizenPostModel, post_id)
+        if post is None:
+            raise CitizenPostNotFoundError(post_id)
+        post.ai_labels = labels
+        self._session.commit()
+        self._session.refresh(post)
+        return self._to_entity(post)
+
     @staticmethod
     def _to_entity(model: CitizenPostModel) -> CitizenPost:
         return CitizenPost(

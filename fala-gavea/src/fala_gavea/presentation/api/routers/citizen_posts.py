@@ -8,6 +8,7 @@ from fala_gavea.application.use_cases.delete_citizen_post import DeleteCitizenPo
 from fala_gavea.application.use_cases.get_citizen_post import GetCitizenPost
 from fala_gavea.application.use_cases.get_post_likes import GetPostLikes, GetPostLikesInput
 from fala_gavea.application.use_cases.list_citizen_posts import ListCitizenPosts
+from fala_gavea.application.use_cases.set_ai_labels import SetAiLabels, SetAiLabelsInput
 from fala_gavea.application.use_cases.toggle_like import ToggleLike, ToggleLikeInput
 from fala_gavea.domain.exceptions import CitizenPostNotFoundError, InvalidInputError
 from fala_gavea.infrastructure.repositories.sqlalchemy_citizen_post_repository import (
@@ -15,6 +16,7 @@ from fala_gavea.infrastructure.repositories.sqlalchemy_citizen_post_repository i
 )
 from fala_gavea.presentation.api.dependencies import get_citizen_post_repo
 from fala_gavea.presentation.schemas.citizen_post_schemas import (
+    AiLabelsRequest,
     CitizenPostCreate,
     CitizenPostResponse,
     LabelFeedbackRequest,
@@ -104,6 +106,19 @@ def get_post_likes(
             post_id=id,
             likers=[LikeRecordResponse(user_id=r.user_id, created_at=r.created_at) for r in records],
         )
+    except CitizenPostNotFoundError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+
+
+@router.post("/{id}/ai_labels", response_model=CitizenPostResponse)
+def set_ai_labels(
+    id: str,
+    body: AiLabelsRequest,
+    repo: SQLAlchemyCitizenPostRepository = Depends(get_citizen_post_repo),
+) -> CitizenPostResponse:
+    try:
+        entity = SetAiLabels(repo).execute(SetAiLabelsInput(post_id=id, labels=body.labels))
+        return CitizenPostResponse(**entity.__dict__)
     except CitizenPostNotFoundError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
 

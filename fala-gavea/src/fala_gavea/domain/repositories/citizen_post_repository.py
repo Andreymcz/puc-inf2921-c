@@ -32,3 +32,7 @@ class CitizenPostRepository(ABC):
 
     @abstractmethod
     def set_label_feedback(self, post_id: str, label: str, approved: bool, user_id: str) -> CitizenPost: ...
+
+    @abstractmethod
+    def set_ai_labels(self, post_id: str, labels: list[str]) -> CitizenPost:
+        """Replace the ai_labels list on a post."""

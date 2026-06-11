@@ -88,6 +88,17 @@ class FakeRepository(CitizenPostRepository):
         self._store[post_id] = updated
         return updated
 
+    def set_ai_labels(self, post_id: str, labels: list[str]) -> CitizenPost:
+        post = self._store[post_id]
+        updated = CitizenPost(
+            id=post.id, text=post.text, territory_level=post.territory_level,
+            territory_name=post.territory_name, author_id=post.author_id,
+            created_at=post.created_at, ai_labels=labels,
+            label_feedback=post.label_feedback, likes_count=post.likes_count,
+        )
+        self._store[post_id] = updated
+        return updated
+
 
 VALID_INPUT = CreateCitizenPostInput(
     text="Precisa de mais iluminação na rua principal",
