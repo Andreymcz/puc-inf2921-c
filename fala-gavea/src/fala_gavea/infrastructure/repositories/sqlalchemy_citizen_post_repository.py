@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
+from typing import cast
 
 from sqlalchemy.orm import Session
 
-from ...domain.entities.citizen_post import CitizenPost, TerritoryLevel
+from ...domain.entities.citizen_post import CitizenPost, LikeRecord, TerritoryLevel
 from ...domain.repositories.citizen_post_repository import CitizenPostRepository
 from ..database.models import CitizenPostModel, LikeModel
 
@@ -69,6 +70,17 @@ class SQLAlchemyCitizenPostRepository(CitizenPostRepository):
 
     def has_liked(self, post_id: str, user_id: str) -> bool:
         return self._session.get(LikeModel, (user_id, post_id)) is not None
+
+    def get_likes(self, post_id: str) -> list[LikeRecord]:
+        likes = (
+            self._session.query(LikeModel)
+            .filter(LikeModel.post_id == post_id)
+            .all()
+        )
+        return [
+            LikeRecord(user_id=cast(str, like.user_id), created_at=cast(datetime, like.created_at))
+            for like in likes
+        ]
 
     def set_label_feedback(self, post_id: str, label: str, approved: bool) -> CitizenPost:
         post = self._session.get(CitizenPostModel, post_id)

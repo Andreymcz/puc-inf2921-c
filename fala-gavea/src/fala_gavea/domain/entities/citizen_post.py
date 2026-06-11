@@ -13,6 +13,12 @@ class TerritoryLevel(str, Enum):
 
 
 @dataclass
+class LikeRecord:
+    user_id: str
+    created_at: datetime
+
+
+@dataclass
 class CitizenPost:
     id: str
     text: str
@@ -22,7 +28,7 @@ class CitizenPost:
     created_at: datetime
     # AI-enrichment extension points (populated by pipeline, not by human input)
     ai_labels: list[str] = field(default_factory=list)
-    label_feedback: dict[str, bool] = field(default_factory=dict)
+    label_feedback: dict[str, dict] = field(default_factory=dict)
     likes_count: int = 0
 
     @staticmethod

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-from ..entities.citizen_post import CitizenPost
+from ..entities.citizen_post import CitizenPost, LikeRecord
 
 
 class CitizenPostRepository(ABC):
@@ -17,3 +17,6 @@ class CitizenPostRepository(ABC):
 
     @abstractmethod
     def delete(self, id: str) -> bool: ...
+
+    @abstractmethod
+    def get_likes(self, post_id: str) -> list[LikeRecord]: ...
