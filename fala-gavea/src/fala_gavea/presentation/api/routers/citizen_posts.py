@@ -6,6 +6,7 @@ from fala_gavea.application.use_cases.add_label_feedback import AddLabelFeedback
 from fala_gavea.application.use_cases.create_citizen_post import CreateCitizenPost, CreateCitizenPostInput
 from fala_gavea.application.use_cases.delete_citizen_post import DeleteCitizenPost
 from fala_gavea.application.use_cases.get_citizen_post import GetCitizenPost
+from fala_gavea.application.use_cases.get_post_likes import GetPostLikes, GetPostLikesInput
 from fala_gavea.application.use_cases.list_citizen_posts import ListCitizenPosts
 from fala_gavea.application.use_cases.toggle_like import ToggleLike, ToggleLikeInput
 from fala_gavea.domain.exceptions import CitizenPostNotFoundError, InvalidInputError
@@ -17,8 +18,10 @@ from fala_gavea.presentation.schemas.citizen_post_schemas import (
     CitizenPostCreate,
     CitizenPostResponse,
     LabelFeedbackRequest,
+    LikeRecordResponse,
     LikeRequest,
     LikeResponse,
+    PostLikesResponse,
 )
 
 router = APIRouter()
@@ -87,6 +90,21 @@ def toggle_like(
         liked = repo.has_liked(id, body.user_id)
         return LikeResponse(post_id=id, liked=liked, likes_count=entity.likes_count)
     except (CitizenPostNotFoundError, ValueError) as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+
+
+@router.get("/{id}/likes", response_model=PostLikesResponse)
+def get_post_likes(
+    id: str,
+    repo: SQLAlchemyCitizenPostRepository = Depends(get_citizen_post_repo),
+) -> PostLikesResponse:
+    try:
+        records = GetPostLikes(repo).execute(GetPostLikesInput(post_id=id))
+        return PostLikesResponse(
+            post_id=id,
+            likers=[LikeRecordResponse(user_id=r.user_id, created_at=r.created_at) for r in records],
+        )
+    except CitizenPostNotFoundError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
 
 

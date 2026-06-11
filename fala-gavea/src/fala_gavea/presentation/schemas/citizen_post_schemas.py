@@ -47,3 +47,13 @@ class LabelFeedbackRequest(BaseModel):
     label: str
     approved: bool
     user_id: str
+
+
+class LikeRecordResponse(BaseModel):
+    user_id: str
+    created_at: datetime
+
+
+class PostLikesResponse(BaseModel):
+    post_id: str
+    likers: list[LikeRecordResponse]

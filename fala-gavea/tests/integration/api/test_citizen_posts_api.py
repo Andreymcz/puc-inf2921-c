@@ -91,3 +91,29 @@ def test_add_label_feedback(client: TestClient) -> None:
     data = response.json()
     assert data["label_feedback"]["iluminação"]["approved"] is True
     assert data["label_feedback"]["iluminação"]["user_id"] == "u1"
+
+
+def test_get_post_likes_endpoint(client: TestClient) -> None:
+    created = client.post("/citizen_posts/", json=VALID_PAYLOAD).json()
+    post_id = created["id"]
+
+    # No likes yet — should return empty likers list
+    response = client.get(f"/citizen_posts/{post_id}/likes")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["post_id"] == post_id
+    assert data["likers"] == []
+
+    # Add a like
+    client.post(f"/citizen_posts/{post_id}/likes", json={"user_id": "u1"})
+    response = client.get(f"/citizen_posts/{post_id}/likes")
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data["likers"]) == 1
+    assert data["likers"][0]["user_id"] == "u1"
+    assert "created_at" in data["likers"][0]
+
+
+def test_get_post_likes_not_found_returns_404(client: TestClient) -> None:
+    response = client.get("/citizen_posts/nonexistent-id/likes")
+    assert response.status_code == 404
