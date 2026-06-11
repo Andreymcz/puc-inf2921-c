@@ -4,6 +4,14 @@ Execution log of all skill invocations.
 
 ---
 
+STARTED | 2026-06-10 23:40 UTC | implement | plan-000025 SEJA skill clean Python project template generator
+
+---
+
+DONE | 2026-06-11 02:25 UTC | STARTED | 2026-06-11 02:19 UTC | plan | create a seja-skill that generates a clean Python project template (uv + pytest + clean architecture + REST API CRUD + SQLite + SQLAlchemy + Pydantic) | PLAN | 000025
+
+---
+
 DONE | 2026-06-11 01:39 UTC | STARTED | 2026-06-11 01:35 UTC | research | Plataforma Fala Gavea - roadmap baseado nos casos de uso e no estado atual do repositório
 
 ---

@@ -44,3 +44,5 @@
 | 2026-05-22 00:00 | Advisory | 000003 | Use Cases: Virtual Space for Citizens and Public Agents | DONE | [advisory-000003-use-cases-virtual-space-citizens-public-agents.md](advisory-logs/advisory-000003-use-cases-virtual-space-citizens-public-agents.md) |
 | 2026-04-24 01:18 UTC | QA Log |  | advisory-000002 | 2026-04-24 01:18 UTC | Atlas Digital Georreferenciado Amazoni… |  | [advisory-000002-qa-atlas-georreferenciado-amazonia-ia.md](advisory-logs/advisory-000002-qa-atlas-georreferenciado-amazonia-ia.md) |
 | 2026-04-24 01:12 UTC | Advisory | 000002 | Atlas Digital Georreferenciado Amazonia IA | DONE | [advisory-000002-atlas-georreferenciado-amazonia-ia.md](advisory-logs/advisory-000002-atlas-georreferenciado-amazonia-ia.md) |
+| 2026-06-11 02:19 UTC | RESERVED | 000025 | plan: SEJA skill: clean Python project template generator | RESERVED | |
+| plan-000025 | 2026-06-11 | PLAN | SEJA skill: clean Python project template generator | _output/plans/plan-000025.md |
