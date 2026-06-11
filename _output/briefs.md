@@ -4,6 +4,10 @@ Execution log of all skill invocations.
 
 ---
 
+DONE | 2026-06-11 19:41 UTC | STARTED | 2026-06-11 19:35 UTC | plan | get citizen posts/likes only when we open the button ver quem curtiu | PLAN | 000040
+
+---
+
 DONE | 2026-06-11 19:26 UTC | STARTED | 2026-06-11 19:15 UTC | implement | fala-gavea: UMAP cluster visualization of posts + AI labels (plan 000039) | PLAN | 000039
 
 ---
