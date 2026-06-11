@@ -18,7 +18,7 @@ A pesquisa responde três perguntas encadeadas:
 ## Files Consulted
 
 - `knowledge/Casos_de_uso_10-06-2026_1.md` — Documento institucional (Núcleo de Prática Jurídica / PUC-Rio): UC-01 Consulta para tomada de decisão + UC-02 Coleta, Síntese e Gestão da Base de Conhecimento
-- `knowledge/Casos_de_uso_10-06-2026_2.md` — Visão de produto GaveaLab: UC-01 Morador registra demanda + UC-02 Agente público analisa demandas
+- `knowledge/Casos_de_uso_10-06-2026_2.md` — Documento do grupo (GaveaLab): UC-01 Morador registra demanda + UC-02 Agente público analisa demandas
 - `gavealab-poc/app.py`, `gavealab-poc/gavealab_poc/workspace.py`, `gavealab-poc/gavealab_poc/llm.py`, `gavealab-poc/gavealab_poc/pages/`
 - `product-design/project/product-design-as-intended.md`
 
@@ -184,9 +184,9 @@ O maior risco de produto é tentar construir a camada cidadã (Subsistema A) em 
 
 Os dois documentos mencionam explicitamente LGPD e PL 2338. Os professores são do Departamento de Direito. A demonstração do curso deve mostrar consciência dos requisitos — pelo menos: (1) log de versão do modelo no pipeline, (2) checklist de anonimização documentado, (3) remoção de PII antes do armazenamento.
 
-### O "Fala Gávea" completo é o Twitter cívico que o Andrey descreveu
+### O "Fala Gávea" completo é o Twitter cívico descrito nos documentos do grupo
 
-A visão do Andrey é tecnicamente coerente com os documentos. O PoC atual é o "motor de back-office" (análise e curadoria). O Subsistema A é o "frontend cívico" (participação e engajamento). Juntos, formam uma plataforma onde dados fluem do cidadão → IA → humano → decisor → impacto mensurável. O PoC demonstra que o motor funciona. A Fase 1 completa o motor. As Fases 2 e 3 conectam os dois lados.
+O Documento 2 elaborado pelo grupo articula exatamente essa visão, que o Andrey também sintetizou no chat da equipe. O PoC atual é o "motor de back-office" (análise e curadoria). O Subsistema A é o "frontend cívico" (participação e engajamento). Juntos, formam uma plataforma onde dados fluem do cidadão → IA → humano → decisor → impacto mensurável. O PoC demonstra que o motor funciona. A Fase 1 completa o motor. As Fases 2 e 3 conectam os dois lados.
 
 ---
 
