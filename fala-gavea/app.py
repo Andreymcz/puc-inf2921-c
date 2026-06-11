@@ -124,7 +124,7 @@ def page_label_feedback() -> None:
                 with col1:
                     st.write(f"`{label}`")
                 with col2:
-                    approved = existing is True
+                    approved = isinstance(existing, dict) and existing.get("approved") is True
                     if st.button("👍", key=f"up_{post['id']}_{label}", type="primary" if approved else "secondary"):
                         try:
                             api_post(
@@ -135,7 +135,7 @@ def page_label_feedback() -> None:
                         except Exception as e:
                             st.error(str(e))
                 with col3:
-                    rejected = existing is False
+                    rejected = isinstance(existing, dict) and existing.get("approved") is False
                     if st.button("👎", key=f"down_{post['id']}_{label}", type="primary" if rejected else "secondary"):
                         try:
                             api_post(
@@ -183,8 +183,14 @@ def page_dashboard() -> None:
         st.subheader("Feedback de labels")
         feedback_rows = []
         for _, row in posts_with_labels.iterrows():
-            for label, approved in (row.get("label_feedback") or {}).items():
-                feedback_rows.append({"label": label, "aprovado": approved})
+            for label, fb in (row.get("label_feedback") or {}).items():
+                if isinstance(fb, dict):
+                    approved_val = fb.get("approved")
+                    usuario = fb.get("user_id", "")
+                else:
+                    approved_val = fb
+                    usuario = ""
+                feedback_rows.append({"label": label, "aprovado": approved_val, "usuario": usuario})
         if feedback_rows:
             fdf = pd.DataFrame(feedback_rows)
             summary = fdf.groupby(["label", "aprovado"]).size().reset_index(name="count")

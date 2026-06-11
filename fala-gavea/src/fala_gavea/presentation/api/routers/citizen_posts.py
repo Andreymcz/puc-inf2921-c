@@ -89,7 +89,7 @@ def toggle_like(
         entity = ToggleLike(repo).execute(ToggleLikeInput(post_id=id, user_id=body.user_id))
         liked = repo.has_liked(id, body.user_id)
         return LikeResponse(post_id=id, liked=liked, likes_count=entity.likes_count)
-    except (CitizenPostNotFoundError, ValueError) as e:
+    except CitizenPostNotFoundError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
 
 
@@ -119,5 +119,5 @@ def add_label_feedback(
             AddLabelFeedbackInput(post_id=id, label=body.label, approved=body.approved, user_id=body.user_id)
         )
         return CitizenPostResponse(**entity.__dict__)
-    except (CitizenPostNotFoundError, ValueError) as e:
+    except CitizenPostNotFoundError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))

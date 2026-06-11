@@ -6,6 +6,7 @@ from typing import cast
 from sqlalchemy.orm import Session
 
 from ...domain.entities.citizen_post import CitizenPost, LikeRecord, TerritoryLevel
+from ...domain.exceptions import CitizenPostNotFoundError
 from ...domain.repositories.citizen_post_repository import CitizenPostRepository
 from ..database.models import CitizenPostModel, LikeModel
 
@@ -85,7 +86,7 @@ class SQLAlchemyCitizenPostRepository(CitizenPostRepository):
     def set_label_feedback(self, post_id: str, label: str, approved: bool, user_id: str) -> CitizenPost:
         post = self._session.get(CitizenPostModel, post_id)
         if post is None:
-            raise ValueError(f"Post {post_id} not found")
+            raise CitizenPostNotFoundError(post_id)
         feedback = dict(post.label_feedback or {})
         feedback[label] = {"approved": approved, "user_id": user_id}
         post.label_feedback = feedback
