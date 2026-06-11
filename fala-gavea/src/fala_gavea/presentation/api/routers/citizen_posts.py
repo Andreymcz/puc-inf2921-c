@@ -2,16 +2,24 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
+from fala_gavea.application.use_cases.add_label_feedback import AddLabelFeedback, AddLabelFeedbackInput
 from fala_gavea.application.use_cases.create_citizen_post import CreateCitizenPost, CreateCitizenPostInput
 from fala_gavea.application.use_cases.delete_citizen_post import DeleteCitizenPost
 from fala_gavea.application.use_cases.get_citizen_post import GetCitizenPost
 from fala_gavea.application.use_cases.list_citizen_posts import ListCitizenPosts
+from fala_gavea.application.use_cases.toggle_like import ToggleLike, ToggleLikeInput
 from fala_gavea.domain.exceptions import CitizenPostNotFoundError, InvalidInputError
 from fala_gavea.infrastructure.repositories.sqlalchemy_citizen_post_repository import (
     SQLAlchemyCitizenPostRepository,
 )
 from fala_gavea.presentation.api.dependencies import get_citizen_post_repo
-from fala_gavea.presentation.schemas.citizen_post_schemas import CitizenPostCreate, CitizenPostResponse
+from fala_gavea.presentation.schemas.citizen_post_schemas import (
+    CitizenPostCreate,
+    CitizenPostResponse,
+    LabelFeedbackRequest,
+    LikeRequest,
+    LikeResponse,
+)
 
 router = APIRouter()
 
@@ -65,4 +73,33 @@ def delete_citizen_post(
     try:
         DeleteCitizenPost(repo).execute(id)
     except CitizenPostNotFoundError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+
+
+@router.post("/{id}/likes", response_model=LikeResponse)
+def toggle_like(
+    id: str,
+    body: LikeRequest,
+    repo: SQLAlchemyCitizenPostRepository = Depends(get_citizen_post_repo),
+) -> LikeResponse:
+    try:
+        entity = ToggleLike(repo).execute(ToggleLikeInput(post_id=id, user_id=body.user_id))
+        liked = repo.has_liked(id, body.user_id)
+        return LikeResponse(post_id=id, liked=liked, likes_count=entity.likes_count)
+    except (CitizenPostNotFoundError, ValueError) as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+
+
+@router.post("/{id}/label_feedback", response_model=CitizenPostResponse)
+def add_label_feedback(
+    id: str,
+    body: LabelFeedbackRequest,
+    repo: SQLAlchemyCitizenPostRepository = Depends(get_citizen_post_repo),
+) -> CitizenPostResponse:
+    try:
+        entity = AddLabelFeedback(repo).execute(
+            AddLabelFeedbackInput(post_id=id, label=body.label, approved=body.approved)
+        )
+        return CitizenPostResponse(**entity.__dict__)
+    except (CitizenPostNotFoundError, ValueError) as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))

@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+from datetime import UTC, datetime
+
 from sqlalchemy.orm import Session
 
 from ...domain.entities.citizen_post import CitizenPost, TerritoryLevel
 from ...domain.repositories.citizen_post_repository import CitizenPostRepository
-from ..database.models import CitizenPostModel
+from ..database.models import CitizenPostModel, LikeModel
 
 
 class SQLAlchemyCitizenPostRepository(CitizenPostRepository):
@@ -38,6 +40,46 @@ class SQLAlchemyCitizenPostRepository(CitizenPostRepository):
         self._session.delete(model)
         self._session.commit()
         return True
+
+    def add_like(self, post_id: str, user_id: str) -> CitizenPost:
+        post = self._session.get(CitizenPostModel, post_id)
+        if post is None:
+            raise ValueError(f"Post {post_id} not found")
+        existing = self._session.get(LikeModel, (user_id, post_id))
+        if existing:
+            return self._to_entity(post)
+        like = LikeModel(user_id=user_id, post_id=post_id, created_at=datetime.now(UTC))
+        post.likes_count = (post.likes_count or 0) + 1
+        self._session.add(like)
+        self._session.commit()
+        self._session.refresh(post)
+        return self._to_entity(post)
+
+    def remove_like(self, post_id: str, user_id: str) -> CitizenPost:
+        post = self._session.get(CitizenPostModel, post_id)
+        if post is None:
+            raise ValueError(f"Post {post_id} not found")
+        like = self._session.get(LikeModel, (user_id, post_id))
+        if like:
+            self._session.delete(like)
+            post.likes_count = max(0, (post.likes_count or 0) - 1)
+            self._session.commit()
+            self._session.refresh(post)
+        return self._to_entity(post)
+
+    def has_liked(self, post_id: str, user_id: str) -> bool:
+        return self._session.get(LikeModel, (user_id, post_id)) is not None
+
+    def set_label_feedback(self, post_id: str, label: str, approved: bool) -> CitizenPost:
+        post = self._session.get(CitizenPostModel, post_id)
+        if post is None:
+            raise ValueError(f"Post {post_id} not found")
+        feedback = dict(post.label_feedback or {})
+        feedback[label] = approved
+        post.label_feedback = feedback
+        self._session.commit()
+        self._session.refresh(post)
+        return self._to_entity(post)
 
     @staticmethod
     def _to_entity(model: CitizenPostModel) -> CitizenPost:

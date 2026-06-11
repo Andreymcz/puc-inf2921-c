@@ -1,5 +1,6 @@
 import pytest
 
+from fala_gavea.application.use_cases.add_label_feedback import AddLabelFeedback, AddLabelFeedbackInput
 from fala_gavea.application.use_cases.create_citizen_post import (
     CreateCitizenPost,
     CreateCitizenPostInput,
@@ -7,6 +8,7 @@ from fala_gavea.application.use_cases.create_citizen_post import (
 from fala_gavea.application.use_cases.delete_citizen_post import DeleteCitizenPost
 from fala_gavea.application.use_cases.get_citizen_post import GetCitizenPost
 from fala_gavea.application.use_cases.list_citizen_posts import ListCitizenPosts
+from fala_gavea.application.use_cases.toggle_like import ToggleLike, ToggleLikeInput
 from fala_gavea.domain.entities.citizen_post import CitizenPost
 from fala_gavea.domain.exceptions import (
     CitizenPostNotFoundError,
@@ -20,6 +22,7 @@ class FakeRepository(CitizenPostRepository):
 
     def __init__(self) -> None:
         self._store: dict[str, CitizenPost] = {}
+        self._likes: set[tuple[str, str]] = set()
 
     def save(self, entity: CitizenPost) -> CitizenPost:
         self._store[entity.id] = entity
@@ -37,6 +40,46 @@ class FakeRepository(CitizenPostRepository):
             del self._store[id]
             return True
         return False
+
+    def has_liked(self, post_id: str, user_id: str) -> bool:
+        return (post_id, user_id) in self._likes
+
+    def add_like(self, post_id: str, user_id: str) -> CitizenPost:
+        post = self._store[post_id]
+        self._likes.add((post_id, user_id))
+        updated = CitizenPost(
+            id=post.id, text=post.text, territory_level=post.territory_level,
+            territory_name=post.territory_name, author_id=post.author_id,
+            created_at=post.created_at, ai_labels=post.ai_labels,
+            label_feedback=post.label_feedback, likes_count=post.likes_count + 1,
+        )
+        self._store[post_id] = updated
+        return updated
+
+    def remove_like(self, post_id: str, user_id: str) -> CitizenPost:
+        post = self._store[post_id]
+        self._likes.discard((post_id, user_id))
+        updated = CitizenPost(
+            id=post.id, text=post.text, territory_level=post.territory_level,
+            territory_name=post.territory_name, author_id=post.author_id,
+            created_at=post.created_at, ai_labels=post.ai_labels,
+            label_feedback=post.label_feedback, likes_count=max(0, post.likes_count - 1),
+        )
+        self._store[post_id] = updated
+        return updated
+
+    def set_label_feedback(self, post_id: str, label: str, approved: bool) -> CitizenPost:
+        post = self._store[post_id]
+        feedback = dict(post.label_feedback)
+        feedback[label] = approved
+        updated = CitizenPost(
+            id=post.id, text=post.text, territory_level=post.territory_level,
+            territory_name=post.territory_name, author_id=post.author_id,
+            created_at=post.created_at, ai_labels=post.ai_labels,
+            label_feedback=feedback, likes_count=post.likes_count,
+        )
+        self._store[post_id] = updated
+        return updated
 
 
 VALID_INPUT = CreateCitizenPostInput(
@@ -137,3 +180,35 @@ def test_delete_citizen_post_not_found_raises() -> None:
     repo = FakeRepository()
     with pytest.raises(CitizenPostNotFoundError):
         DeleteCitizenPost(repo).execute("ghost-id")
+
+
+# ── ToggleLike ─────────────────────────────────────────────────────────────
+
+
+def test_toggle_like_adds_like_when_not_liked() -> None:
+    repo = FakeRepository()
+    post = CreateCitizenPost(repo).execute(VALID_INPUT)
+    result = ToggleLike(repo).execute(ToggleLikeInput(post_id=post.id, user_id="u1"))
+    assert result.likes_count == 1
+    assert repo.has_liked(post.id, "u1")
+
+
+def test_toggle_like_removes_like_when_already_liked() -> None:
+    repo = FakeRepository()
+    post = CreateCitizenPost(repo).execute(VALID_INPUT)
+    ToggleLike(repo).execute(ToggleLikeInput(post_id=post.id, user_id="u1"))
+    result = ToggleLike(repo).execute(ToggleLikeInput(post_id=post.id, user_id="u1"))
+    assert result.likes_count == 0
+    assert not repo.has_liked(post.id, "u1")
+
+
+# ── AddLabelFeedback ───────────────────────────────────────────────────────
+
+
+def test_add_label_feedback_calls_set_label_feedback() -> None:
+    repo = FakeRepository()
+    post = CreateCitizenPost(repo).execute(VALID_INPUT)
+    result = AddLabelFeedback(repo).execute(
+        AddLabelFeedbackInput(post_id=post.id, label="iluminação", approved=True)
+    )
+    assert result.label_feedback["iluminação"] is True

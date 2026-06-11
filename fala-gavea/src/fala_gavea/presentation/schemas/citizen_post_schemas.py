@@ -31,3 +31,19 @@ class CitizenPostResponse(BaseModel):
     likes_count: int
 
     model_config = {"from_attributes": True}
+
+
+class LikeRequest(BaseModel):
+    user_id: str
+
+
+class LikeResponse(BaseModel):
+    post_id: str
+    liked: bool
+    likes_count: int
+
+
+class LabelFeedbackRequest(BaseModel):
+    label: str
+    approved: bool
+    user_id: str

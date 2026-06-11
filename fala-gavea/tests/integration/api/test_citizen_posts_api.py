@@ -60,3 +60,33 @@ def test_delete_citizen_post_returns_204(client: TestClient) -> None:
 def test_delete_citizen_post_not_found_returns_404(client: TestClient) -> None:
     response = client.delete("/citizen_posts/ghost-id")
     assert response.status_code == 404
+
+
+def test_toggle_like_adds_like(client: TestClient) -> None:
+    created = client.post("/citizen_posts/", json=VALID_PAYLOAD).json()
+    response = client.post(f"/citizen_posts/{created['id']}/likes", json={"user_id": "u1"})
+    assert response.status_code == 200
+    data = response.json()
+    assert data["liked"] is True
+    assert data["likes_count"] == 1
+
+
+def test_toggle_like_removes_like(client: TestClient) -> None:
+    created = client.post("/citizen_posts/", json=VALID_PAYLOAD).json()
+    client.post(f"/citizen_posts/{created['id']}/likes", json={"user_id": "u1"})
+    response = client.post(f"/citizen_posts/{created['id']}/likes", json={"user_id": "u1"})
+    assert response.status_code == 200
+    data = response.json()
+    assert data["liked"] is False
+    assert data["likes_count"] == 0
+
+
+def test_add_label_feedback(client: TestClient) -> None:
+    created = client.post("/citizen_posts/", json=VALID_PAYLOAD).json()
+    response = client.post(
+        f"/citizen_posts/{created['id']}/label_feedback",
+        json={"label": "iluminação", "approved": True, "user_id": "u1"},
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["label_feedback"]["iluminação"] is True
