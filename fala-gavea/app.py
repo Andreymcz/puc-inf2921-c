@@ -63,6 +63,14 @@ def page_posts() -> None:
                         st.rerun()
                     except Exception as e:
                         st.error(str(e))
+                if likes > 0:
+                    with st.expander("Ver quem curtiu"):
+                        try:
+                            likes_data = api_get(f"/citizen_posts/{post['id']}/likes")
+                            for liker in likes_data.get("likers", []):
+                                st.caption(f"👤 {liker['user_id'][:8]}...")
+                        except Exception as e:
+                            st.error(f"Erro ao carregar likes: {e}")
 
 
 def page_new_post() -> None:
@@ -181,6 +189,43 @@ def page_dashboard() -> None:
             fdf = pd.DataFrame(feedback_rows)
             summary = fdf.groupby(["label", "aprovado"]).size().reset_index(name="count")
             st.dataframe(summary, use_container_width=True)
+
+    st.subheader("Rastreabilidade de likes")
+    if st.button("Carregar rastreabilidade"):
+        likes_rows = []
+        posts_with_likes = [p for p in posts if p.get("likes_count", 0) > 0]
+        with st.spinner(f"Buscando likes de {len(posts_with_likes)} postagens..."):
+            for post in posts_with_likes:
+                try:
+                    likes_data = api_get(f"/citizen_posts/{post['id']}/likes")
+                    likers = [lr["user_id"] for lr in likes_data.get("likers", [])]
+                    likes_rows.append({
+                        "post_id": post["id"][:8],
+                        "texto": post["text"][:40],
+                        "curtidores": ", ".join(u[:8] for u in likers),
+                    })
+                except Exception:
+                    pass
+        if likes_rows:
+            st.dataframe(pd.DataFrame(likes_rows), use_container_width=True)
+        else:
+            st.info("Nenhum like registrado.")
+
+    st.subheader("Rastreabilidade de labels")
+    label_trace_rows = []
+    for post in posts:
+        feedback = post.get("label_feedback") or {}
+        for label, info in feedback.items():
+            if isinstance(info, dict):
+                label_trace_rows.append({
+                    "label": label,
+                    "aprovado": info.get("approved"),
+                    "usuario": str(info.get("user_id", ""))[:8],
+                })
+    if label_trace_rows:
+        st.dataframe(pd.DataFrame(label_trace_rows), use_container_width=True)
+    else:
+        st.info("Nenhum feedback de label registrado.")
 
 
 # -- navigation ---------------------------------------------------------------
