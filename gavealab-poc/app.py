@@ -10,7 +10,6 @@ logging.basicConfig(
 )
 
 st.set_page_config(page_title="GaveaLab -- Analise de Relatos", layout="wide")
-st.title("GaveaLab -- Analise de Relatos de Cidadaos")
 
 
 @st.cache_resource
@@ -18,26 +17,54 @@ def get_workspace() -> GaveaLabWorkspace:
     return GaveaLabWorkspace("gavealab.db")
 
 
-workspace = get_workspace()
-
 if "session" not in st.session_state:
     st.session_state.session = None
 
-page = st.sidebar.radio(
-    "Navegacao",
-    ["Upload CSV", "Temas automaticos", "Categorizar por temas",
-     "Opinioes divergentes", "Visualizar clusters"],
-)
 
-if page == "Upload CSV":
+def _page_all_sessions() -> None:
+    from gavealab_poc.pages.all_sessions import render
+    render(get_workspace())
+
+
+def _page_upload() -> None:
     from gavealab_poc.pages.upload import render
-elif page == "Temas automaticos":
-    from gavealab_poc.pages.auto_topics import render
-elif page == "Categorizar por temas":
-    from gavealab_poc.pages.manual_topics import render
-elif page == "Visualizar clusters":
-    from gavealab_poc.pages.umap_viz import render
-else:
-    from gavealab_poc.pages.cruxes import render
+    render(get_workspace())
 
-render(workspace)
+
+def _page_auto_topics() -> None:
+    from gavealab_poc.pages.auto_topics import render
+    render(get_workspace())
+
+
+def _page_manual_topics() -> None:
+    from gavealab_poc.pages.manual_topics import render
+    render(get_workspace())
+
+
+def _page_cruxes() -> None:
+    from gavealab_poc.pages.cruxes import render
+    render(get_workspace())
+
+
+def _page_umap_viz() -> None:
+    from gavealab_poc.pages.umap_viz import render
+    render(get_workspace())
+
+
+pages = [
+    st.Page(_page_all_sessions, title="Todos os Estudos", icon=":material/home:", default=True),
+    st.Page(_page_upload, title="Upload CSV", icon=":material/upload_file:"),
+    st.Page(_page_auto_topics, title="Temas automaticos", icon=":material/auto_awesome:"),
+    st.Page(_page_manual_topics, title="Categorizar por temas", icon=":material/category:"),
+    st.Page(_page_cruxes, title="Opinioes divergentes", icon=":material/compare_arrows:"),
+    st.Page(_page_umap_viz, title="Visualizar clusters", icon=":material/scatter_plot:"),
+]
+
+pg = st.navigation(pages)
+
+if st.session_state.get("session"):
+    st.sidebar.success(f"Sessao ativa: **{st.session_state.session.name}**")
+else:
+    st.sidebar.info("Nenhuma sessao ativa.")
+
+pg.run()

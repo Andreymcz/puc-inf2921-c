@@ -10,11 +10,27 @@ designer_description: "Implementation state mirror for kb-qa — maintained by p
 
 ## Conceptual Design
 
+### 0b. Fala Gávea — Streamlit frontend (plan-000030)
+
+`fala-gavea/app.py` is a single-file Streamlit app that consumes the Fala Gávea FastAPI backend (`fala-gavea/src/`). The API base URL defaults to `http://localhost:8000`, overridable via `FALA_GAVEA_API_URL`. A `user_id` UUID is generated once per session and stored in `st.session_state`.
+
+**Four pages** (dispatched via sidebar radio):
+- **📋 Postagens**: lists all posts with like counter; clicking ❤️ toggles a like (second click removes it via the backend toggle logic).
+- **✍️ Nova Postagem**: form to create a new post (text + territory level/name); calls `POST /citizen_posts/`.
+- **🏷️ Validar Labels**: shows posts that have `ai_labels`; per-label 👍/👎 buttons call `POST /citizen_posts/{id}/label_feedback`.
+- **📊 Dashboard**: summary metrics (total posts, likes, posts with AI labels), top-10 posts by likes table, bar chart of posts by territory, and label feedback summary table.
+
+**API helpers**: `api_get(path, **params)` and `api_post(path, body)` call the backend synchronously via `httpx` with a 10-second timeout and raise on 4xx/5xx.
+
 ### 0. GaveaLab PoC (sibling project)
 
 `gavealab-poc/` is a Streamlit + Ollama citizen-claims analysis PoC, scaffolded in plan-000008. It runs independently from kb-qa (separate `pyproject.toml`, uv venv). Key components: `GaveaLabWorkspace` (SQLite persistence), `AnalysisSession` (domain object), `gavealab_poc/llm.py` (Ollama OpenAI-compatible wrapper), and page modules for upload (plan-000009), auto-topics, manual-topics, and cruxes (stubs).
 
-**Upload page (plan-000009)**: `gavealab_poc/pages/upload.py` implements the full CSV upload flow: file picker, session name input, 10-row preview via pandas, validation (column presence enforced by `workspace._parse_csv`), session creation via `workspace.create_session()`, and a "Sessoes anteriores" panel listing and reloading persisted sessions from SQLite.
+**Navigation (plan-000021)**: `app.py` uses `st.navigation()` + `st.Page()` (Streamlit 1.28+ API). Six pages are defined as zero-arg wrapper functions that call `render(get_workspace())`. "Todos os Estudos" is the default landing page. A sidebar indicator shows the active session name (or "Nenhuma sessao ativa."). The old `st.sidebar.radio` dispatch block is removed.
+
+**All-studies dashboard (plan-000021)**: `gavealab_poc/pages/all_sessions.py` implements the "Todos os Estudos" page. Calls `workspace.get_sessions_summary()` (new method — two SQL queries: sessions + result types; `comment_count` approximated from newline count in `csv_raw`). Renders each session as a bordered `st.container` with two columns: name/date/comment-count on the left, four `st.badge()` status indicators on the right (Temas, Claims, Divergencias, Categorias — green when the result exists, gray otherwise; UMAP badge green when `claims_tree` present). An "Abrir este estudo" button loads the session into `st.session_state.session` and calls `st.rerun()`.
+
+**Upload page (plan-000009, updated plan-000021)**: `gavealab_poc/pages/upload.py` implements the CSV upload flow: file picker, session name input, 10-row preview via pandas, validation, session creation via `workspace.create_session()`. The "Sessoes anteriores" inline panel was removed (plan-000021) — session management is now owned by the "Todos os Estudos" page. A `st.info()` hint directs users to that page.
 
 **Auto-topics page (plan-000010)**: `gavealab_poc/pages/auto_topics.py` renders the "Temas automaticos" page. A "Gerar temas com IA" button triggers `generate_topic_tree(session)` from `gavealab_poc/pipeline/topics.py`, which assembles all comments (≥10 chars) from `session.df["text"]`, calls Ollama via `llm.chat()` with a structured JSON prompt, parses the response with `_parse_taxonomy` / `_extract_json` (best-effort JSON extraction with `{...}` block fallback), and persists the result via `session.save_result("topic_tree", tree)`. The page then renders each topic as a `st.expander` with subtopics listed as markdown bullet points. Results survive page reload (loaded from SQLite via `AnalysisSession.topic_tree`).
 

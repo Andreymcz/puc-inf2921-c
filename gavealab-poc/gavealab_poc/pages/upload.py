@@ -10,18 +10,7 @@ from gavealab_poc.workspace import GaveaLabWorkspace
 
 def render(workspace: GaveaLabWorkspace) -> None:
     st.header("1. Upload de Relatos")
-
-    # --- Previous sessions (always visible) ---
-    sessions = workspace.list_sessions()
-    if sessions:
-        st.subheader("Sessoes anteriores")
-        for s in sessions:
-            col1, col2 = st.columns([4, 1])
-            col1.markdown(f"**{s['name']}** -- {s['created_at'][:10]}")
-            if col2.button("Carregar", key=f"load_{s['id']}"):
-                st.session_state.session = workspace.load_session(s["id"])
-                st.success(f"Sessao '{s['name']}' carregada.")
-        st.divider()
+    st.info("Para ver e carregar sessoes anteriores, va para **Todos os Estudos** no menu.")
 
     # --- New session upload ---
     st.subheader("Nova sessao")

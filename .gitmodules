@@ -1,3 +1,9 @@
 [submodule "tttc-poc/tttc-light-js-ollama"]
 	path = tttc-poc/tttc-light-js-ollama
 	url = https://github.com/Diegorb1329/tttc-light-js-ollama
+[submodule "rd-cbir-api"]
+	path = rd-cbir-api
+	url = https://git.tecgraf.puc-rio.br/vis/rocha-digital/rd-cbir-api
+[submodule "SEJA-Florence"]
+	path = SEJA-Florence
+	url = https://github.com/PUC-Behring-Institute-for-AI/SEJA-Florence

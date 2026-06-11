@@ -86,6 +86,39 @@ class GaveaLabWorkspace:
         ).fetchall()
         return [dict(r) for r in rows]
 
+    def get_sessions_summary(self) -> list[dict]:
+        """Return summary dicts for all sessions, newest first.
+
+        Each dict: id, name, created_at, comment_count, available_results.
+        comment_count is approximated from newline count in csv_raw.
+        available_results is a list of result_type strings present for the session.
+        """
+        sessions = self._conn.execute(
+            "SELECT id, name, created_at, csv_raw FROM sessions ORDER BY id DESC"
+        ).fetchall()
+        if not sessions:
+            return []
+        session_ids = [r["id"] for r in sessions]
+        placeholders = ",".join("?" * len(session_ids))
+        result_rows = self._conn.execute(
+            f"SELECT session_id, result_type FROM results WHERE session_id IN ({placeholders})",
+            session_ids,
+        ).fetchall()
+        results_map: dict[int, list[str]] = {s["id"]: [] for s in sessions}
+        for r in result_rows:
+            results_map[r["session_id"]].append(r["result_type"])
+        summary = []
+        for s in sessions:
+            comment_count = max(0, s["csv_raw"].count("\n") - 1)
+            summary.append({
+                "id": s["id"],
+                "name": s["name"],
+                "created_at": s["created_at"],
+                "comment_count": comment_count,
+                "available_results": results_map[s["id"]],
+            })
+        return summary
+
     def save_result(self, session_id: int, result_type: str, value: Any) -> None:
         """Persist an analysis result for a session. Overwrites if same type exists."""
         self._conn.execute(
