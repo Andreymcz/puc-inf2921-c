@@ -5,8 +5,8 @@
 
 | Date | Type | ID | Title | Status | File |
 |------|------|----|-------|--------|------|
+| 2026-06-11 17:12 UTC | Other |  | DONE | 2026-06-11 17:12 UTC | Plan 000036 | FIX-F fala-gavea | 2026-06-11 16:48… |  | [plan-000036-fala-gavea-pagination-names-encoding.md](plans/plan-000036-fala-gavea-pagination-names-encoding.md) |
 | 2026-06-11 16:51 UTC | QA Log | 000036 | fala-gavea posts pagination, citizen names, encoding fix |  | [plan-000036-qa-pagination-names-encoding.md](plans/plan-000036-qa-pagination-names-encoding.md) |
-| 2026-06-11 16:48 | Other |  | Plan 000036 | FIX-F fala-gavea | 2026-06-11 16:48 | posts pagination, citizen n… |  | [plan-000036-fala-gavea-pagination-names-encoding.md](plans/plan-000036-fala-gavea-pagination-names-encoding.md) |
 | 2026-06-11 14:28 UTC | QA Log | 000032 | fala-gavea: seed dataset + dashboard visualizations |  | [plan-000032-qa-fala-gavea-seed-dashboard-viz.md](plans/plan-000032-qa-fala-gavea-seed-dashboard-viz.md) |
 | 2026-06-11 13:41 UTC | Other |  | Progress -- Plan 000025 |  | [plan-000025-progress.md](plans/plan-000025-progress.md) |
 | 2026-06-11 12:34 UTC | QA Log | 000033 | fala-gavea: like and label traceability |  | [implement-000033-qa-fala-gavea-like-label-traceability.md](plans/implement-000033-qa-fala-gavea-like-label-traceability.md) |

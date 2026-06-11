@@ -1,4 +1,4 @@
-# Plan 000036 | FIX-F fala-gavea | 2026-06-11 16:48 | posts pagination, citizen names, encoding fix | Review: light
+# DONE | 2026-06-11 17:12 UTC | Plan 000036 | FIX-F fala-gavea | 2026-06-11 16:48 | posts pagination, citizen names, encoding fix | Review: light
 plan_format_version: 1
 
 ## Brief
@@ -208,3 +208,23 @@ The "Próxima →" button is shown only when the current page returned exactly `
 ## Docs
 
 No documentation update required — internal app changes only.
+
+---
+
+## Implementation Summary
+
+**Completed:** 2026-06-11 17:12 UTC | **Steps:** 4/4 | **Files changed:** 2
+
+### Changes applied
+
+| File | Change |
+|------|--------|
+| `fala-gavea/scripts/seed_db.py` | `encoding="latin-1"` → `encoding="utf-8"` in `load_csv()` |
+| `fala-gavea/app.py` | Added `import hashlib`, `POSTS_PER_PAGE = 20`, `_CITIZEN_NAMES` list, `citizen_name()` function |
+| `fala-gavea/app.py` | Replaced all `user_id[:8]...` displays with `citizen_name()` (posts captions, likes expander, dashboard likes traceability, dashboard label traceability) |
+| `fala-gavea/app.py` | Replaced `page_posts()` with paginated version using `st.session_state.posts_page`, fetches 20 posts per page, prev/next controls |
+
+### Notes
+
+- Existing `app.db` was seeded with broken latin-1 encoding — a fresh `seed_db.py` run is needed to get clean UTF-8 text in the database.
+- `citizen_name("")` is safe: `hashlib.md5(b"")` is deterministic and returns a valid name for absent `user_id` values.

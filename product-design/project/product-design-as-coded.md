@@ -10,17 +10,21 @@ designer_description: "Implementation state mirror for kb-qa — maintained by p
 
 ## Conceptual Design
 
-### 0b. Fala Gávea — Streamlit frontend (plan-000030, plan-000033)
+### 0b. Fala Gávea — Streamlit frontend (plan-000030, plan-000032, plan-000033, plan-000036)
 
 `fala-gavea/app.py` is a single-file Streamlit app that consumes the Fala Gávea FastAPI backend (`fala-gavea/src/`). The API base URL defaults to `http://localhost:8000`, overridable via `FALA_GAVEA_API_URL`. A `user_id` UUID is generated once per session and stored in `st.session_state`.
 
 **Four pages** (dispatched via sidebar radio):
-- **📋 Postagens**: lists all posts with like counter; clicking ❤️ toggles a like. When `likes_count > 0`, a `st.expander("Ver quem curtiu")` appears — on expansion it calls `GET /citizen_posts/{id}/likes` and lists liker `user_id`s.
+- **📋 Postagens**: paginated list of posts (20 per page, controlled by `st.session_state.posts_page`); prev/next controls fetch `POSTS_PER_PAGE=20` posts at the correct `offset`. Author displayed as a human-readable Brazilian first name via `citizen_name()` instead of a truncated UUID. When `likes_count > 0`, a `st.expander("Ver quem curtiu")` appears — likers also shown as names.
 - **✍️ Nova Postagem**: form to create a new post (text + territory level/name); calls `POST /citizen_posts/`.
 - **🏷️ Validar Labels**: shows posts that have `ai_labels`; per-label 👍/👎 buttons call `POST /citizen_posts/{id}/label_feedback`. Vote state reads from `label_feedback[label]["approved"]` (new dict structure).
-- **📊 Dashboard**: summary metrics, top-10 posts by likes, bar chart of posts by territory, label feedback summary table, and two new traceability subsections: "Rastreabilidade de likes" (on-demand bulk fetch via "Carregar rastreabilidade" button — shows post_id, text, likers) and "Rastreabilidade de labels" (reads `label_feedback` dict — shows label, aprovado, usuario).
+- **📊 Dashboard**: summary metrics (total posts, total likes, avg likes per post), top-10 posts by likes, bar chart of posts by territory, "Postagens por dia" timeline (line chart on `created_at`), "Distribuição de likes por post" histogram (bucketed by `pd.cut` into 8 ranges ending at `float("inf")`), label feedback summary table, and two traceability subsections: "Rastreabilidade de likes" (on-demand bulk fetch; likers shown as names via `citizen_name()`) and "Rastreabilidade de labels" (reads `label_feedback` dict; user shown as name). Limit raised to 1500 to accommodate the seed dataset (plan-000032).
+
+**Citizen name helper (plan-000036)**: `citizen_name(user_id: str) -> str` maps any UUID to a deterministic Brazilian first name using MD5 hash modulo 30. `_CITIZEN_NAMES` is a 30-entry list of common Brazilian first names. Used everywhere UUIDs were previously displayed (`author_id`, `user_id` in likes, dashboard traceability columns).
 
 **API helpers**: `api_get(path, **params)` and `api_post(path, body)` call the backend synchronously via `httpx` with a 10-second timeout and raise on 4xx/5xx.
+
+**Seed script (plan-000032, fixed plan-000036)**: `fala-gavea/scripts/seed_db.py` reads `data/sample-gavealab-1000.csv` (UTF-8 encoding — fixed from latin-1 in plan-000036 to prevent Mojibake, columns: `id`, `comment`, `territory`). Maps 4 territory values to `territory_name`/`territory_level` pairs (Comunidade da Gávea, Baixo Gávea, Alto da Gávea, Favela da Gávea — all `neighborhood`). Each relato gets a unique `author_id` UUID. Posts inserted with `ai_labels: []`. After inserting all posts, each author distributes 50 likes to posts of other authors (excludes own post) via `POST /citizen_posts/{id}/likes` — ~50,000 sequential HTTP calls. Progress logged every 100 posts / 100 authors. Package marker `fala-gavea/scripts/__init__.py` also added.
 
 **Like and label traceability (plan-000033)**:
 - `GET /citizen_posts/{id}/likes` returns `PostLikesResponse{post_id, likers: [{user_id, created_at}]}` — implemented by `GetPostLikes` use case and `SQLAlchemyCitizenPostRepository.get_likes`.
