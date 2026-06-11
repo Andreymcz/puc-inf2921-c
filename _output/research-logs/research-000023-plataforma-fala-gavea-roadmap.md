@@ -155,22 +155,39 @@ Objetivo: Preparar a arquitetura para receber o Subsistema A (input cidadão) se
 
 ---
 
-### Fase 3 — Subsistema A: Camada Cidadã (2026 Q4 / 2027)
+### Fase 3a — Subsistema A: Formulário Web Mínimo (pós-curso, Q3 2026)
 
-Objetivo: Construir a interface cidadã do Document 2.
+Objetivo: Primeira versão do input cidadão — demonstra o loop completo sem a complexidade de um app nativo.
+
+Modelo de dados base: `Postagem { id, user_id, text, territory_level, territory_ref, created_at }` + `Feedback { user_id, target_type, target_id, signal }` (ver seção "Modelo de dados da postagem cidadã" acima).
 
 | Feature | Prioridade | Complexidade | Justificativa |
 |---|---|---|---|
-| **Web app público** (mobile-first) para submissão de relatos | ALTA | Alta | Core do UC-01 Doc 2 |
-| **Input por voz** na interface cidadã | ALTA | Média | Inclusão de baixa alfabetização |
-| **Validação coletiva** (upvoting de demandas) | ALTA | Média | Sinal de prioridade coletiva |
-| **Notificações** (SMS/push) para o cidadão | MÉDIA | Alta | Acompanhamento da demanda |
-| **Perfil de líder comunitário** com dashboard de auditoria | ALTA | Alta | Doc 1 UC-01 fluxo alternativo + Doc 2 UC-02 passo 3 |
-| **Monitoramento de impacto** pós-intervenção | MÉDIA | Alta | Doc 2 UC-02 passo 5 |
-| **Tótem físico** (interface offline simplificada) | BAIXA | Alta | Para comunidades com baixa conectividade |
-| **Métricas de abandono institucional** | MÉDIA | Média | Demanda encerrada sem resolução → contador público |
+| **Formulário web** (mobile-first, sem login) para submissão de relato + nível territorial | ALTA | Baixa-Média | Core do UC-01 Doc 2. Pode ser FastAPI + HTML simples ou Next.js |
+| **ID de usuário anônimo persistente** (cookie/localStorage) | ALTA | Baixa | Identidade sem cadastro — essencial para o feedback democrático |
+| **Feedback em postagem e labels da IA** (like/dislike em postagem, topic_label, cluster) | ALTA | Média | Sinal social + sinal epistêmico; retroalimenta curadoria |
+| **Validação coletiva** (contador público de confirmações por demanda) | ALTA | Baixa | Sinal de prioridade coletiva — Doc 2 UC-01 passo 3 |
+| **Endpoint de ingestão** no Subsistema B (API que recebe postagens e as coloca na fila de análise) | ALTA | Média | Contrato de dados entre A e B |
 
-**Entregável da Fase 3:** Plataforma completa Fala Gávea. Loop end-to-end: cidadão submete → IA analisa → humano valida → decisor age → impacto monitorado.
+**Entregável da Fase 3a:** Loop end-to-end mínimo — cidadão submete via web → IA analisa → cidadão confirma/corrige labels → curador do GaveaLab revisa no PoC.
+
+---
+
+### Fase 3b — Subsistema A: App Completo (2027)
+
+Objetivo: Interface cidadã completa com offline, voz, tótem e notificações.
+
+| Feature | Prioridade | Complexidade | Justificativa |
+|---|---|---|---|
+| **App móvel nativo** (Flutter ou React Native) com suporte offline | ALTA | Alta | Rocinha: baixa conectividade, mobile-first |
+| **Input por voz** (transcrição local via Whisper no device ou servidor) | ALTA | Média | Inclusão de baixa alfabetização |
+| **Notificações** (push/SMS) sobre andamento da demanda | MÉDIA | Alta | Acompanhamento — Doc 2 UC-01 passo 5 |
+| **Perfil de líder comunitário** com dashboard de auditoria de labels | ALTA | Alta | Doc 1 UC-01 fluxo alternativo + Doc 2 UC-02 passo 3 |
+| **Tótem físico** (interface offline simplificada, touch-screen) | BAIXA | Alta | Comunidades com acesso limitado a smartphones |
+| **Métricas de abandono institucional** (demanda encerrada sem resolução → contador público) | MÉDIA | Média | Pressão institucional baseada em dados |
+| **Monitoramento de impacto** pós-intervenção | MÉDIA | Alta | Doc 2 UC-02 passo 5 |
+
+**Entregável da Fase 3b:** Plataforma Fala Gávea completa. Loop: cidadão submete (qualquer canal) → IA enriquece → cidadão retroalimenta democraticamente → curador valida → decisor age → impacto monitorado.
 
 ---
 
@@ -190,6 +207,53 @@ O Documento 2 elaborado pelo grupo articula exatamente essa visão, que o Andrey
 
 ---
 
+### Modelo de dados da postagem cidadã (refinamento pós-pesquisa, 2026-06-11)
+
+A equipe refiniu o conceito do Subsistema A: uma postagem cidadã tem estrutura análoga a um tweet, com a adição de granularidade territorial explícita e uma camada de feedback democrático sobre os labels gerados pela IA.
+
+**Input básico (humano):**
+```
+Postagem {
+  id:               uuid
+  user_id:          uuid          # anônimo persistente — sem login real obrigatório
+  text:             string
+  territory_level:  enum(preciso | bairro | território)
+  territory_ref:    string        # ex.: "Rocinha", "Gávea Asfalto", nome do território
+  created_at:       timestamp
+}
+```
+
+**Enriquecimento pela IA (gerado pelo pipeline do Subsistema B):**
+```
+PostagemEnriquecida {
+  ...postagem
+  topic:      string
+  subtopic:   string
+  cluster_id: uuid
+  claims:     [Claim]
+}
+```
+
+**Feedback cidadão (retroalimentação democrática):**
+```
+Feedback {
+  user_id:     uuid
+  target_type: enum(postagem | topic_label | cluster | claim)
+  target_id:   uuid
+  signal:      enum(like | dislike)
+}
+```
+
+**Por que esse modelo é correto:**
+
+- **Separação humano / IA**: a postagem é sempre do cidadão; os labels/tópicos/clusters são sempre da IA. O feedback é o cidadão *corrigindo* a IA — não a postagem. Auditabilidade preservada.
+- **Dois fluxos de sinal distintos**: like na postagem = sinal social ("outros concordam com o problema"); like/dislike no label = sinal epistêmico ("a IA acertou ou errou a classificação"). O segundo viabiliza revisão curada e eventual fine-tuning local.
+- **Granularidade territorial por nível**: em vez de coordenadas/endereço (que quebra LGPD e intimida), o usuário escolhe a granularidade que quer expor. Resolve privacidade e o requisito de segmentação asfalto vs. favela simultaneamente.
+
+**Implicação para o roadmap**: o Subsistema A pode começar como **formulário web simples** (qualquer stack leve) para o curso, com o app completo (offline, voz, tótem) como evolução pós-curso. O contrato de dados acima é suficiente para começar a Fase 2 sem ambiguidade.
+
+---
+
 ## Recomendações
 
 1. **[ALTA]** Implementar a interface de revisão humana (cluster title editing + realocação de claims) — fecha o maior gap do UC-02 Doc 1. Usar `st.data_editor` ou componente drag-drop no Streamlit.
@@ -206,4 +270,6 @@ O Documento 2 elaborado pelo grupo articula exatamente essa visão, que o Andrey
 
 7. **[MÉDIA]** Integrar Whisper local para transcrição de áudio — UC-02 fluxo alternativo, sem dependência de cloud.
 
-8. **[BAIXA]** Planejar o Subsistema A (camada cidadã) como brief separado para pós-curso — FastAPI backend + React/Flutter frontend, PostgreSQL, auth.
+8. **[MÉDIA]** Definir o contrato de dados do Subsistema A (`Postagem` + `Feedback`) como schema formal e criar o endpoint de ingestão no Subsistema B — isso desacopla as Fases 3a/3b do motor de análise e permite que ambos evoluam em paralelo.
+
+9. **[BAIXA]** Implementar o formulário web mínimo (Fase 3a) como prova do loop completo — identidade anônima por cookie, granularidade territorial por nível, feedback em postagem e labels da IA. Stack: FastAPI + HTML ou Next.js simples.
