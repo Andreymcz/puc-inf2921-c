@@ -1,6 +1,7 @@
 import pytest
 
 from fala_gavea.application.use_cases.add_label_feedback import AddLabelFeedback, AddLabelFeedbackInput
+from fala_gavea.application.use_cases.bulk_create_citizen_posts import BulkCreateCitizenPosts
 from fala_gavea.application.use_cases.create_citizen_post import (
     CreateCitizenPost,
     CreateCitizenPostInput,
@@ -87,6 +88,11 @@ class FakeRepository(CitizenPostRepository):
         )
         self._store[post_id] = updated
         return updated
+
+    def save_many(self, entities: list[CitizenPost]) -> list[CitizenPost]:
+        for entity in entities:
+            self._store[entity.id] = entity
+        return entities
 
     def set_ai_labels(self, post_id: str, labels: list[str]) -> CitizenPost:
         post = self._store[post_id]
@@ -254,6 +260,37 @@ def test_get_likes_returns_likers() -> None:
 
 
 # ── GetPostLikes ───────────────────────────────────────────────────────────
+
+
+# ── BulkCreateCitizenPosts ────────────────────────────────────────────────
+
+
+def test_bulk_create_citizen_posts_returns_all() -> None:
+    repo = FakeRepository()
+    inputs = [
+        CreateCitizenPostInput(text="Primeiro post válido", territory_level="neighborhood", territory_name="Gávea", author_id="u1"),
+        CreateCitizenPostInput(text="Segundo post válido", territory_level="city", territory_name="Rio", author_id="u2"),
+        CreateCitizenPostInput(text="Terceiro post válido", territory_level="district", territory_name="Centro", author_id="u3"),
+    ]
+    entities = BulkCreateCitizenPosts(repo).execute(inputs)
+    assert len(entities) == 3
+    for entity in entities:
+        assert repo.find_by_id(entity.id) is not None
+
+
+def test_bulk_create_invalid_item_raises() -> None:
+    repo = FakeRepository()
+    inputs = [
+        CreateCitizenPostInput(text="Hi", territory_level="neighborhood", territory_name="Gávea", author_id="u1"),
+    ]
+    with pytest.raises(InvalidInputError, match="5 characters"):
+        BulkCreateCitizenPosts(repo).execute(inputs)
+
+
+def test_bulk_create_empty_list_returns_empty() -> None:
+    repo = FakeRepository()
+    result = BulkCreateCitizenPosts(repo).execute([])
+    assert result == []
 
 
 def test_get_post_likes_returns_records() -> None:

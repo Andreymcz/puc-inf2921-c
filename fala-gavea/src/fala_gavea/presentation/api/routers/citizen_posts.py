@@ -3,6 +3,7 @@ from __future__ import annotations
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from fala_gavea.application.use_cases.add_label_feedback import AddLabelFeedback, AddLabelFeedbackInput
+from fala_gavea.application.use_cases.bulk_create_citizen_posts import BulkCreateCitizenPosts
 from fala_gavea.application.use_cases.create_citizen_post import CreateCitizenPost, CreateCitizenPostInput
 from fala_gavea.application.use_cases.delete_citizen_post import DeleteCitizenPost
 from fala_gavea.application.use_cases.get_citizen_post import GetCitizenPost
@@ -14,9 +15,12 @@ from fala_gavea.domain.exceptions import CitizenPostNotFoundError, InvalidInputE
 from fala_gavea.infrastructure.repositories.sqlalchemy_citizen_post_repository import (
     SQLAlchemyCitizenPostRepository,
 )
+from fala_gavea.pipeline.embeddings import embed_and_store
 from fala_gavea.presentation.api.dependencies import get_citizen_post_repo
 from fala_gavea.presentation.schemas.citizen_post_schemas import (
     AiLabelsRequest,
+    BulkCitizenPostsCreate,
+    BulkCitizenPostsResponse,
     CitizenPostCreate,
     CitizenPostResponse,
     LabelFeedbackRequest,
@@ -43,7 +47,30 @@ def create_citizen_post(
                 author_id=body.author_id,
             )
         )
+        embed_and_store([{"id": entity.id, "text": entity.text, "territory_name": entity.territory_name, "author_id": entity.author_id}])
         return CitizenPostResponse(**entity.__dict__)
+    except InvalidInputError as e:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e))
+
+
+@router.post("/bulk", response_model=BulkCitizenPostsResponse, status_code=status.HTTP_201_CREATED)
+def bulk_create_citizen_posts(
+    body: BulkCitizenPostsCreate,
+    repo: SQLAlchemyCitizenPostRepository = Depends(get_citizen_post_repo),
+) -> BulkCitizenPostsResponse:
+    try:
+        inputs = [
+            CreateCitizenPostInput(
+                text=item.text,
+                territory_level=item.territory_level,
+                territory_name=item.territory_name,
+                author_id=item.author_id,
+            )
+            for item in body.items
+        ]
+        entities = BulkCreateCitizenPosts(repo).execute(inputs)
+        embed_and_store([{"id": e.id, "text": e.text, "territory_name": e.territory_name, "author_id": e.author_id} for e in entities])
+        return BulkCitizenPostsResponse(items=[CitizenPostResponse(**e.__dict__) for e in entities])
     except InvalidInputError as e:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e))
 

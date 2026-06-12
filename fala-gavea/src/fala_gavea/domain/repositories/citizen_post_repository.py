@@ -36,3 +36,6 @@ class CitizenPostRepository(ABC):
     @abstractmethod
     def set_ai_labels(self, post_id: str, labels: list[str]) -> CitizenPost:
         """Replace the ai_labels list on a post."""
+
+    @abstractmethod
+    def save_many(self, entities: list[CitizenPost]) -> list[CitizenPost]: ...

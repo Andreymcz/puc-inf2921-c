@@ -94,6 +94,12 @@ class SQLAlchemyCitizenPostRepository(CitizenPostRepository):
         self._session.refresh(post)
         return self._to_entity(post)
 
+    def save_many(self, entities: list[CitizenPost]) -> list[CitizenPost]:
+        for entity in entities:
+            self._session.merge(self._to_model(entity))
+        self._session.commit()
+        return entities
+
     def set_ai_labels(self, post_id: str, labels: list[str]) -> CitizenPost:
         post = self._session.get(CitizenPostModel, post_id)
         if post is None:

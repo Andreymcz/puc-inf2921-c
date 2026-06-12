@@ -117,3 +117,41 @@ def test_get_post_likes_endpoint(client: TestClient) -> None:
 def test_get_post_likes_not_found_returns_404(client: TestClient) -> None:
     response = client.get("/citizen_posts/nonexistent-id/likes")
     assert response.status_code == 404
+
+
+BULK_PAYLOAD = {
+    "items": [
+        {**VALID_PAYLOAD, "text": "Falta iluminação na praça central"},
+        {**VALID_PAYLOAD, "text": "O transporte público precisa melhorar"},
+    ]
+}
+
+
+def test_bulk_create_returns_201_with_all_items(client: TestClient) -> None:
+    response = client.post("/citizen_posts/bulk", json=BULK_PAYLOAD)
+    assert response.status_code == 201
+    data = response.json()
+    assert len(data["items"]) == 2
+    for item in data["items"]:
+        assert "id" in item
+        assert "text" in item
+        assert "created_at" in item
+
+
+def test_bulk_create_empty_list_returns_201(client: TestClient) -> None:
+    response = client.post("/citizen_posts/bulk", json={"items": []})
+    assert response.status_code == 201
+    assert response.json()["items"] == []
+
+
+def test_bulk_create_invalid_item_returns_422(client: TestClient) -> None:
+    payload = {"items": [{**VALID_PAYLOAD, "text": "Hi"}]}
+    response = client.post("/citizen_posts/bulk", json=payload)
+    assert response.status_code == 422
+
+
+def test_bulk_create_posts_are_retrievable(client: TestClient) -> None:
+    client.post("/citizen_posts/bulk", json=BULK_PAYLOAD)
+    response = client.get("/citizen_posts/")
+    assert response.status_code == 200
+    assert len(response.json()) == 2

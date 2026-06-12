@@ -6,7 +6,6 @@ from pathlib import Path
 
 import chromadb
 import numpy as np
-from sentence_transformers import SentenceTransformer
 
 EMBED_MODEL = "nomic-ai/nomic-embed-text-v1"
 COLLECTION_NAME = "fala-gavea-posts"
@@ -14,7 +13,8 @@ DEFAULT_VECTORSTORE = Path(__file__).parent.parent.parent.parent / "vectorstore"
 
 
 @lru_cache(maxsize=1)
-def _get_model() -> SentenceTransformer:
+def _get_model():  # type: ignore[return]
+    from sentence_transformers import SentenceTransformer
     return SentenceTransformer(EMBED_MODEL, trust_remote_code=True)
 
 

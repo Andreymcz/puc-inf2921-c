@@ -33,6 +33,14 @@ class CitizenPostResponse(BaseModel):
     model_config = {"from_attributes": True}
 
 
+class BulkCitizenPostsCreate(BaseModel):
+    items: list[CitizenPostCreate]
+
+
+class BulkCitizenPostsResponse(BaseModel):
+    items: list[CitizenPostResponse]
+
+
 class LikeRequest(BaseModel):
     user_id: str
 

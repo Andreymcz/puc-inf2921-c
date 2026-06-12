@@ -31,6 +31,14 @@ from fala_gavea.presentation.api.main import create_app
 
 
 @pytest.fixture(autouse=True)
+def mock_embed(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(
+        "fala_gavea.presentation.api.routers.citizen_posts.embed_and_store",
+        lambda posts, **kw: None,
+    )
+
+
+@pytest.fixture(autouse=True)
 def reset_db() -> None:
     """Drop and recreate all tables before each test for full isolation."""
     Base.metadata.drop_all(_TEST_ENGINE)
