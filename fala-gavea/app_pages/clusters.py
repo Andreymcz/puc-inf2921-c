@@ -1,0 +1,99 @@
+from __future__ import annotations
+
+import pandas as pd
+import plotly.express as px
+import streamlit as st
+
+from fala_gavea.pipeline.cluster import build_cluster_df
+from fala_gavea.pipeline.label_clusters import label_clusters
+
+from .shared import api_get, api_post
+
+
+def render() -> None:
+    st.header("🗺️ Explorar Clusters")
+    st.caption("Clusterização semântica dos posts via UMAP + HDBSCAN. Labels gerados por IA.")
+
+    if "cluster_df" not in st.session_state:
+        st.session_state.cluster_df = None
+
+    col1, col2 = st.columns([1, 4])
+    with col1:
+        run_btn = st.button("🔄 Gerar Clusters", use_container_width=True)
+        save_btn = st.button(
+            "💾 Salvar Labels",
+            disabled=st.session_state.cluster_df is None,
+            use_container_width=True,
+        )
+
+    if run_btn:
+        try:
+            with st.spinner("Buscando posts..."):
+                posts = api_get("/citizen_posts/", limit=500, offset=0)
+        except Exception as e:
+            st.error(f"Erro ao carregar posts: {e}")
+            return
+
+        if not posts:
+            st.warning("Nenhum post encontrado.")
+            return
+
+        with st.spinner("Calculando embeddings e clusters (pode levar alguns minutos na primeira vez)..."):
+            df = build_cluster_df(posts)
+
+        with st.spinner("Gerando labels com IA..."):
+            cluster_label_map = label_clusters(df)
+            df["cluster_label"] = df["cluster_id"].map(cluster_label_map)
+
+        st.session_state.cluster_df = df
+        n_clusters = df["cluster_id"].nunique() - (1 if -1 in df["cluster_id"].values else 0)
+        st.success(f"{len(posts)} posts clusterizados em {n_clusters} clusters.")
+
+    df = st.session_state.cluster_df
+    if df is not None:
+        fig = px.scatter(
+            df,
+            x="x",
+            y="y",
+            color="cluster_label",
+            hover_data={"text": True, "territory_name": True, "x": False, "y": False},
+            title="Clusters de Posts — Espaço Semântico (UMAP)",
+            labels={"cluster_label": "Cluster", "x": "UMAP-1", "y": "UMAP-2"},
+        )
+        fig.update_traces(marker=dict(size=6, opacity=0.7))
+        st.plotly_chart(fig, use_container_width=True)
+
+        st.subheader("Posts por Cluster")
+
+        cluster_groups = df.groupby("cluster_label")
+        counts = cluster_groups.size().reset_index(name="n")
+        noise_label = "Nao classificado"
+        main = counts[counts["cluster_label"] != noise_label].sort_values("n", ascending=False)
+        noise = counts[counts["cluster_label"] == noise_label]
+        ordered = pd.concat([main, noise]).reset_index(drop=True)
+
+        for _, row in ordered.iterrows():
+            label = row["cluster_label"]
+            n = row["n"]
+            cluster_posts = df[df["cluster_label"] == label][["text", "territory_name"]].copy()
+            cluster_posts.columns = ["Relato", "Territorio"]
+            with st.expander(f"{label}  ({n} posts)", expanded=False):
+                st.dataframe(cluster_posts, use_container_width=True)
+
+        if save_btn:
+            with st.spinner("Salvando labels nos posts..."):
+                errors = 0
+                for _, row in df.iterrows():
+                    if row["cluster_id"] == -1:
+                        continue
+                    try:
+                        api_post(
+                            f"/citizen_posts/{row['post_id']}/ai_labels",
+                            {"labels": [row["cluster_label"]]},
+                        )
+                    except Exception:
+                        errors += 1
+            if errors:
+                st.warning(f"Labels salvos com {errors} erros.")
+            else:
+                st.success("Labels salvos com sucesso!")
