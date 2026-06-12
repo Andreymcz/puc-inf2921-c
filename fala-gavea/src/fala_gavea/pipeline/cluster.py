@@ -7,7 +7,7 @@ import pandas as pd
 import umap
 from sklearn.cluster import HDBSCAN
 
-from .embeddings import DEFAULT_VECTORSTORE, embed_and_store, get_embeddings
+from .embeddings import DEFAULT_VECTORSTORE, get_embeddings
 
 
 def build_cluster_df(
@@ -30,7 +30,6 @@ def build_cluster_df(
                      "cluster_id", "cluster_label"]
         )
 
-    embed_and_store(posts, vectorstore_dir)
     ids = [p["id"] for p in posts]
     embeddings = get_embeddings(ids, vectorstore_dir)
 

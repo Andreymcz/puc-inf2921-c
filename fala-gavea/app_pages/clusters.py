@@ -38,7 +38,7 @@ def render() -> None:
             st.warning("Nenhum post encontrado.")
             return
 
-        with st.spinner("Calculando embeddings e clusters (pode levar alguns minutos na primeira vez)..."):
+        with st.spinner("Calculando clusters (embeddings já disponíveis)..."):
             df = build_cluster_df(posts)
 
         with st.spinner("Gerando labels com IA..."):
@@ -71,7 +71,7 @@ def render() -> None:
         main = counts[counts["cluster_label"] != noise_label].sort_values("n", ascending=False)
         noise = counts[counts["cluster_label"] == noise_label]
         ordered = pd.concat([main, noise]).reset_index(drop=True)
-
+        
         for _, row in ordered.iterrows():
             label = row["cluster_label"]
             n = row["n"]
