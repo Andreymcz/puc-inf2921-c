@@ -1,3 +1,5 @@
+DONE | 2026-06-12 19:41 UTC | STARTED | 2026-06-12 19:38 UTC | plan | agora que salvamos os embeddings na criacao dos posts, nao precisamos recalcula-los na geracao dos clusters, podemos recuperar a informaçao já salva via api. | PLAN | plan-000047
+
 DONE | 2026-06-12 19:08 UTC | STARTED | 2026-06-12 19:05 UTC | implement | plan 43 + bulk insert page for fala-gavea multipage refactor | PLAN | 000043
 
 # Briefs
