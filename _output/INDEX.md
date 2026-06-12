@@ -5,7 +5,7 @@
 
 | Date | Type | ID | Title | Status | File |
 |------|------|----|-------|--------|------|
-| 2026-06-12 18:30 UTC | Plan | 000045 | Bulk CSV insertion page for postas | OPEN | [plan-000045.md](plans/plan-000045.md) |
+| 2026-06-12 18:30 UTC | Plan | 000045 | Bulk CSV insertion page for postas | DONE | [plan-000045.md](plans/plan-000045.md) |
 | 2026-06-12 18:30 UTC | RESERVED | 000046 | plan: bulk-insertion-page | RESERVED |  |
 | 2026-06-12 18:28 UTC | Other |  | Progress -- Plan 000044 |  | [plan-000044-progress.md](plans/plan-000044-progress.md) |
 | 2026-06-12 18:20 UTC | Other |  | Progress -- Plan 000040 |  | [plan-000040-progress.md](plans/plan-000040-progress.md) |
