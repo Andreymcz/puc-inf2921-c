@@ -38,3 +38,6 @@
 {"created_at": "2026-06-12T11:44:43Z", "description": "Execute plan-000043 fala-gavea multipage Streamlit refactor", "id": "pa-000030", "last_reminded_at": null, "snooze_until": null, "source": "plan-000043", "status": "pending", "type": "implement"}
 {"created_at": "2026-06-12T18:31:05Z", "description": "Execute plan-000045: bulk CSV insertion page for fala-gavea postas", "id": "pa-000031", "last_reminded_at": null, "snooze_until": null, "source": "plan-000045", "status": "pending", "type": "implement"}
 {"created_at": "2026-06-12T18:36:53Z", "description": "Review product-design/product-design-as-coded.md against the real implementation of plan-000044", "id": "pa-000032", "last_reminded_at": null, "snooze_until": null, "source": "plan-000044", "status": "pending", "type": "verify-as-coded"}
+{"closed_at": "2026-06-12T18:39:50Z", "id": "pa-000031", "status": "done"}
+{"closed_at": "2026-06-12T19:07:47Z", "id": "pa-000030", "status": "done"}
+{"created_at": "2026-06-12T19:09:06Z", "description": "Review product-design/product-design-as-coded.md against the real implementation of plan-000043", "id": "pa-000033", "last_reminded_at": null, "snooze_until": null, "source": "plan-000043", "status": "pending", "type": "verify-as-coded"}

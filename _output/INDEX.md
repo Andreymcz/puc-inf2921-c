@@ -5,6 +5,7 @@
 
 | Date | Type | ID | Title | Status | File |
 |------|------|----|-------|--------|------|
+| 2026-06-12 19:10 UTC | Other |  | DONE | 2026-06-12 19:10 UTC | |  | [plan-000043-fala-gavea-multipage-streamlit-refactor.md](plans/plan-000043-fala-gavea-multipage-streamlit-refactor.md) |
 | 2026-06-12 18:30 UTC | Plan | 000045 | Bulk CSV insertion page for postas | DONE | [plan-000045.md](plans/plan-000045.md) |
 | 2026-06-12 18:30 UTC | RESERVED | 000046 | plan: bulk-insertion-page | RESERVED |  |
 | 2026-06-12 18:28 UTC | Other |  | Progress -- Plan 000044 |  | [plan-000044-progress.md](plans/plan-000044-progress.md) |
@@ -13,7 +14,6 @@
 | 2026-06-12 11:43 UTC | Plan | 000044 | embed on create + bulk post route | OPEN | [plan-000044.md](plans/plan-000044.md) |
 | 2026-06-12 11:42 UTC | RESERVED | 000043 | plan: fala-gavea multipage Streamlit refactor | RESERVED |  |
 | 2026-06-12 11:42 | Plan | 000042 | debug-print-llm-calls | OPEN | [plan-000042.md](plans/plan-000042.md) |
-| 2026-06-12 11:41 | Other |  | Plan 000043 | REFACTOR-F frontend | 2026-06-12 11:41 | fala-gavea multipage Str… |  | [plan-000043-fala-gavea-multipage-streamlit-refactor.md](plans/plan-000043-fala-gavea-multipage-streamlit-refactor.md) |
 | 2026-06-11 20:46 UTC | Other |  | DONE | 2026-06-11 20:46 UTC | Plan 000041 | FEATURE-F frontend | 2026-06-11 20:… |  | [plan-000041.md](plans/plan-000041.md) |
 | 2026-06-11 20:36 UTC | RESERVED | 000041 | plan: cluster viz LLM labels table | RESERVED |  |
 | 2026-06-11 20:35 UTC | RESERVED | 000040 | plan: cluster viz LLM labels table | RESERVED |  |

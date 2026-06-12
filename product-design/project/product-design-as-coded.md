@@ -10,11 +10,11 @@ designer_description: "Implementation state mirror for kb-qa — maintained by p
 
 ## Conceptual Design
 
-### 0b. Fala Gávea — Streamlit frontend (plan-000030, plan-000032, plan-000033, plan-000036)
+### 0b. Fala Gávea — Streamlit frontend (plan-000030, plan-000032, plan-000033, plan-000036, plan-000043)
 
-`fala-gavea/app.py` is a single-file Streamlit app that consumes the Fala Gávea FastAPI backend (`fala-gavea/src/`). The API base URL defaults to `http://localhost:8000`, overridable via `FALA_GAVEA_API_URL`. A `user_id` UUID is generated once per session and stored in `st.session_state`.
+`fala-gavea/app.py` is the navigation entry point for the Fala Gávea Streamlit app. It calls `st.navigation()` + `st.Page()` (Streamlit 1.28+ API) and delegates each page to `fala-gavea/app_pages/<page>.py`. The API base URL defaults to `http://localhost:8000`, overridable via `FALA_GAVEA_API_URL`. A `user_id` UUID is generated once per session and stored in `st.session_state`. Shared helpers (`api_get`, `api_post`, `citizen_name`, `API_URL`, `POSTS_PER_PAGE`, `_CITIZEN_NAMES`) live in `fala-gavea/app_pages/shared.py`.
 
-**Six pages** (dispatched via sidebar radio):
+**Six pages** (dispatched via `st.navigation()`; each module exports `render() -> None`):
 - **📋 Postagens**: paginated list of posts (20 per page, controlled by `st.session_state.posts_page`); prev/next controls fetch `POSTS_PER_PAGE=20` posts at the correct `offset`. Author displayed as a human-readable Brazilian first name via `citizen_name()` instead of a truncated UUID. When `likes_count > 0`, a `st.expander("Ver quem curtiu")` appears — likers are lazy-loaded: the expander shows a "Carregar curtidas" button; on click, fetches `GET /citizen_posts/{id}/likes` once and caches the result in `st.session_state[f"likers_{post_id}"]`. Subsequent renders read from cache — zero API calls on page load (plan-000040).
 - **✍️ Nova Postagem**: form to create a new post (text + territory level/name); calls `POST /citizen_posts/`.
 - **🏷️ Validar Labels**: shows posts that have `ai_labels`; per-label 👍/👎 buttons call `POST /citizen_posts/{id}/label_feedback`. Vote state reads from `label_feedback[label]["approved"]` (new dict structure).
