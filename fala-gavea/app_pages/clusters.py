@@ -70,7 +70,7 @@ def render() -> None:
         noise_label = "Nao classificado"
         main = counts[counts["cluster_label"] != noise_label].sort_values("n", ascending=False)
         noise = counts[counts["cluster_label"] == noise_label]
-        ordered = pd.concat([main, noise]).reset_index(drop=True)
+        ordered: pd.DataFrame = pd.concat([main, noise]).reset_index(drop=True)
         
         for _, row in ordered.iterrows():
             label = row["cluster_label"]

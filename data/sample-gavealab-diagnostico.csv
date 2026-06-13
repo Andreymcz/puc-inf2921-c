@@ -1,0 +1,98 @@
+author_id,territory_level,territory_name,text
+C0001,neighborhood,Parque da Cidade,"Precisamos de segurança pública de verdade, não só operações que assustam mais do que protegem."
+C0002,neighborhood,Parque da Cidade,A educação de base na comunidade é fraca. Muitas crianças ficam para trás por falta de apoio.
+C0003,neighborhood,Gávea neighborhood,Os eventos culturais no Planetário e na PUC são ótimos. O neighborhood tem uma vida cultural rica.
+C0004,neighborhood,Rocinha,A água chega com pressão baixíssima e às vezes vem barrenta. Precisamos de saneamento de verdade.
+C0005,neighborhood,Gávea,"O turismo é um ponto forte da Gávea, mas precisa incluir as comunidades como protagonistas."
+C0006,neighborhood,Gávea neighborhood,O neighborhood poderia aproveitar melhor sua vocação econômica para gerar mais empregos locais.
+C0007,neighborhood,Rocinha,Já faz anos que pedimos melhorias e nada muda. Os políticos aparecem só em época de eleição.
+C0008,neighborhood,Gávea neighborhood,"A UPA da região é sobrecarregada, mas no geral a saúde pública aqui é melhor que em outros neighborhoods."
+C0009,neighborhood,Rocinha,As ruas aqui dentro estão cheias de buracos e ninguém conserta. A prefeitura não investe na neighborhood.
+C0010,neighborhood,Gávea,"O nível de educação é alto no neighborhood em geral, mas existe uma desigualdade gritante no acesso."
+C0011,neighborhood,Rocinha,As opções de cultura que existem no neighborhood não chegam até a comunidade. Sinto falta disso.
+C0012,neighborhood,Parque da Cidade,Não temos coleta de lixo direito. O caminhão não sobe até aqui e o lixo acumula nas vielas.
+C0013,neighborhood,Gávea neighborhood,"Os imóveis na Gávea têm boa qualidade, mas o custo de vida é alto para quem não tem renda elevada."
+C0014,neighborhood,Rocinha,O ônibus para o metrô é lotado e demora muito. O ideal seria o metrô chegar até a Rua Marquês de São Vicente.
+C0015,neighborhood,Gávea neighborhood,Moro num apartamento bem cuidado. Estou satisfeito com as condições de moradia no neighborhood.
+C0016,neighborhood,Gávea,"Me identifico muito com a Gávea. É um neighborhood especial, mas precisa resolver suas desigualdades internas."
+C0017,neighborhood,Rocinha,"As casas aqui são apertadas e úmidas, mas fazemos o melhor que podemos com o espaço que temos."
+C0018,neighborhood,Gávea,O gap de tecnologia entre o neighborhood e as neighborhoods é enorme. Isso aprofunda as desigualdades.
+C0019,neighborhood,Parque da Cidade,Cultura para nós é o que criamos dentro da comunidade. Precisamos de apoio para fazer isso crescer.
+C0020,neighborhood,Rocinha,"Gosto que as pessoas venham conhecer a comunidade, mas quero que o dinheiro fique aqui dentro."
+C0021,neighborhood,Gávea neighborhood,Os colégios particulares da Gávea são de excelente qualidade. Estou muito satisfeito com a educação dos meus filhos.
+C0022,neighborhood,Parque da Cidade,O posto de saúde fecha cedo e não funciona fim de semana. Fica difícil para quem trabalha.
+C0023,neighborhood,Rocinha,Tem muito lixo acumulado nos córregos porque a coleta não chega direito. Isso polui o ambiente da comunidade.
+C0024,neighborhood,Gávea neighborhood,Estou satisfeito com a atividade turística do neighborhood. Gera movimento e valoriza a região.
+C0025,neighborhood,Gávea neighborhood,Gávea é um neighborhood privilegiado. Temos responsabilidade de ajudar a reduzir as desigualdades locais.
+C0026,neighborhood,Gávea neighborhood,Tenho plano de saúde e os hospitais da zona sul atendem bem. Estou satisfeito com o acesso à saúde.
+C0027,neighborhood,Rocinha,"A Rocinha é minha casa e tenho orgulho de morar aqui, mas quero dignidade e serviços básicos de qualidade."
+C0028,neighborhood,Rocinha,"Falta esgoto aqui em cima. Quando chove forte, tudo transborda e o cheiro é insuportável."
+C0029,neighborhood,Parque da Cidade,Tecnologia e inovação são palavras que não chegam até aqui. Nenhum projeto de inclusão digital funciona de verdade.
+C0030,neighborhood,Parque da Cidade,A mobilidade dentro da comunidade é péssima. Não tem como passar com carrinho de bebê ou cadeira de rodas.
+C0031,neighborhood,Gávea,"Mobilidade é um problema sério para todo o neighborhood, mas afeta muito mais os moradores das neighborhoods."
+C0032,neighborhood,Gávea,"O neighborhood tem vocação ambiental clara, mas é preciso incluir as neighborhoods nos projetos de sustentabilidade."
+C0033,neighborhood,Gávea neighborhood,A arborização das ruas é excelente. Faz diferença no calor do Rio.
+C0034,neighborhood,Gávea neighborhood,"Adoro morar na Gávea pela natureza. As árvores, o silêncio, o ar puro. Isso não tem preço."
+C0035,neighborhood,Rocinha,"Quero que meus filhos tenham futuro aqui na Rocinha, não precisem ir embora para ter oportunidade."
+C0036,neighborhood,Parque da Cidade,A habitação na comunidade é precária. Precisamos de programa de regularização e melhoria habitacional.
+C0037,neighborhood,Rocinha,Já perdi vizinhos para a violência. As operações policiais também nos deixam em pânico.
+C0038,neighborhood,Gávea neighborhood,"O saneamento básico aqui funciona bem, água e esgoto sem problemas. Fico satisfeito."
+C0039,neighborhood,Rocinha,Wi-Fi público seria uma revolução aqui dentro. Meus filhos não conseguem fazer tarefa sem internet de qualidade.
+C0040,neighborhood,Rocinha,Quero abrir um pequeno negócio mas não tenho acesso a crédito nem a capacitação adequada.
+C0041,neighborhood,Gávea neighborhood,"A cobertura de internet na Gávea neighborhood é razoável, mas deixa a desejar em estabilidade."
+C0042,neighborhood,Gávea neighborhood,Serviços digitais da prefeitura poderiam ser mais eficientes. Ainda muita coisa é feita presencialmente.
+C0043,neighborhood,Gávea neighborhood,As calçadas e ruas do neighborhood estão em bom estado no geral. Mas a manutenção poderia ser mais frequente.
+C0044,neighborhood,Gávea neighborhood,Uso carro particular porque o transporte público da Gávea é insuficiente. Precisamos de mais linhas.
+C0045,neighborhood,Rocinha,Falta médico especialista na comunidade. Para consulta com especialista tenho que ir longe.
+C0046,neighborhood,Rocinha,"A escola pública aqui é sobrecarregada. Falta professor, material didático e estrutura básica."
+C0047,neighborhood,Gávea,"A governança precisa melhorar, mas reconheço alguns avanços recentes na comunicação com a comunidade."
+C0048,neighborhood,Rocinha,A internet aqui é puxada do GatoNet porque o serviço oficial não chega ou é caro demais.
+C0049,neighborhood,Gávea neighborhood,A extensão do metrô até a Gávea transformaria o neighborhood. É o principal desejo de todos aqui.
+C0050,neighborhood,Parque da Cidade,"A área verde perto do Parque da Cidade é linda, mas o acesso e a manutenção poderiam ser melhores para nós."
+C0051,neighborhood,Parque da Cidade,Falta de transparência na gestão do neighborhood. A comunidade deveria participar mais das decisões.
+C0052,neighborhood,Rocinha,Pedimos reforma da praça há dois anos. Nada foi feito. O investimento em infraestrutura é inexistente aqui.
+C0053,neighborhood,Parque da Cidade,Já ouvi falar de projeto de internet comunitária mas nunca vi nada ser implantado de fato.
+C0054,neighborhood,Gávea,A cultura do neighborhood poderia ser mais inclusiva. Eventos no neighborhood deveriam ser abertos às neighborhoods.
+C0055,neighborhood,Rocinha,"Sonho em trabalhar perto de casa, mas as oportunidades estão longe e o transporte é caro."
+C0056,neighborhood,Parque da Cidade,"Os projetos sociais da PUC ajudam muito, mas precisamos de mais vagas em escolas de qualidade perto daqui."
+C0057,neighborhood,Parque da Cidade,Falta apoio ao empreendedorismo local. Muita gente tem talento mas não tem oportunidade.
+C0058,neighborhood,Gávea neighborhood,"Os serviços públicos são razoáveis, mas a participação cidadã poderia ser muito maior."
+C0059,neighborhood,Gávea neighborhood,"Estou satisfeito com a administração comparando com outros neighborhoods do Rio, mas ainda há muita burocracia."
+C0060,neighborhood,Rocinha,Emprego é o que mais faz falta aqui. Muita gente qualificada desempregada dentro da comunidade.
+C0061,neighborhood,Rocinha,Minha casa foi construída com muito esforço mas falta regularização fundiária. Vivo com medo de remoção.
+C0062,neighborhood,Gávea neighborhood,"A Gávea tem ótimas opções culturais: cinema, teatro, museus próximos. Estou muito satisfeito."
+C0063,neighborhood,Gávea,A percepção de segurança é muito diferente entre quem mora no neighborhood e nas neighborhoods.
+C0064,neighborhood,Gávea neighborhood,Falta investimento em espaços públicos de lazer. Praças poderiam ser revitalizadas.
+C0065,neighborhood,Gávea,"A saúde precisa de mais investimento em todos os segmentos do neighborhood, principalmente nas neighborhoods."
+C0066,neighborhood,Gávea neighborhood,A preservação ambiental é o maior orgulho do neighborhood. Espero que continue assim com o crescimento urbano.
+C0067,neighborhood,Parque da Cidade,Minha filha não sai mais à noite por causa da insegurança. Isso limita muito a vida da comunidade.
+C0068,neighborhood,Gávea,"O neighborhood tem boa infraestrutura para quem mora no neighborhood, mas as neighborhoods ficam de fora."
+C0069,neighborhood,Rocinha,"A governança aqui é um descaso total. A gente não tem representação nenhuma, ninguém escuta a voz da comunidade."
+C0070,neighborhood,Parque da Cidade,"O Parque da Cidade é lindo, mas a gente que mora aqui merece mais atenção das autoridades."
+C0071,neighborhood,Rocinha,Quero que meu filho estude numa escola boa mas as opções públicas estão longe e o ônibus não ajuda.
+C0072,neighborhood,Gávea neighborhood,Moro na Gávea há 30 anos e tenho muito orgulho do neighborhood. Quero ver todo mundo bem aqui.
+C0073,neighborhood,Gávea,"A qualidade da habitação é muito desigual. Quem mora no neighborhood está bem, quem mora na neighborhood sofre."
+C0074,neighborhood,Gávea neighborhood,"A segurança melhorou nos últimos anos, mas ainda há furtos frequentes em carros e residências."
+C0075,neighborhood,Parque da Cidade,O desemprego aqui é alto. Programas de formação profissional fariam muita diferença.
+C0076,neighborhood,Parque da Cidade,O acesso à saúde mental é praticamente zero aqui. Não existe suporte para quem precisa.
+C0077,neighborhood,Rocinha,A segurança dentro da comunidade é controlada por milícia e tráfico. O estado não protege a gente.
+C0078,neighborhood,Gávea neighborhood,O trânsito na saída das escolas é caótico. Falta um plano de mobilidade escolar no neighborhood.
+C0079,neighborhood,Rocinha,"Temos manifestações culturais riquíssimas aqui dentro, mas não recebemos apoio para divulgar e sustentar."
+C0080,neighborhood,Rocinha,O turismo na Rocinha poderia gerar mais renda para os moradores se fosse organizado pela própria comunidade.
+C0081,neighborhood,Gávea neighborhood,Falta fomento para pequenas empresas. O comércio local está morrendo com a concorrência dos grandes shoppings.
+C0082,neighborhood,Gávea neighborhood,"Os câmeras de monitoramento ajudam, mas a presença policial ainda é insuficiente."
+C0083,neighborhood,Gávea,"A Gávea é um neighborhood que tem de tudo, mas precisa ser justo com todos os seus moradores."
+C0084,neighborhood,Gávea neighborhood,A gestão pública deixa a desejar. Falta diálogo com os moradores do neighborhood nas decisões urbanas.
+C0085,neighborhood,Gávea neighborhood,A PUC-Rio é um orgulho do neighborhood e eleva o nível educacional da região toda.
+C0086,neighborhood,Rocinha,Subir e descer a Rocinha a pé é cansativo. As vans e mototáxis são caras para quem ganha pouco.
+C0087,neighborhood,Parque da Cidade,O esgoto corre a céu aberto em alguns trechos. Isso é um problema de saúde pública gravíssimo.
+C0088,neighborhood,Rocinha,A fila no posto de saúde é enorme. Às vezes espero horas para ser atendida por coisa simples.
+C0089,neighborhood,Gávea neighborhood,"Me sinto razoavelmente seguro aqui no neighborhood, comparando com outros neighborhoods do Rio."
+C0090,neighborhood,Gávea neighborhood,A coleta de lixo é regular e a rede de esgoto não apresenta problemas na nossa rua.
+C0091,neighborhood,Parque da Cidade,A iluminação pública é precária. À noite fica muito escuro em vários becos.
+C0092,neighborhood,Gávea,A Gávea tem grande potencial econômico que não é explorado em benefício dos moradores da neighborhood.
+C0093,neighborhood,Gávea neighborhood,"A Gávea tem muito a oferecer ao turismo. O Parque da Cidade, a PUC, o Jóquei são atrativos únicos."
+C0094,neighborhood,Rocinha,Só tenho acesso à internet pelo celular com dados móveis. Fica impossível trabalhar ou estudar direito.
+C0095,neighborhood,Parque da Cidade,Nunca vejo nenhum representante aqui dentro. É como se a gente não existisse para a prefeitura.
+C0096,neighborhood,Gávea,Existe uma desigualdade enorme no saneamento entre a neighborhood e o neighborhood. Isso precisa mudar.
+C0097,neighborhood,Rocinha,A gente vive com medo de sair de casa à noite. Os confrontos armados assustam muito as famílias.

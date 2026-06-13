@@ -1,0 +1,2834 @@
+--- Page 1 ---
+Gávea Lab
+‘Strategic Design For Smart City’ Lab | PUC-Rio 
+Diagnóstico centrado na experiência do cidadão
+RESULTADOS | DEZEMBRO DE 2023
+Diagnóstico centrado na experiência do cidadão para acelerar o 
+empreendedorismo local com foco na transição para cidades mais inteligentes 
+e sustentáveis: implementação de programa piloto no bairro da Gávea.
+FAPERJ Nº 20/2022: 
+Programa de apoio a projetos temáticos no estado do Rio de Janeiro
+LGD
+
+--- Page 2 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+2
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+Projeto temático FAPERJ
+FAPERJ Nº 20/2022: Programa de apoio a projetos temáticos no estado do Rio de Janeiro
+Gávea Lab - Diagnóstico centrado na experiência do cidadão para acelerar o 
+empreendedorismo local com foco na transição para cidades mais inteligentes e 
+sustentáveis: implementação de programa piloto no bairro da Gávea
+Referência: RELATÓRIO DE RESULTADOS DA PESQUISA DE CAMPO
+Data: 20/11/2023
+EQUIPE DE COORDENAÇAO LGD/PUC-Rio:
+Prof. Dr. Carlo Franzato (LinkedIn: @carlofranzato) - Coordenador
+Prof. Dr. Cláudio Freitas de Magalhães (LinkedIn: @claudio-freitas-de-magalhaes-1b35581a)
+Fabienne Torres Schiavo (LinkedIn: @fabienneschiavo) - Doutora em Design, bolsista CAPES 
+Vitória Chini (LinkedIn: @vitória-chini-82277b2b1) - Bacharel em Design, bolsista CNPq
+Equipe do Projeto - pesquisadores
+Prof. Dr. Jorge Roberto Lopes dos Santos 
+Prof. Dra. Maria Fernanda Lemos 
+Prof. Dr. LD. Joaquim Redig
+Prof. Dr. João Victor Azevedo de Menezes Correia de Melo
+Prof. Dr. LD. Marcio Ruiz Schiavo
+Débora Souza Garcia, assistente social
+Vanusa Pessanha da Silva, assistente social
+O Gávea Lab conta com o apoio da Fundação Carlos Chagas Filho de Amparo à Pesquisa do Estado do Rio de Janei-
+ro (FAPERJ, processo SEI-260003/001198/2023 – APQ1), da Coordenação de Aperfeiçoamento de Pessoal de Nível 
+Superior – Brasil (CAPES, Código de Financiamento 001) e do Conselho Nacional de Desenvolvimento Científico e 
+Tecnológico (CNPQ, processos 314437/2023-1 e 442962/2023-1).
+Gávea Lab is financed by the Carlos Chagas Filho Foundation for Research Support of the State of Rio de Janeiro 
+(FAPERJ, process SEI-260003/001198/2023 - APQ1), the Coordination for the Improvement of Higher Education Per-
+sonnel – Brazil (CAPES, finance code 001), and the National Council for Scientific and Technological Development 
+(CNPq, processes 314437/2023-1 and 442962/2023-1).
+
+--- Page 3 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+3
+Sumário
+1. Apresentação | 4
+2. Objetivos | 6
+3. Metodologia | 8
+4. Resultados | 11
+5. Mapa das Forças Locais Atuantes da Gávea | 29
+6. Próximas Etapas | 35
+
+--- Page 4 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+4
+Apresentação
+1.
+
+--- Page 5 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+5
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+O relatório ora apresentado contém os resultados do Diagnóstico Centrado nos Moradores da Gávea real-
+izado entre os meses de junho e novembro de 2023 que buscou identificar os temas prioritários do bairro e definir 
+desafios a serem trabalhados.
+Esta pesquisa integra as atividades do Gavea Lab, no âmbito da implementação das atividades previstas do 
+projeto “Diagnóstico centrado na experiência do cidadão para acelerar o empreendedorismo local com foco na 
+transição para cidades mais inteligentes e sustentáveis: implementação de programa piloto no bairro da Gávea”, 
+apresentada e aprovada no edital FAPERJ Nº 20/2022: Programa de apoio a projetos temáticos no estado do Rio de 
+Janeiro.
+Configura-se como escopo do referido projeto a implementação, no bairro da Gávea, de uma nova propos-
+ta metodológica baseada na revisão das abordagens para o Design Thinking voltada para cidades inteligentes e 
+sustentáveis. Tal método, desenvolvido no Laboratório de Gestão em Design (LGD) do Departamento de Artes e 
+Design (DAD) da PUC-Rio, parte da visão das pessoas que vivem o território, prevê o envolvimento e facilitação da 
+participação de cidadãos e de diferentes stakeholders e fundamenta-se em uma abordagem centrada nas vidas 
+presentes no local (life-centered approach).
+As próximas etapas preveem a realização de dois fóruns e seis eventos de ideação com públicos universitári-
+os e integrantes das favelas e comunidades locais.
+
+--- Page 6 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+6
+2.
+Objetivos
+DO DIAGNÓSTICO CENTRADO NOS 
+MORADORES DA GÁVEA
+
+--- Page 7 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+7
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+2.1. Objetivo Geral
+O Diagnóstico Centrado nos Moradores da Gávea tem como objetivo geral contribuir com a equipe da PUC-
+Rio na execução das atividades previstas no projeto intitulado Gávea Lab - Diagnóstico centrado na experiência do 
+cidadão para acelerar o empreendedorismo local com foco na transição para cidades mais inteligentes sustentáveis: 
+implementação de programa piloto no bairro da Gávea, no âmbito do programa E_20/2022 – PROGRAMA DE APOIO 
+A PROJETOS TEMÁTICOS NO ESTADO DO RIO DE JANEIRO - 2022.
+O objetivo geral do referido projeto é aplicar uma metodologia piloto de desenvolvimento de projeto 
+colaborativo inovador para cidades inteligentes e sustentáveis, centrada no cidadão, apoiada pelo método do 
+Design Thinking, fundamentada pela convergência entre stakeholders locais, e implementada por um “living maker 
+space”. Busca-se, pois, experimentar uma metodologia em um ambiente da vida real, com papéis ativos de usuários 
+e pesquisadores de múltiplas disciplinas e com colaboração ativa, pois estes são considerados elementos essenciais 
+para alcançar os objetivos da pesquisa no contexto do processo de transformação urbana.
+2.2. Objetivo específico
+• Realizar um diagnóstico centrado nas pessoas locais;
+• Identificar os temas prioritários do bairro, com base na metodologia piloto de diagnóstico centrado nas pessoas 
+para cidades inteligentes e sustentáveis;
+• Definir desafios a serem trabalhados, com base na metodologia piloto de diagnóstico centrado nas pessoas para 
+cidades inteligentes e sustentáveis.
+
+--- Page 8 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+8
+Metodologia
+3.
+
+--- Page 9 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+9
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+3.1. Definição do cálculo amostral e 
+distribuição da pesquisa
+O CENSO 2022 realizado pelo Instituto Brasileiro de 
+Geografia e Estatística (IBGE) teve primeiros resultados 
+divulgados junto com o início deste trabalho. A menor 
+unidade com dados populacionais divulgada foi 
+municípios. Considerando os dados do município do 
+Rio de Janeiro, não houve variação significativa entre os 
+censos de 2010 e 2022 em relação ao total da população 
+do Rio de Janeiro (6.320.446 pessoas em 2010 e 6.211.423 
+pessoas em 2022). O Instituto Pereira Passos (IPP) é o órgão 
+da prefeitura do Rio de Janeiro que mantém os dados da 
+cidade atualizados e atua conjuntamente com o IBGE . 
+Para definição da amostra foram considerados os dados 
+populacionais consultados nas duas fontes, não tendo 
+sido necessário alterações frente à proposta apresentada 
+a FAPERJ. Foi utilizada a “Tabela 2974 - População 
+residente, por grupos de idade e sexo, segundo as Áreas 
+de Planejamento (AP), Regiões Administrativas (RA) e 
+Bairros - Município do Rio de Janeiro - 2010 “, com dados 
+estimados atualizados em 2019. Para os dados das duas 
+favelas contempladas na pesquisa - Rocinha e Parque da 
+Cidade, as informações foram validadas diretamente com 
+o Observatório das Favelas. 
+O cálculo da amostra considerou um universo 
+composto pela população total do bairro da Gávea (17.475 
+pessoas) e da favela Parque da Cidade (1.924 pessoas) e a 
+população parcial da Rocinha (13.832) de acordo com os 
+dados da prefeitura do Rio de Janeiro  e do Observatório 
+das Favelas. Considerando que a Rocinha tem fronteira 
+UNIVERSO CONSIDERADO
+INTERVALO DE 
+CONFIANÇA: 68%
+INTERVALO DE 
+CONFIANÇA: 90%
+Gávea
+17.475 pessoas
+53 pessoas
+141 pessoas
+Estimativa Rocinha / Gavea
+13.832 pessoas
+42 pessoas
+112 pessoas
+Vila Parque da Cidade
+1.924 pessoas
+6 pessoas
+16 pessoas
+TOTAL
+33.231 pessoas 
+100 pessoas
+268 pessoas
+Total de Formulários realizados válidos
+Gávea
+137
+Rocinha
+132
+Parque da Cidade
+16
+Trabalhadores (não moradores)
+95
+TOTAL
+380
+com os bairros São Conrado, Gávea e Vidigal e que a maior 
+parte está voltada para São Conrado, para esta pesquisa 
+foram considerados 20% de sua população total (69.161 
+pessoas ). Desta forma, o universo desta pesquisa soma 
+33.231 pessoas. 
+Para cálculo da amostra, foi considerada uma 
+população total estimada em 33.231 habitantes, tendo 
+sido calculada uma amostra finita (N<100.000):
+• Universo (N): 33.231 pessoas
+• Variância (S2): 0,25
+• Erro amostral (e): 5%
+Para 
+cálculo 
+da 
+amostra, 
+primeiramente 
+foi 
+confirmado o objetivo da presente pesquisa. Esta, 
+busca identificar tendências de modos de vidas e 
+comportamento da população do bairro, não tendo 
+cunho mercadológico. Baseado nessa informação, para 
+definição da amostra, foram calculados dois cenários 
+cientificamente aceitos, sendo o primeiro com indicativo 
+de tendência, com Intervalo de Confiança de 68%, 
+que cumpre o objetivo; e o segundo com Intervalo de 
+Confiança de 90%, permitindo tomadas de decisão 
+(mercadológico) e extrapolando o objetivo da pesquisa, 
+mas disponibilizando dados que podem ser relevantes 
+no futuro. O total de questionários desta amostra prevê 
+um quantitativo entre 100 questionários (tendência) e 
+268 questionários (mercadológico).
+Estratificando-se a amostra proporcionalmente à 
+quantidade de habitantes, a distribuição de questionários 
+procurará alcançar os seguintes quantitativos, desde que 
+o acesso não comprometa a segurança dos pesquisadores:
+Além dos questionários com moradores foram consultados também frequentadores do bairro. São pessoas que 
+trabalham no bairro, mas não residem. No total foram aplicados e consolidados 380 questionários válidos, respeitando 
+os quantitativos planejados:
+
+--- Page 10 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+10
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+Questionários previstos 
+(por faixa etária)
+Total de Formulários realizados 
+válidos (por faixa etária)
+De
+Até
+Todos
+Moradores
+Até 19 anos
+20
+55
+45
+38
+De 20 a 29 anos
+21
+56
+82
+54
+De 30 a 59
+47
+126
+190
+138
+60 +
+12
+31
+63
+55
+Questionários previstos 
+(por gênero)
+Total de Formulários realizados 
+válidos (por gênero)
+De
+Até
+Todos
+Moradores
+Feminino
+54
+144
+208
+155
+Masculino
+47
+125
+166
+126
+Outro
+3
+2
+Não respondeu
+3
+2
+O critério estabelecido para esta pesquisa foi 
+preservar a quantidade mínima planejada, mantendo-se 
+a amostra a fidedigna em relação à realidade encontrada. 
+Como limitações estão as dificuldades de acesso às 
+favelas, que respeitarão as diretrizes de segurança 
+para os pesquisadores, a data do último censo oficial 
+com publicação de dados específicos dos bairros e a 
+restrição de informações sobre a população residente 
+nas favelas. Estas limitações, no entanto, não prejudicam 
+o objetivo do diagnóstico proposto. No caso da Rocinha, 
+por não haver uma divisão oficial entre os moradores 
+considerados dentro da área de influência da Gávea, de 
+São Conrado e do Vidigal, foram consideradas válidas 
+variações de até 20% em relação à amostra inicialmente 
+planejada. Foram consultados 15% a mais de moradores 
+em relação à máxima estabelecida, aumentando o 
+intervalo e confiança das respostas provenientes dos 
+moradores da Rocinha.
+Considerando-se as informações oficiais disponíveis 
+para consulta, a distribuição desta pesquisa por gênero 
+previu um quantitativo entre 54 e 144 de respostas 
+femininas e entre 47 e 125 de respostas masculinas. As 
+respostas válidas obtidas estão apresentadas no quadro 
+a seguir.
+Na Rocinha e no Parque da Cidade foram obedecidos os quantitativos calculados para a amostra, sem 
+distribuição etária e de gênero. Foram privilegiados o recrutamento de pesquisadores moradores ou com experiência 
+nas localidades.
+	
+3.2. Customização do roteiro de pesquisa a ser aplicado
+Foi utilizado na pesquisa o roteiro aprovado pela Câmara de Ética da PUC-Rio.
+3.3. Formatação dos questionários nos dispositivos que serão adotados
+Para esta pesquisa de campo foi utilizada a ferramenta de formulário da empresa Formstack. O questionário foi 
+formatado para uso remoto, em telefone celular disponibilizado para as pesquisadoras.
+
+--- Page 11 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+11
+Resultados
+4.
+
+--- Page 12 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+12
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+4.1. Perfil Socioeconômico do Morador Respondente
+Trata-se de um território (bairro) com nível de escolaridade acima da média da cidade e do estado. Considerando 
+o Ensino Médio e a Graduação, o total alcança 73%. 
+Em relação à renda familiar, a alta percentagem de quem “preferiu não responder (39%) reflete a informalidade 
+que caracteriza os ganhos de grande parte da população. Trata-se, portanto, de “renda variável”. É difícil definir os 
+ganhos reais com precisão.
+1/4 das famílias presentes no território não alcança rendimento mensal de até um salário mínimo.  
+Excluindo-se os que preferiram não declarar (39%), há mudanças significativas na distribuição da renda familiar 
+dos entrevistados. 
+Ensino 
+fundamental
+15%
+Ensino médio
+53%
+Graduação
+20%
+Pós-graduação
+8%
+Mestrado
+3%
+Doutorado
+1%
+Escolaridade (morador)
+Feminino
+55%
+Masculino
+43%
+Outro
+1%
+Preferiu não 
+responder
+1%
+Gênero (morador)
+Até 1 salário 
+mínimo
+25%
+Entre 1 e 3 
+salários mínimos
+17%
+Entre 3 e 6 
+salários mínimos
+8%
+Entre 6 e 10 
+salários mínimos
+8%
+Acima de 10 
+salários mínimos
+3%
+Preferiu não 
+responder
+39%
+Renda familiar (morador)
+
+--- Page 13 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+13
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+A relação RENDA X ESCOLARIDADE revela que os 
+moradores com baixa escolaridade (Ensino Fundamenta 
+e Médio) preferiram não declarar a renda familiar (72%). 
+O principal motivo apresentado foi “não saber porque 
+estão perguntando”, e por isso tem receio de que, ao 
+declarar, podem perder algum benefício.
+Até 19 anos
+13%
+De 20 a 29 anos
+14%
+31 a 39 anos
+21%
+41 a 49 anos
+17%
+51 a 59 anos
+17%
+61 a 79 anos
+16%
+81 anos ou mais
+2%
+Faixa etária dos que preferiram 
+não declarar renda (moradores)
+Ensino 
+fundamental
+17%
+Ensino médio
+55%
+Graduação
+18%
+Pós-graduação / 
+Mestrado / 
+Doutorado
+10%
+Escolaridade dos que preferiram 
+não declarar renda (moradores)
+A população acima dos 40 anos é a mais reticente 
+em declarar a renda familiar. 
+4.2. Diagnóstico centrado no morador e 
+frequentador do bairro 
+Inicialmente houve uma consolidação geral dos 
+dados da pesquisa no bairro da Gávea. Posteriormente, 
+analisando-se as respostas de forma segmentada, 
+verificou-se que as respostas médias não correspondiam 
+nem à realidade da população moradora das duas favelas 
+nem da população das demais áreas do bairro, que os 
+moradores da favela se referem como “moradores do 
+“asfalto”. Uma vez que a percepção isolada de cada um 
+dos grupos de moradores é diferente da média, foram 
+incluídas nas análises do bairro da Gávea como um todo, 
+as avaliações segmentadas do bairro. Desta forma, os 
+resultados a seguir são apresentados em três formas:
+• Bairro da Gávea;
+• Parte do bairro da Gávea composta exclusivamente 
+de favelas e comunidades urbanas (Rocinha e Parque 
+da Cidade), aqui denominadas “Gávea - favelas”; e
+• Parte do bairro da Gávea que não é composta 
+pelas  favelas Rocinha e Parque da Cidade, aqui 
+denominadas “Gávea - asfalto”.
+Também foi avaliado separadamente a satisfação 
+sob a ótica somente do morador e sob a ótica do morador 
+e frequentador. Não houve diferença significativa 
+quando incluiu a percepção de frequentadores.
+Por fim, é importante ressaltar que os resultados 
+apresentados a seguir referem-se ao diagnóstico do 
+bairro da Gávea centrado na experiência do cidadão 
+local. Ou seja, trata-se de um processo analítico, 
+fundamentado em um pensamento sistêmico de coleta 
+e consolidação de dados, embasado na percepção do 
+morador e frequentador, estruturado de forma a facilitar 
+as tomadas de decisões com foco na transição para 
+cidades mais inteligentes e sustentáveis.
+
+--- Page 14 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+14
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+4.2.1.Níveis de satisfação
+A Gávea, conforme considerado pela Prefeitura 
+do Rio, compreende a população residente na “favela e 
+no “asfalto”. Conforme consta no capítulo Metodologia, 
+foram considerados moradores da Gávea, parte da 
+favela Rocinha (parte do território que tem a Gávea 
+como referência e trânsito) e a favela Parque da Cidade.
+Como 
+mencionado 
+anteriormente, 
+ao 
+se 
+comparar os resultados da “Gávea-asfalto” com a 
+“Gávea-favelas” (Rocinha e Parque da Cidade), foram 
+constatadas diferenças significativas na percepção dos 
+moradores, o que era de se esperar. As ações devem, 
+portanto,  ser pensadas e implementadas para cada área 
+especificamente, considerando suas peculiaridades. Por 
+exemplo: 
+• Governança: para ambos os grupos é onde reside 
+a maior taxa de insatisfação. No entanto, o nível de 
+insatisfação dos moradores da “Gávea-favela” (66% 
+das pessoas insatisfeitas) é o dobro, comparando-se 
+aos moradores do “Gávea-asfalto” (32% de pessoas 
+insatusfeitas).
+• Saneamento básico: a satisfação é quatro vezes 
+maior na “Gávea-asfalto” (46%), se comparada à “Gávea-
+favelas” (11%).
+• Níveis de satisfação com a educação oferecida: na 
+“Gávea-favelas”, aproximadamente 1/3 dos moradores 
+estão satisfeitos, 1/3, insatisfeitos e 1/3, possuem 
+posição neutra. Na “Gávea-asfalto”, praticamene não há 
+insatisfação, estando a grande maioria (2/3) satisfeitos. 
+Este retrato e suas proporções são semelhantes nas 
+percepções de satisfação quanto às questões ambientais 
+e as condições e qualidade de habitação.
+43%
+50%
+49%
+68%
+74%
+68%
+87%
+86%
+31%
+65%
+49%
+32%
+46%
+26%
+32%
+36%
+35%
+21%
+21%
+29%
+12%
+11%
+46%
+29%
+35%
+44%
+39%
+42%
+25%
+14%
+16%
+12%
+4%
+3%
+1%
+3%
+23%
+5%
+16%
+24%
+15%
+32%
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+80%
+90%
+100%
+Segurança
+Mobilidade
+Desenvolvimento econômico
+Saúde
+Opções de Cultura
+Educação
+Condições e qualidade da habitação
+Meio Ambiente
+Tecnologia e Inovação
+Turismo
+Oportunidades de trabalho
+Investimento em infraestrutura
+Saneamento Básico
+Governança
+Percepção de satisfação - Gávea (moradores "asfalto")
+Satisfeito(a) ou Muito satisfeito(a)
+Neutro (a)
+Insatisfeito(a) ou Muito insatisfeito(a)
+12%
+24%
+23%
+39%
+36%
+37%
+21%
+28%
+7%
+46%
+23%
+18%
+11%
+5%
+29%
+43%
+38%
+26%
+39%
+32%
+50%
+37%
+38%
+38%
+38%
+29%
+30%
+29%
+59%
+33%
+39%
+35%
+25%
+31%
+29%
+35%
+55%
+16%
+39%
+53%
+59%
+66%
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+80%
+90%
+100%
+Segurança
+Mobilidade
+Desenvolvimento econômico
+Saúde
+Opções de Cultura
+Educação
+Condições de habitação
+Meio Ambiente
+Tecnologia e Inovação
+Turismo
+Oportunidades de trabalho
+Investimento em infraestrutura
+Saneamento Básico
+Governança
+Percepção de satisfação - Gávea (moradores “favelas")
+Satisfeito(a) ou Muito satisfeito(a)
+Neutro (a)
+Insatisfeito(a) ou Muito insatisfeito(a)
+O conjunto de respostas, quando comparados, evidencia a necessidade de se conceber e adotar políticas 
+públicas considerando a diversidade territorial e buscar a garantia do direito a cidades sustentáveis para todas as 
+pessoas. Ou seja,  as soluções devem buscar reduzir as desigualdades históricas que prejudicam o acesso de pessoas 
+e grupos sociais vulneráveis a oportunidades, bens e serviços e que ações devem ser estruturadas de forma adequada 
+à ampla diversidade territorial do país, o que está em linha com a Carta Brasileira para Cidades Inteligentes.
+
+--- Page 15 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+15
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+Daí termos optado por analisar os dados em três diferentes conjuntos: “Gávea-asfalto”, “Gávea-favelas” e Gávea 
+como um todo. Para vários temas, portanto, a MÉDIA não reflete as realidades encontradas.
+Pensando nas alternativas de atuação, procedeu-se a análise em separado das duas favelas presentes (favela da 
+Rocinha e favela Parque da Cidade). Assim, se evitam distorções generalizadas entre o que pensam e o que esperam 
+receber cada grupo de moradores.
+Já entre as percepções verificadas entre os 
+MORADORES e os FREQUENTADORES, quando aplicáveis, 
+não houveram diferenças substanciais.
+4.2.2.	 Níveis de satisfação – por temas
+4.2.2.1.Governança
+Os resultados indicam claramente a insatisfação 
+dos moradores das favelas com a governança: 66% 
+mostram-se insatisfeitos e apenas 5% estão satisfeitos. 
+Já entre os moradores do “asfalto”, a insatisfação, embora 
+alta, representa 1/3 da população, estando os demais 
+satisfeitos ou neutros em relação a esta questão. Melhorar 
+15%
+36%
+49%
+26%
+42%
+32%
+5%
+29%
+66%
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+80%
+90% 100%
+Satisfeito(a) ou Muito satisfeito(a)
+Neutro (a)
+Insatisfeito(a) ou Muito insatisfeito(a)
+Nível de Satisfação com a Governança na Gávea
+Somente "Favelas"
+Somente "Asfalto"
+Moradores
+31%
+36%
+40%
+55%
+58%
+51%
+55%
+62%
+20%
+58%
+40%
+30%
+28%
+18%
+30%
+38%
+34%
+23%
+28%
+30%
+30%
+22%
+41%
+31%
+34%
+35%
+38%
+36%
+38%
+26%
+25%
+22%
+14%
+19%
+14%
+16%
+39%
+11%
+25%
+35%
+34%
+46%
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+80%
+90%
+100%
+Segurança
+Mobilidade
+Desenvolvimento econômico
+Saúde
+Opções de Cultura
+Educação
+Condições de habitação
+Meio Ambiente
+Tecnologia e Inovação
+Turismo
+Oportunidades de trabalho
+Investimento em infraestrutura
+Saneamento Básico
+Governança
+Níveis de satistação - Gávea (moradores e frequentadores)
+Satisfeito(a) ou Muito satisfeito(a)
+Neutro (a)
+Insatisfeito(a) ou Muito insatisfeito(a)
+28%
+37%
+35%
+52%
+54%
+51%
+53%
+56%
+19%
+55%
+35%
+25%
+27%
+15%
+31%
+40%
+37%
+23%
+31%
+30%
+31%
+24%
+42%
+34%
+37%
+36%
+35%
+36%
+42%
+24%
+29%
+25%
+15%
+18%
+16%
+19%
+39%
+11%
+29%
+39%
+38%
+49%
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+80%
+90%
+100%
+Segurança
+Mobilidade
+Desenvolvimento econômico
+Saúde
+Opções de Cultura
+Educação
+Condições de habitação
+Meio Ambiente
+Tecnologia e Inovação
+Turismo
+Oportunidades de trabalho
+Investimento em infraestrutura
+Saneamento Básico
+Governança
+Percepção de satisfação - Gávea (moradores)
+Satisfeito(a) ou Muito satisfeito(a)
+Neutro (a)
+Insatisfeito(a) ou Muito insatisfeito(a)
+
+--- Page 16 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+16
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+a governança nos territórios “favela” é imprescindível 
+para impactar positivamente seus moradores.
+4.2.2.2. Saneamento Básico
+ Mais uma vez as diferenças se acentuam, 
+demonstrando a percepção de “CIDADE PARTIDA”, 
+mesmo dentro de um único bairro.
+Essas situações recorrentes exigem respostas 
+diferentes, principalmente da administração pública, 
+mas também do setor privado e das organizações sociais.
+4.2.2.3. Investimento em Infraestrutura
+O quadro se repete: mais da metade dos moradores 
+das favelas encontram-se insatisfeitos e a maioria dos 
+moradores do asfalto não relatam insatisfação. 
+4.2.2.4. Oportunidades de trabalho e 
+Desenvolvimento Econômico
+A oferta de oportunidades de trabalho deve ser 
+uma prioridade. Mesmo para os moradores da “Gávea-
+asfalto”, o nível de satisfação não chega a 50%.
+Ações que privilegiem o empreendedorismo 
+serão muito bem aceitas, segundo a percepção dos 
+moradores. Cerca de 80% dos moradores da “Gávea-
+27%
+35%
+38%
+46%
+39%
+15%
+11%
+30%
+59%
+0%
+20%
+40%
+60%
+80%
+100%
+Satisfeito(a) ou Muito satisfeito(a)
+Neutro (a)
+Insatisfeito(a) ou Muito insatisfeito(a)
+Nível de Satisfação com as condições de 
+Saneamento Básico na Gávea
+Somente "Favelas"
+Somente "Asfalto"
+Moradores
+favela”, considerando os insatisfeitos somado com os 
+neutros, buscam melhores oportunidades de trabalho. 
+Para o “asfalto” esse número chega a 51%.
+Os “empregadores” da Gávea devem estar cientes 
+desses dados, que são importantes também para a oferta 
+de programas de capacitação e formação, principalmente 
+para profissionais de nível técnico.
+4.2.2.5. Turismo
+Os resultados evidenciam um alto grau de 
+satisfação em relação ao Turismo, tanto entre os 
+moradores do “asfalto” (65%) quanto os moradores 
+das favelas (46%). Para o total de moradores, quando 
+somadas as percepções dos satisfeitos com os neutros, o 
+percentual chega a 89%.
+A área de turismo, por sua capilaridade, pode 
+contribuir significativamente com a empregabilidade, 
+principalmente para os moradores da Gávea-favela.
+4.2.2.6. Tecnologia e Inovação
+25%
+36%
+39%
+32%
+44%
+24%
+18%
+29%
+53%
+0%
+20%
+40%
+60%
+80%
+100%
+Satisfeito(a) ou Muito satisfeito(a)
+Neutro (a)
+Insatisfeito(a) ou Muito insatisfeito(a)
+Nível de Satisfação com os investimentos 
+em Infraestrutura realizados na Gávea
+Somente "Favelas"
+Somente "Asfalto"
+Moradores
+35%
+37%
+29%
+49%
+35%
+16%
+23%
+38%
+39%
+0%
+20%
+40%
+60%
+80%
+100%
+Satisfeito(a) ou Muito satisfeito(a)
+Neutro (a)
+Insatisfeito(a) ou Muito insatisfeito(a)
+Nível de Satisfação com as Oportunidades de 
+Trabalho oferecidas na Gávea
+Somente "Favelas"
+Somente "Asfalto"
+Moradores
+55%
+34%
+11%
+65%
+29%
+5%
+46%
+38%
+16%
+0%
+20%
+40%
+60%
+80%
+100%
+Satisfeito(a) ou Muito satisfeito(a)
+Neutro (a)
+Insatisfeito(a) ou Muito insatisfeito(a)
+Nível de Satisfação serviços oferecidos ao 
+turista na Gávea
+Somente "Favelas"
+Somente "Asfalto"
+Moradores
+
+--- Page 17 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+17
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+ Em relação ao uso de TIC, mais uma vez é marcante 
+o gap entre favela e “asfalto”. Apenas 7% dos moradores 
+das favelas declaram estar satisfeitos com o emprego 
+das tecnologias e inovações.
+O acesso à internet é limitado, de baixa qualidade 
+e caro para os moradores das favelas, que usam o 
+“GatoNet” como a principal fonte de acesso.
+Mesmo para os moradores do “asfalto”, os serviços 
+disponíveis deixam a desejar. Apenas 31% se dizem 
+satisfeitos com os serviços que recebem.
+4.2.2.7.Meio Ambiente
+É surpreendente o nível de satisfação dos 
+moradores do “asfalto” com a preservação do meio 
+ambiente: 86% dos moradores “Gávea-asfalto” declaram-
+se satisfeitos e apenas 3% encontram-se insatisfeitos. Em 
+contrapartida, na favela o nível de insatisfação é de 35%. 
+O 
+ambiente 
+arborizado, 
+ruas 
+tranquilas, 
+poucos edifícios e não muito altos e uma população 
+relativamente pequena em relação a outros bairros da 
+zona sul, são fatores predominantes para a satisfação 
+de quem mora no “asfalto”. Mesmo entre os moradores 
+das duas favelas, a satisfação é superior a 50% (56%). 
+Quando somados os “neutros”, a satisfação com o meio 
+ambiente sobe para 75% dos entrevistados.
+19%
+42%
+39%
+31%
+46%
+23%
+7%
+38%
+55%
+0%
+20%
+40%
+60%
+80%
+100%
+Satisfeito(a) ou Muito satisfeito(a)
+Neutro (a)
+Insatisfeito(a) ou Muito insatisfeito(a)
+Nível de Satisfação com o emprego de 
+tecnologia e inovação na Gávea
+Somente "Favelas"
+Somente "Asfalto"
+Moradores
+56%
+24%
+19%
+86%
+11%
+3%
+28%
+37%
+35%
+0%
+20%
+40%
+60%
+80%
+100%
+Satisfeito(a) ou Muito satisfeito(a)
+Neutro (a)
+Insatisfeito(a) ou Muito insatisfeito(a)
+Nível de Satisfação com a preservação do 
+Meio Ambiente na Gávea
+Somente "Favelas"
+Somente "Asfalto"
+Moradores
+4.2.2.8. Habitação
+Os moradores do “asfalto” estão quase que 
+plenamente satisfeitos com as condições e qualidade 
+de suas casas. Em relação aos moradores das favelas, o 
+grau de satisfação é de 21%, que quando somado aos 
+moradores que são indiferentes (neutros), a percepção 
+sobe para 71%, o que não deixa de ser surpreendente. 
+Declaram-se 
+insatisfeitos 
+ou 
+muito 
+insatisfeitos 
+aproximadamente 1/3 dos moradores das favelas. 
+Comparando-se este resultado com a percepção 
+sobre o saneamento básico (item 4.2.2.2), pode-se 
+concluir que os moradores das favelas acreditam que 
+“fazem sua parte” no que tange sua habitação, no 
+entanto entendem que há uma carência da rede pública, 
+o que cabe ao governo. 
+4.2.2.9. Educação
+Os serviços de educação disponíveis na Gávea, 
+satisfazem plenamente 68 % dos moradores do “asfalto”. 
+Os colégios privados asseguram essa percepção, mesmo 
+quando não frequentados pelos moradores do “asfalto” 
+ou das favelas. Já para os moradores das favelas Rocinha 
+e Parque da Cidade, o nível de satisfação com o sistema 
+educacional atinge 37% dos moradores, quantidade 
+próxima à quantidade de insatisfeitos (31%). Outro 
+fato relevante é que para cerca de 1/3 dos moradores, 
+independente se do “asfalto” ou das favelas, a percepção 
+sobre os serviços de educação disponíveis é neutra, ou 
+seja, nem estão satisfeitos nem insatisfeitos. 
+53%
+31%
+16%
+87%
+12%
+1%
+21%
+50%
+29%
+0%
+20%
+40%
+60%
+80%
+100%
+Satisfeito(a) ou Muito satisfeito(a)
+Neutro (a)
+Insatisfeito(a) ou Muito insatisfeito(a)
+Nível de Satisfação com as condições e a 
+qualidade de Habitação na Gávea
+Somente "Favelas"
+Somente "Asfalto"
+Moradores
+51%
+30%
+18%
+68%
+29%
+3%
+37%
+32%
+31%
+0%
+20%
+40%
+60%
+80%
+100%
+Satisfeito(a) ou Muito satisfeito(a)
+Neutro (a)
+Insatisfeito(a) ou Muito insatisfeito(a)
+Nível de Satisfação com serviços de Educação 
+na Gávea
+Somente "Favelas"
+Somente "Asfalto"
+Moradores
+
+--- Page 18 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+18
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+A PUC-Rio é referenciada como instituição de 
+ensino, tendo aparecido como motivo de orgulho para 
+o morador “Gávea-asfalto”. É bom lembrar também que 
+existem muitos projetos sociais na PUC-Rio com foco na 
+educação complementar nas favelas pesquisadas.
+4.2.2.10. Cultura
+De forma geral, a maioria dos moradores estão 
+satisfeitos ou indiferentes com as opções de cultura 
+disponíveis, quer seja no “asfalto” quer residam nas 
+favelas da Rocinha ou Parque da Cidade. Ao se analisar 
+os grupos isoladamente, percebe-se uma clara diferença 
+de percepções. 2/3 dos moradores do “asfalto” estão 
+satisfeitos e apenas 4% estão insatisfeitos. Em relação 
+aos moradores das favelas, ¼ estão insatisfeitos e 1/3, 
+satisfeitos.  
+Para todos os temas analisados, repete-se a 
+distância entre o que é acessível aos moradores do 
+“asfalto” comparados com os residentes nas favelas. No 
+entanto, vale ressaltar que os dois grupos se consideram 
+moradores da Gávea.
+Cabe aqui intervenções pontuais, tanto no sentido 
+dos moradores do “asfalto” compartilharem suas opções 
+com os moradores das favelas, e vice-versa.
+Nesse aspecto, mais do que em outros, é possível 
+se implementar uma política de inclusão cultural, que 
+se exitosa, com certeza impactará outros indicadores, 
+diminuindo a distância entre as opções disponíveis para 
+os moradores da Gávea, como um todo.
+O nível de insatisfação é baixo para ambos os 
+grupos pesquisados. E o índice de satisfação com as 
+opções culturais disponíveis pode ser um alavancador 
+para a melhoria de outras condições de vida, como 
+educação, empregabilidade e saúde.
+4.2.2.11. Saúde
+Existe uma insatisfação com a saúde entre os 
+moradores, independente de onde residem. No entanto, 
+um número maior de moradores declara-se satisfeitos ou 
+muito satisfeitos: nas favelas esse indicador chega a 39% 
+e no “asfalto” 68%. Estes percentuais elevam a média de 
+satisfação para 52% do total de moradores.
+Tratar de diferentes questões de forma integrada, 
+com soluções centradas nas pessoas e não na geografia 
+do bairro, mostra-se uma estratégia adequada de 
+atuação conjunta para a melhoria da qualidade de vida 
+da totalidade dos moradores.
+4.2.2.12.Mobilidade e Transporte Público
+As condições de mobilidade e do transporte 
+público não satisfazem plenamente 76% da favela, 
+embora apenas 1/3 dos mesmos se declarem insatisfeitos 
+ou muitos insatisfeitos com o transporte público a que 
+tem acesso. As principais declarações estão na baixa 
+frequência dos ônibus de integração com o sistema 
+metroviário e os deslocamentos dentro das próprias 
+favelas (Rocinha e Parque da Cidade).
+54%
+31%
+15%
+74%
+21%
+4%
+36%
+39%
+25%
+0%
+20%
+40%
+60%
+80%
+100%
+Satisfeito(a) ou Muito satisfeito(a)
+Neutro (a)
+Insatisfeito(a) ou Muito insatisfeito(a)
+Nível de Satisfação com as opções de 
+Cultura na Gávea
+Somente "Favelas"
+Somente "Asfalto"
+Moradores
+37%
+40%
+24%
+50%
+36%
+14%
+24%
+43%
+33%
+0%
+20%
+40%
+60%
+80%
+100%
+Satisfeito(a) ou Muito satisfeito(a)
+Neutro (a)
+Insatisfeito(a) ou Muito insatisfeito(a)
+Nível de Satisfação com as condições de 
+Mobilidade e Transporte Público na Gávea
+Somente "Favelas"
+Somente "Asfalto"
+Moradores
+52%
+23%
+25%
+68%
+21%
+12%
+39%
+26%
+35%
+0%
+20%
+40%
+60%
+80%
+100%
+Satisfeito(a) ou Muito satisfeito(a)
+Neutro (a)
+Insatisfeito(a) ou Muito insatisfeito(a)
+Nível de Satisfação com serviços de Saúde 
+na Gávea
+Somente "Comunidades"
+Somente "Asfalto"
+Moradores
+
+--- Page 19 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+19
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+Os moradores do “asfalto” se fixaram mais na 
+mobilidade por transporte próprio, já que praticamente 
+não dependem de transporte público para seus 
+deslocamentos. As queixas se concentram no trânsito 
+(engarrafamentos), 
+principalmente 
+nos 
+horários 
+escolares.
+METRÔ até o final da Rua Marques de São Vicente: 
+esse é o principal desejo dos moradores, tanto da 
+favela quanto do “asfalto”, no âmbito da mobilidade. Há 
+espaço significativo para atuar no tema MOBILIDADE, 
+que necessariamente passa pelo sistema público de 
+transporte.
+ 
+4.2.2.13.Segurança 
+A insatisfação com a SEGURANÇA é muito grande 
+em toda a cidade do Rio de Janeiro. Chega a surpreender 
+o fato de 43% dos moradores da Gávea “asfalto” se 
+declararem satisfeitos ou muito satisfeitos com a 
+segurança pública. 
+Já na “Gávea-favela” a percepção é diferente: 
+59% dos moradores manifestam sua insatisfação com 
+a segurança. Quando somado com os “neutros”, a 
+insatisfação com a segurança alcança 88% dos moradores.
+ 
+28%
+31%
+42%
+43%
+32%
+25%
+12%
+29%
+59%
+0%
+20%
+40%
+60%
+80%
+100%
+Satisfeito(a) ou Muito satisfeito(a)
+Neutro (a)
+Insatisfeito(a) ou Muito insatisfeito(a)
+Nível de Satisfação com a Segurança na Gávea
+Somente "Favelas"
+Somente "Asfalto"
+Moradores
+
+--- Page 20 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+20
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+28%
+37%
+35%
+52%
+54%
+51%
+53%
+56%
+19%
+55%
+35%
+25%
+27%
+15%
+43%
+50%
+49%
+68%
+74%
+68%
+87%
+86%
+31%
+65%
+49%
+32%
+46%
+26%
+12%
+24%
+23%
+39%
+36%
+37%
+21%
+28%
+7%
+46%
+23%
+18%
+11%
+5%
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+80%
+90%
+100%
+Segurança
+Mobilidade
+Desenvolvimento econômico
+Saúde
+Opções de Cultura
+Educação
+Condições de habitação
+Meio Ambiente
+Tecnologia e Inovação
+Turismo
+Oportunidades de trabalho
+Investimento em infraestrutura
+Saneamento Básico
+Governança
+Níveis de SATISFAÇÃO - Gávea
+Moradores Favelas
+Morador (Asfalto)
+Morador (total)
+4.2.2.14. Níveis de satisfação e insatisfação: 
+panorama geral
+Foram pesquisados 14 temas de satisfação/
+insatisfação, que apresentam diferenças significativas 
+quando comparados os moradores da “GÁVEA-ASFALTO” 
+com a “GÁVEA-FAVELA”.
+a) Níveis de Satisfação
+Os maiores índices de satisfação encontrados 
+entre os moradores da “Gávea-asfalto” foram: 
+• Condições de habitação (87%);
+• Meio ambiente (86%);
+• Opções culturais (74%); e
+• Educação e saúde, ambos com 68%. 
+Sem dúvida esses resultados refletem o alto 
+poder aquisitivo e o nível educacional dos moradores da 
+Gávea-”asfalto”. 
+Por outro lado, esses mesmos temas quando 
+analisados 
+pelos 
+moradores 
+da 
+“Gávea-favela”, 
+apresentam resultados que são muito insuficientes. Por 
+exemplo: 
+• As condições de habitação variam de 87% de 
+satisfação no “asfalto” para 29 % nas favelas. 
+• A percepção sobre as questões ambientais, 
+que no “asfalto” registra 86% de satisfação, na 
+favela cai para 28%. 
+• E as opções culturais que apresentam índice 
+de satisfação de 74% no “asfalto”, alcança 
+apenas 36% nas favelas.
+Se bem é verdade que condições de Habitação, 
+Baneamento Básico e Infraestrutura, dependam 
+em grande parte da implementação de políticas 
+públicas 
+e 
+recursos 
+financeiros 
+consideráveis, 
+outras variáveis, como mobilidade, segurança e 
+oportunidades de trabalho, podem ser melhoradas 
+com ações desenvolvidas pela iniciativa privada e pelas 
+organizações sociais, ou ainda, pelas parcerias público-
+privadas (PPP).
+
+--- Page 21 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+21
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+42%
+24%
+29%
+25%
+15%
+18%
+16%
+19%
+39%
+11%
+29%
+39%
+38%
+49%
+25%
+14%
+16%
+12%
+4%
+3%
+1%
+3%
+23%
+5%
+16%
+24%
+15%
+32%
+59%
+33%
+39%
+35%
+25%
+31%
+29%
+35%
+55%
+16%
+39%
+53%
+59%
+66%
+0%
+20%
+40%
+60%
+80%
+100%
+Segurança
+Mobilidade
+Desenvolvimento econômico
+Saúde
+Opções de Cultura
+Educação
+Condições de habitação
+Meio Ambiente
+Tecnologia e Inovação
+Turismo
+Oportunidades de trabalho
+Investimento em infraestrutura
+Saneamento Básico
+Governança
+Níveis de INSATISFAÇÃO - Gávea
+Moradores Favelas
+Morador (Asfalto)
+Morador (total)
+A Governança, para os moradores da “Gávea-
+favela”, é o tema que registra o menor percentual de 
+satisfação: apenas 5% dos moradores declaram-se 
+satisfeitos. Sentem-se abandonados pela administração 
+pública, que segundo a percepção deles, o Governo só 
+tem olhos para o “asfalto”. Essa interpretação é recorrente, 
+evidenciando a tese da “CIDADE-PARTIDA”.
+b) Níveis de Insatisfação
+O tema “campeão” de insatisfação, tanto no 
+“asfalto” quanto nas favelas, é a percepção sobre 
+GOVERNANÇA.
+Mesmo havendo uma grande diferença entre os 
+moradores do “asfalto” (32%) e os da favela (66%), de 
+mais do que o dobro, os dois conjuntos de públicos 
+percebem a governança como o ponto da insatisfação 
+mais relevante entre os dados levantados. Um melhor 
+desempenho 
+nesta 
+área, 
+certamente, 
+impactará 
+positivamente o conjunto de moradores da Gávea.
+Segurança é outro fator crítico que aproxima os 
+dois mundos que compõem o bairro da Gávea. Mesmo 
+sendo bem maior a insatisfação com a segurança 
+entre os que habitam as favelas (59%) comparado 
+com os moradores do “asfalto” (25%), a percepção 
+de insatisfação sobre essa questão é a segunda mais 
+relatada pelos moradores.
+Algo parecido ocorre com a área de Tecnologia e 
+Inovação. O grau de insatisfação é alto, tanto nas favelas 
+
+--- Page 22 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+22
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+(55%) quanto no “asfalto” (23%). Neste campo também 
+deslumbra-se a possibilidade de atuação conjunta com 
+os moradores da Gávea. O oferecimento de acesso 
+à internet formal e a capacitação de adolescentes e 
+jovens, trará benefícios para a melhoria das condições 
+de vida da Gávea, com reflexos no aumento de renda da 
+população. 
+ 
+4.2.3. Tema de Alavanca 
+O tema de alavanca é aquele que mais 
+influência exerce sobre os demais temas. Por isso 
+este tema é considerado uma força de influência 
+no bairro e é considerada uma dimensão estrutural, 
+dada capacidade sua de influência e alavancar o 
+desenvolvimento. 
+Esta força é conhecida a partir da consolidação da 
+percepção da população local do tema que mais influencia 
+positivamente outros temas. Intervir nesse tema pode 
+alavancar indiretamente uma série de outras temáticas 
+no território. Deve ser vista como uma área estratégica e 
+prioritária. É o tema que mais influencia os outros temas e, 
+portanto, o tema de influência para a mudança. 
+ SEGURANÇA, EDUCAÇÃO, DESENVOLVIMENTO 
+ECONÔMICO e GOVERNANÇA, nessa ordem, são os 
+principais temas de alavancagem para a melhoria das 
+condições de vida dos moradores da Gávea. É claro 
+que aqui se apresentam também variações entre as 
+percepções dos moradores da favela e do “asfalto”. No 
+entanto, para alavancar outros temas e potencializar 
+os demais indicadores, melhorias na segurança, 
+na qualidade da educação e a busca aumentar o 
+desenvolvimento econômico, diminuir as desigualdades 
+sociais, gerar renda e proporcionar mais oportunidades 
+de trabalho, principalmente para os moradores da 
+Rocinha e da Parque da Cidade, são caminhos apontados 
+para aumentar o grau de satisfação dos moradores da 
+Gávea com a qualidade de vida que almejam.
+Quanto à governança, como dito anteriormente, 
+é fundamental aumentar a presença do setor público 
+(Estado e Município), tanto no que cabe a cada nível 
+da administração fazer, quanto na forma de divulgar o 
+20%
+7%
+14%
+6%
+6%
+24%
+3%
+3%
+3%
+1%
+13%
+26%
+9%
+8%
+7%
+5%
+23%
+0%
+3%
+5%
+1%
+13%
+16%
+4%
+20%
+5%
+7%
+24%
+6%
+3%
+1%
+1%
+12%
+19%
+10%
+13%
+6%
+7%
+22%
+2%
+5%
+3%
+1%
+12%
+0%
+5%
+10%
+15%
+20%
+25%
+30%
+Segurança
+Mobilidade
+Desenvolvimento econômico
+Saúde
+Cultura
+Educação
+Condições de habitação
+Meio Ambiente
+Tecnologia e Inovação
+Turismo
+Governança
+Tema de Alavanca - Gávea
+Moradores e frequentadores
+Somente "Favelas"
+Somente "Asfalto"
+Moradores
+Consenso
+Divergência de percepções
+
+--- Page 23 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+23
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+que for feito. Pequenas iniciativas podem trazer grandes 
+resultados na percepção dos moradores, levando-os 
+a entender também o quanto a EDUCAÇÃO PARA A 
+CIDADANIA é necessária para a melhoria das condições 
+de vida nos territórios.
+4.2.4. Desejos e necessidades dos 
+moradores e frequentadores em 
+relação ao bairro
+O(s) tema(s) revelado(s) como necessidades e 
+desejos locais refletem as dores atuais da população 
+e é considerada uma dimensão cognitiva, cujas 
+informações são conhecidas a partir das declarações 
+das pessoas locais, em depoimentos espontâneos, a 
+partir de perguntas abertas. 
+Trabalhar as dores da população eleva o 
+sentimento de atendimento aos mesmos e aumenta 
+a relação de reciprocidade entre as pessoas e o 
+local. É o tema que a população pede mudanças (as 
+dores e necessidades da população) e onde há maior 
+insatisfação declarada. Os resultados relacionados a 
+este tema vão gerar emoções positivas na população, 
+como contentamento.
+4.2.4.1. Moradores
+O que mais chama atenção ao observar os desejos 
+e necessidades dos moradores, é a comparação entre a 
+quantidade de temas citados espontaneamente pelas 
+pessoas do “asfalto” e a população das favelas. Enquanto 
+no “asfalto” 13 temas são identificados por pelo menos 
+2% da população local, nas favelas essa quantidade 
+dobra (27 temas), caracterizando uma variedade maior 
+de aspirações.
+No “asfalto”, por exemplo, o segundo desejo/
+necessidade mais citado é “resolver o metrô”, com 7% 
+MORADORES (total)
+1.	 Segurança
+2.	 Infraestrutura
+3.	 Melhorar esgotos
+4.	 Melhorar trânsito
+5.	 Resolver metrô
+6.	 Serviços saúde
+7.	 Melhorar calçadas
+8.	 Melhorar ruas
+9.	 Melhorar transporte
+10.	Presença governo
+11.	 Obras
+12.	Opções culturais
+13.	Educação
+14.	Enchente chuva
+15.	Melhorar praças
+16.	Ordem pública
+17.	Modernizar
+Moradores - somente “asfalto”
+Moradores - somente favelas
+1.	 Segurança - 20%
+2.	 Resolver metrô - 7%
+3.	 Melhorar calçadas - 6%
+4.	 Infraestrutura - 6%
+5.	 Melhorar trânsito - 5%
+6.	 Melhorar praças - 4%
+7.	 Presença governo - 3%
+8.	 Opções culturais - 3%
+9.	 Sinalização trânsito - 3% 
+10.	 Melhorar transporte - 3%
+11.	 Modernizar - 3%
+12.	Ordem pública - 3%
+1.	 Segurança - 9%
+2.	 Melhorar esgotos - 7%
+3.	 Serviço saúde- 6%
+4.	 Infraestrutura- 6%
+5.	 Melhorar ruas- 5%
+6.	 Obras - 5%
+7.	 Educação - 4%
+8.	 Ser bairro - 4%
+9.	 Melhorar transporte- 3% 
+10.	Serviços públicos- 3%
+11.	 Respeito moradores - 3%
+12.	Melhorar acessos- 3%
+13.	Presença governo - 3%
+14.	Enchente chuva - 2%
+15.	Investimento público- 2%
+16.	Opções culturais - 2%
+17.	Luz qualidade - 2%
+18.	Melhorar trânsito - 2% 
+19.	Saneamento - 2%
+20.	Qualidade escolas  
+públicas - 2%
+21.	Comércio barato - 2%
+22.	Habitação qualidade - 2%
+23.	Espaços públicos - 2%
+24.	Meio ambiente - 2%
+25.	Água qualidade - 2%
+26.	Melhorar renda - 2%
+27.	Ordem pública - 2%
+
+--- Page 24 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+24
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+de referências, tema que nem aparece no imaginário da 
+população das favelas.
+Embora com percentuais bem diferentes (20% 
+no “asfalto” e 9% nas favelas), o maior desejo refere-se 
+às questões relacionadas à segurança das pessoas. As 
+percepções são bem diferentes: enquanto o “asfalto” 
+clama por mais polícia, a favela vê na polícia uma 
+geradora de violência. A história recente da Rocinha 
+registra mais situações de violência nas ocasiões em que 
+a polícia está presente.
+No aspecto SEGURANÇA, não se pode deixar de 
+lado a presença e a atuação de organizações criminosas, 
+tanto às ligadas ao tráfico quanto àquelas dominadas 
+por milícias.
+As respostas fornecidas sugerem a falta que faz uma 
+política de educação para a cidadania, que demonstre 
+com clareza o papel das pessoas/moradores para 
+melhorar o território onde vivem. Com mais participação 
+popular e consciência de pertencimento, os próprios 
+moradores podem contribuir significativamente, com a 
+soma de suas habilidades e representatividade, para a 
+melhoria das condições de vida, seja no “asfalto” ou na 
+favela.
+20%
+7%
+6%
+6%
+5%
+4%
+3%
+3%
+3%
+3%
+3%
+3%
+2%
+2%
+2%
+2%
+2%
+2%
+2%
+2%
+2%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+0%
+5%
+10%
+15%
+20%
+25%
+Segurança
+Resolver metrô
+Melhorar calçadas
+Infraestrutura
+Melhorar trânsito
+Melhorar praças
+Presença governo
+Opções culturais
+Sinalização trânsito
+Melhorar transporte
+Modernizar
+Ordem pública
+Enchente chuva
+Melhorar esgotos
+Serviço saúde
+Melhorar ruas
+Sinalização pedestre
+Comércio
+Atividades crianças jovens
+Manutenção
+Obras
+Acessibilidade cadeirante
+Investimento privado
+Investimento público
+Atratividade turismo
+Comércio barato
+Atratividade
+Conter crescimento
+Organização barulho bar
+Necesidades - moradores “asfalto”
+9%
+7%
+6%
+6%
+5%
+5%
+4%
+4%
+3%
+3%
+3%
+3%
+3%
+2%
+2%
+2%
+2%
+2%
+2%
+2%
+2%
+2%
+2%
+2%
+2%
+2%
+2%
+0%
+5%
+10%
+15%
+20%
+25%
+segurança
+melhorar esgotos
+serviço saúde
+infraestrutura
+melhorar ruas
+obras
+educação
+ser bairro
+melhorar transporte
+serviços públicos
+respeito moradores
+melhorar acessos
+presença governo
+enchente chuva
+investimento público
+opções culturais
+luz qualidade
+melhorar trânsito
+saneamento
+qualidade escolas públicas
+comércio barato
+habitação qualidade
+espaços públicos
+meio ambiente
+Água qualidade
+melhorar renda
+ordem pública
+Necessidades - moradores “favelas”
+ 4.2.4.2. Frequentadores
+Sob o ponto de vista dos frequentadores, os 
+desejos e necessidades que se destacam são, por ordem 
+de importância: a segurança, o término do metrô, mais 
+opções de transporte público, melhorar o trânsito, 
+consertar as calçadas e melhorar o escoamento da 
+água em dias de chuva. Quando demandas comércio e 
+Frequentadores
+1.	 Segurança
+2.	 Metrô
+3.	 Variedade de transporte
+4.	 Melhorar o trânsito
+5.	 Consertar calçadas
+6.	 Lixo em dia de chuva
+7.	 Melhorar saneamento básico
+8.	 Melhorar condições transporte
+9.	 Modernizar o bairro
+10.	Restaurantes acessíveis
+11.	 Comércio mais acessível
+12.	Não sabe dizer
+13.	Ciclovia
+14.	Diminuir população de rua
+15.	Limpeza
+
+--- Page 25 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+25
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+serviços mais acessíveis, estão se referindo à oferta de 
+opções com preços menores.
+SEGURANÇA é a maior reivindicação. Para muitos 
+frequentadores, apesar de não ser um problema da 
+mesma dimensão de alguns bairros críticos, a questão 
+de segurança é crucial para melhorar a sensação de bem-
+estar das pessoas que visitam o bairro, sejam por lazer 
+ou por necessidades. Há que se considerar a existência 
+de instituições educacionais e de saúde, que aumentam 
+a circulação de frequentadores, impactando o trânsito e 
+a mobilidade da Gávea.
+ 4.2.5. Sentimento de orgulho 
+O(s) tema(s) revelado(s) como motivadores 
+refletem os sentimentos de orgulho em relação 
+ao bairro da população. É uma força motriz, que 
+tem relação com a vocação e identidade locais, e 
+é, portanto, considerada uma dimensão da ação, 
+conhecida a partir das declarações das pessoas locais, 
+em depoimentos espontâneos, a partir de perguntas 
+abertas. A temática que os moradores associam ao 
+sentimento de orgulho, eleva a autoestima, gera 
+emoções positivas relacionadas ao sentimento de 
+pertencimento, motiva e convida para a ação. Os 
+resultados vão impactar o engajamento. 
+Soluções que usam essa(s) força(s) motriz(es) 
+unem e motivam as pessoas, reforçando a vontade de 
+agir e transformar.
+A tranquilidade do bairro e sua localização 
+predominam na sensação de orgulho e pertencimento 
+dos moradores da “Gávea-asfalto”. Quando consideradas 
+as declarações das pessoas das favelas, a principal 
+evidência é a de que não há entre esses moradores, 
+motivos fortes o suficiente para se orgulharem do 
+lugar onde residem. 
+A localização, a beleza e a tranquilidade 
+coincidem com a percepção dos moradores do 
+“asfalto”, embora em menor proporção. 
+Vale ressaltar que a coletividade aparece como 
+um sentimento positivo para os moradores das 
+favelas, o que pode ser explorado em projetos futuros 
+que contribuam, ainda mais, com a proposta de bairro 
+inteligente e bom para se morar.
+Moradores (total)
+1.	 Tranquilidade 
+2.	 Localização
+3.	 Bom (de morar)
+4.	 Pessoas
+5.	 Beleza
+6.	 Natureza
+Somente “asfalto” 
+1.	 Tranquilidade - 21%
+2.	 Localização - 13%
+3.	 Acesso fácil - 7%
+4.	 Natureza - 5%
+5.	 Beleza  - 5%
+6.	 Tudo perto - 3%
+7.	 Tradição - 3%
+8.	 Segurança - 3%
+9.	 PUC - 2%
+10.	Perto da praia - 2%
+11.	 Perto do Jardim Botânico e/ou 
+Lagoa - 2%
+Somente favelas
+1.	 Nada - 7%
+2.	 Localização - 7%
+3.	 Beleza - 6%
+4.	 Tranquilidade - 6%
+5.	 não sabe - 6%
+6.	 Tudo perto - 5%
+7.	 Coletividade - 4%
+
+--- Page 26 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+26
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+É importante notar que, embora em pequena 
+proporção, a PUC aparece como motivo de orgulho para 
+os moradores da Gávea, havendo inclusive referência 
+em questões abertas, nos projetos sociais apoiados pela 
+instituição. 
+O acesso fácil e a localização são também motivos 
+de orgulho, tanto para os moradores do “asfalto” quanto 
+para os residentes nas favelas, embora com proporções 
+diferentes, mas representativo no quadro geral do 
+SENTIMENTO DE ORGULHO.
+Tranquilidade é o maior motivo de orgulho para 
+os moradores da Gávea-”asfalto” (21%). Já para os que 
+vivem na Gávea-favelas, comparando com os demais 
+temas, tranquilidade aparece na terceira posição (6,3%) 
+como motivo de orgulho. 
+Entre um e outro grupo de moradores, a diferença 
+é significativa: tranquilidade é referida 3,3 vezes menos 
+21%
+13%
+7%
+5%
+5%
+3%
+3%
+3%
+2%
+2%
+2%
+2%
+2%
+2%
+1%
+0%
+5%
+10%
+15%
+20%
+25%
+tranquilidade
+localização
+acesso fácil
+natureza
+beleza
+tudo perto
+tradição
+segurança
+puc
+perto da praia
+perto do jardim botânico e/ou lagoa
+atividades
+qualidade de vida
+serviços
+praça
+ORGULHO - MORADOR “asfalto”
+7,4%
+6,9%
+6,3%
+6,3%
+6,3%
+5,3%
+4,2%
+3,7%
+3,7%
+2,6%
+2,1%
+2,1%
+2,1%
+1,6%
+1,6%
+1,6%
+1,6%
+1,6%
+1,1%
+0%
+5%
+10%
+15%
+20%
+25%
+nada
+localização
+beleza
+tranquilidade
+não sabe
+tudo perto
+coletividade
+natureza
+vista
+atividades
+parque
+vizinhança
+família
+acesso fácil
+perto da praia
+acessível
+tem tudo
+moradores
+planetário
+ORGULHO - MORADOR “favela”
+pelos moradores da favela do que pelos do “asfalto”.
+Para os moradores da Gávea-favelas, nenhum 
+motivo de orgulho mereceu destaque superior a 10%. A 
+localização do bairro, tema mais citado, alcançou apenas 
+6,9% das referências.
+A análise detalhada dos dados indica que 
+os moradores da Gávea valorizam e se orgulham 
+significativamente das vantagens de “morar no bairro”. 
+As oportunidades para se trabalhar os valores positivos 
+existem e precisam ser mais exploradas.
+Equipamentos públicos, como o Planetário e o 
+Jardim Botânico, por exemplo, que podem aumentar 
+o orgulho e o sentimento de pertencimento dos 
+moradores, foram pouco citados.
+Muitos dos entrevistados declararam sequer já 
+terem visitado o Planetário e o Jardim Botânico, embora 
+saibam da existência deles.
+Os resultados indicam que esses espaços merecem 
+atenção especial estratégias que levem os moradores a 
+reconhecerem e se orgulharem dessas instalações.
+4.2.6.	 Frustrações
+O(s) tema(s) revelado(s) como sabotadores 
+refletem os sentimentos de frustrações da população 
+em relação ao bairro. É uma força sabotadora das ações 
+e, portanto, encontra-se na dimensão da inércia. Diz 
+respeito àquilo que traz o sentimento de frustração e 
+medo. Soluções que recorrem à frustrações passadas ou 
+remetem às frustrações da população podem não ter o 
+engajamento e força para a mudança.
+Somente  “asfalto”
+1.	 Nada-20%
+2.	 Insegurança-10%
+3.	 Trânsito-9%
+4.	 População rua-9%
+5.	 Assalto/violência-4%
+6.	 Barulho-4%
+7.	 Dias chuva-4%
+8.	 Descaso governo-3%
+9.	 Insegurança andar ruas-3%
+10.	Manutenção-3%
+11.	 Desigualdade-3%
+12.	Opções comércio-3%
+13.	Segurança noite-3%
+14.	Alto custo de vida-2%
+15.	Organização trânsito-2%
+
+--- Page 27 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+27
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+Frustrações sobre algo que se espera que aconteça 
+e não aconteceu, ou a expectativa de que, se realizadas, 
+algumas ações “resolveriam” um determinado problema, 
+e ao serem realizadas, não levaram às soluções 
+pretendidas. Esse é o sentimento que se procura 
+identificar nessa análise, para que novas frustrações não 
+se repitam.
+Mais uma vez recorremos à analise das percepções 
+registradas nos dois conjuntos de moradores estudados: 
+os do “asfalto” e os das favelas.
+4.2.6.1. Sabotador  - “asfalto”
+Em relação ao “asfalto”, um quinto dos moradores 
+(20%) não identificam especificamente uma “força 
+sabotadora”. Para os restantes 80%, são muitas as forças 
+sabotadoras e se apresentam de forma dispersas. A 
+insegurança (10%), o trânsito (9%) e a presença de 
+população de rua (9%), destacam-se como forças que 
+impedem ou prejudicam o bem-estar dos moradores. A 
+partir daí outros 34 “sabotadores” são identificados, no 
+Somente  
+favelas
+1.	 Exclusão-11%
+2.	 Nada-11%
+3.	 Desigualdade-9%
+4.	 Trânsito-9%
+5.	 Insegurança-6%
+6.	 Descaso governo-4%
+7.	 Subida-4%
+8.	 Transporte-4%
+9.	 Barulho-3%
+10.	Dias chuva-2%
+11.	 Esgoto-2%
+12.	Vizinhança-2%
+20%
+10%
+9%
+9%
+4%
+4%
+4%
+3%
+3%
+3%
+3%
+3%
+3%
+2%
+2%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+0%
+5%
+10%
+15%
+20%
+25%
+nada
+insegurança
+trânsito
+população rua
+assalto/violência
+barulho
+dias chuva
+descaso governo
+insegurança andar ruas
+manutenção
+desigualdade
+opções comércio
+segurança noite
+alto custo de vida
+(falta de) organização trânsito
+distância
+falta investimento
+falta policiamento
+lazer crianças
+não sabe
+obras inacabadas
+passividade pessoas
+usuário drogas espaço…
+desordem
+exclusão
+falta de interação
+falta metrô
+favela
+futuro
+manutenção calçadas
+pobreza
+população flutuante
+saúde
+segurança presente
+serviço saúde cheio
+tradição
+tumulto
+vizinhança
+SABOTADOR – “ASFALTO” 
+11%
+11%
+9%
+9%
+6%
+4%
+4%
+4%
+3%
+2%
+2%
+2%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+1%
+0%
+5%
+10%
+15%
+20%
+25%
+exclusão
+nada
+desigualdade
+trânsito
+insegurança
+descaso governo
+subida
+transporte
+barulho
+dias chuva
+esgoto
+vizinhança
+condições acesso
+falta cuidado morador
+falta infraestrutura
+favela
+não sabe
+operação
+passividade pessoas
+sabe
+serviços públicos
+agitação
+alto custo de vida
+amagávea
+ambiente hostil
+chegar em casa
+condições moradias
+condomínios
+crianças envolvidas crime
+degradação ambiental
+desordem
+distância
+drogas
+escolas
+falta espiritualidade
+falta investimento
+iluminação
+ineficiência governo
+instabilidade serviço
+internet falha
+lazer crianças
+lixo
+moradores
+organização trânsito
+passividade jovens
+polícia
+população rua
+problemas
+saúde
+segurança noite
+sociedade
+tudo
+tumulto
+SABOTADOR – “FAVELAS” 
+
+--- Page 28 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+28
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+entanto com pequenos impactos quando considerados 
+isoladamente. Pode-se concluir que para os moradores da 
+Gávea-”asfalto”, as forças sabotadoras estão capilarizadas 
+em 38 razões, sendo que 23 delas alcançam cada uma até 
+1% das referências. 
+Aplicando-se o Teorema de Pareto (Regra 80/20), 
+12 dessas forças indicam a necessidade de atenção 
+especial. São as que atingem pelo menos 3% das citações 
+espontâneas dos moradores. Relembrando que para 
+20% deles não há força sabotadora presente na Gávea-
+”asfalto”.
+4.2.6.2. Sabotador  - favelas
+Já quando analisamos as forças sabotadoras da 
+Gávea-favelas, verifica-se uma capilaridade ainda maior 
+das forças sabotadoras identificadas pelos moradores. 
+Foram citadas espontaneamente 52 “forças sabotadoras”, 
+assim consolidadas:
+• Com 11% de citações duas respostas (nada e 
+exclusão social); e
+• Com 9% de citações, duas forças (trânsito e 
+desigualdade).
+As demais 60% das citações estão dispersas em 49 
+temas considerados sabotadores, sendo que 32 foram 
+citados por até 1% dos moradores entrevistados da 
+Gávea-favelas.
+Aplicando-se mais uma vez o Teorema de Pareto, 
+ações consistentes para mudar a percepção sobre os 
+temas sabotadores, devem se concentrar nos 8 temas 
+mais citados.
+Outras questões a considerar dizem respeito a 
+maneira como são percebidos os temas sabotadores na 
+Gávea-”asfalto” em comparação com a Gávea-favela. Por 
+exemplo:
+• O trânsito, tanto no “asfalto” quanto na favela, 
+aparece com 9% de citações como uma questão 
+sabotadora. No entanto, para o “asfalto” é um problema 
+de “engarrafamentos recorrentes”. Já para as favelas é a 
+falta de acesso à algumas vielas e becos;
+• A desigualdade é citada três vezes mais (9%) 
+como tema sabotador pela favela em relação ao “asfalto” 
+(3%). Para os moradores das favelas, desigualdade 
+significa falta de oportunidades de estudo e trabalho e 
+diferenças sociais e econômicas.
+No “asfalto” esses mesmos indicadores são 
+assinalados em uma escala bem menor;
+• A insegurança para o “asfalto” está relacionada às 
+ocorrências de delitos, como furtos, roubos, agressões e 
+assaltos (insegurança, assalto e violência foram citados 
+por 14% das pessoas entrevistadas. Nas favelas a 
+insegurança decorre da ação de traficantes e milicianos, 
+que impõem suas normas e vontades aos moradores.
+• A população de rua, que alcançou 9% de citações 
+espontâneas no “asfalto”, não aparece como tema 
+relevante para as favelas; 
+• Curiosamente o “descaso do governo” é 
+percebido com pequena diferença entre os moradores 
+do “asfalto” (3%) e os residentes nas favelas (4%). Ao 
+analisar mais detidamente essa questão, o que se ouviu 
+foi que “do governo não se espera mais nada”. Não há um 
+sentimento de que o governo não tem responsabilidade 
+sobre as forças sabotadoras. Ao contrário, o que não 
+há é a esperança de que “o governo faça alguma coisa”. 
+Prevalece nos dois territórios a descrença de que o 
+governo possa ser o agente responsável pela melhoria 
+das condições de vida dos moradores da Gávea. 
+Talvez esse seja o maior desafio a ser enfrentado. 
+É fundamental que a população perceba e cobre as 
+responsabilidades que cabem aos governos estadual 
+e municipal, o pleno exercício dos direitos humanos, 
+assegurados pela Constituição Federal.
+
+--- Page 29 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+29
+Mapa das Forças Locais 
+Atuantes da Gávea
+5.
+MFLA - GÁVEA
+
+--- Page 30 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+30
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+5.1. MFLA GÁVEA (“asfalto” mais  favelas)
+5.1.1. Força de Influência da Gávea
+A Força de Influência diz respeito ao(s) tema(s) que 
+mais influencia(m) os outros temas, e é considerada uma 
+força capaz de alavancar o bairro. Tem alta repercussão e 
+impacto nas outras áreas e exerce influência nos resultados 
+dos outros temas.
+Considerando a Gávea como um todo, as forças de 
+influência capazes de alavancar o bairro se concentram 
+na EDUCAÇÃO e na SEGURANÇA. São esses dois temas 
+que exercem mais influência sobre os demais. De 
+acordo com a percepção dos moradores, melhoras 
+tanto na segurança quanto na educação, impactarão 
+positivamente os demais temas. 
+A coincidência dos temas nos dois grupos não 
+significa que as ações a serem tomadas podem ser as 
+mesmas para a Gávea-”asfalto” e Gávea-favelas. No 
+entanto, guardadas suas peculiaridades, é importante 
+notar que os temas alavancadores têm o mesmo sentidos 
+para ambos os grupos.
+5.1.2. Força dos Desejos da Gávea
+A Força dos Desejos diz respeito ao(s) tema(s) 
+que a população deseja e/ou necessita mudanças. É 
+onde encontram-se as dores e há maior insatisfação. Os 
+resultados aqui vão gerar emoções positivas na população, 
+como contentamento.
+Em relação às forças dos desejos na Gávea, 
+a SEGURANÇA também é um tema impactante, ao 
+lado do desejo de que a Gávea disponha de melhor 
+INFRAESTRUTURA. A falta de segurança é a maior DOR 
+das pessoas do bairro, reafirmando um sentimento 
+recorrente na cidade do Rio de Janeiro. 
+Já no que concerne a infraestrutura, por razões 
+diferentes, os residentes tanto das favelas como 
+os do “asfalto” identificam como uma DOR. Como 
+visto anteriormente, as reivindicações mudam mas 
+concentram-se no eixo da infraestrutura. 
+
+--- Page 31 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+31
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+5.1.3. Força Motriz da Gávea
+A Força Motriz diz respeito ao(s) tema(s) que 
+motiva(m) e impulsiona(m) a população para a ação. Tem 
+relação  com o DNA e a vocação local. Eleva a autoestima, 
+aumenta o sentimento de pertencimento e traz orgulho. Os 
+resultados vão impactar o engajamento.
+Na Gávea, as forças capazes de motivar os 
+moradores, concentram-se na TRANQUILIDADE e na 
+LOCALIZAÇÃO do bairro. 
+É curioso que o sentimento de insegurança conviva 
+com a percepção de tranquilidade. 
+Em relação ao espaço público, os moradores 
+constatam que “não tem camelô, gente morando nas 
+ruas e nem drogados. Por isso gosto de morar aqui”.
+A localização é outro fator de destaca para os 
+moradores da Gávea. “É perto de tudo, o que eu preciso 
+tem aqui”. Frases como estas expressam sentimentos 
+das pessoas entrevistadas. Dizer que mora na Gávea é 
+motivo de orgulho e a localização do bairro transmite 
+um sentimento de pertencimento próprio.
+5.1.4. Força Sabotadora da Gávea
+A Força Sabotadora diz respeito ao(s) tema(s) 
+que  traz(em) o sentimento de frustração. Soluções que 
+recorrem a frustrações passadas ou remetem às frustrações 
+da população podem não ter o engajamento e força para a 
+mudança.
+Pode parecer alto o número de moradores que 
+não identificam nenhuma FORÇA SABOTADORA (20% 
+dos moradores do “asfalto” e 11% dos residentes nas 
+favelas). Essa primeira impressão não se sustenta, 
+quando invertemos a leitura: 80% dos moradores do 
+“asfalto” admitem a presença de forças sabotadoras, 
+embora não as identifiquem com precisão. O mesmo 
+ocorre em relação aos moradores das favelas. Para estes, 
+89% sabem que existem forças sabotadoras, sem no 
+entanto especificarem, ou pelo menos reuní-las em um 
+grupo mais consistentes. 
+O TRÂNSITO volta ao cenário como força 
+sabotadora. Há um descontentamento com a mobilidade 
+urbana, percebidos pelos moradores da Gávea como um 
+problema do bairro.
+E a sensação de insegurança mais uma vez mostra 
+a importância desse tema. 
+“A cidade está entregue aos milicianos, aos 
+traficantes e aos desonestos. Não tem jeito ...”. Essa 
+frase dita por um morador exprime o sentimento 
+predominante. 
+5.2. MFLA GÁVEA: somente “asfalto”
+ 
+5.2.1. Força de Influência: Gávea - “asfalto”
+SEGURANÇA (24%) e EDUCAÇÃO (22%) são os 
+dois principais temas alavancadores do bairro, segundo 
+os moradores do asfalto”. São desafios que necessitam 
+ser enfrentados, pois sem melhorias nesses temas, a 
+tarefa da mudar a percepção dos moradores acerca do 
+bem-estar no bairro estará comprometida. 
+No “asfalto” a SEGURANÇA indica a importância da 
+tranquilidade, que é um dos principais valores do bairro, 
+com reflexos na baixa incidência de criminalidade, 
+principalmente nas ocorrências de roubos e furtos. A 15ª 
+Delegacia de Polícia, com jurisdição na Gávea, atende 
+também os bairros do Jardim Botânico, parte da Lagoa, 
+São Conrado, Rocinha (inteira) e Vidigal. 
+A educação reflete a consciência da necessidade 
+de atualização constante do processo educacional. 
+Educação em tempo integral, bilingue, com atividades 
+no contra-turno, foram reivindicações lembradas pelas 
+pessoas entrevistadas.
+Há que se considerar a rede privada de ensino 
+que serve a Gávea pode introduzir mudanças que 
+posteriormente se estendam para as demais escolas, 
+públicas e privadas. 
+5.2.2. Forças dos Desejos: Gávea - “asfalto”
+Mais uma vez a FALTA DE SEGURANÇA é a principal 
+dor identificada pelos moradores do “asfalto” (20%), mais 
+que o dobro dos residentes na Rocinha e no Parque da 
+Cidade (9%).
+Das demais forças dos desejos para a população 
+residente no “asfalto”, destacam-se a finalização das 
+obras do metrô, as melhorias na infraestrutura do bairro, 
+incluindo o aproveitamento das praças (especialmente 
+a Praça Santos Dumont), como espaço público de lazer, 
+com foco nas crianças e nos idosos.
+No que concerne ao trânsito, o principal é melhorar 
+a fluidez dos veículos, diminuindo o tempo gasto nos 
+engarrafamentos, especialmente nas horas de “pico”.  
+Ao que parece, os moradores não esperam muito 
+do “governo”, citado por apenas 3% dos entrevistados 
+como um desejo de melhora.
+Embora as principais mudanças pretendidas 
+dependam do governo, os moradores do “asfalto” 
+não esperam muito dos administradores públicos, 
+sedimentando 
+um 
+sentimento 
+de 
+descrença 
+e 
+desconfiança quanto aos mesmos, tanto no âmbito 
+municipal, quanto estadual e federal.
+
+--- Page 32 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+32
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+5.2.3. Força Motriz: Gávea - “asfalto”
+A TRANQUILIDADE é percebida pela população do 
+“asfalto” como o principal atributo da Gávea. A sensação 
+de viver em um “bairro tranquilo” está associada  à 
+localização e ao acesso fácil. A beleza natural (ou 
+presença de áreas urbanas arborizadas) completa o 
+quadro de forças motivadoras para esses moradores.
+Trabalhar essas forças motrizes, principalmente 
+sob a perspectiva da preservação do que já existe e 
+a restauração das áreas degradadas, se constitui em 
+atividades capazes de motivar a população em torno de 
+um desejo comum.
+5.2.4. Força Sabotadora: Gávea - “asfalto”
+Do total de moradores da Gávea-”asfalto”, 40% 
+identificam forças sabotadoras. São elas: sensação de 
+INSEGURANÇA (10%), dificuldades com o TRÂNSITO 
+(9%), existência de POPULAÇÃO DE RUA (9%), assalto e 
+violência (4%), excesso de BARULHO (4%) e desconforto 
+nos DIAS DE CHUVA (4%).
+A soma dos moradores que indicaram como força 
+sabotadora a INSEGURANÇA e a ocorrência de ASSALTOS 
+e VIOLÊNCIA, alcança 14%, número esse só superado 
+pelos que não identificaram alguma força sabotadora 
+(20%). Constata-se mais uma vez que é alto o número 
+de moradores que admitem a existência de forças 
+sabotadoras (80%). Destes, a metade (40%) citam causas 
+específicas e os 40% restantes, embora considerem a 
+existência de FORÇAS SABOTADORAS, não identificam 
+claramente quais são. No entanto, nenhuma outra força 
+sabotadora citada atinge 4% de citações espontâneas.
+
+--- Page 33 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+33
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+5.3. MFLA GÁVEA: somente favelas
+5.3.1. Força de Influência: Gávea - Rocinha e 
+Parque da Cidade
+Quando analisadas em separado, as forças de 
+influência capazes de alavancar a Gávea, segundo os 
+moradores das favelas (Rocinha e Parque da Cidade), 
+concentram-se na EDUCAÇÃO, citadas por 22% dos 
+moradores, seguidas por ações que promovam o 
+DESENVOLVIMENTO ECONÔMICO (20%) e a SEGURANÇA 
+PÚBLICA (17%).
+Para os moradores da Gávea-favelas, o acesso 
+à educação de qualidade, a diminuição do abandono 
+escolar, principalmente pelos adolescentes, a defasagem 
+idade-série e a não disponibilidade das tecnologias de 
+informação e comunicação (TIC) são as metas a serem 
+perseguidas.  
+O DESENVOLVIMENTO ECONÔMICO é a segunda 
+maior força de influência identificada (20%). A população 
+residente na Gávea-favela associa o desenvolvimento 
+econômico à geração de renda e entende que é preciso 
+melhorar a formação profissional, a oferta de empregos 
+(empregabilidade) e o aumento da remuneração 
+pelos serviços prestados. Há que se considerar que 
+muitos moradores da Gávea-favelas trabalham como 
+prestadores de serviços.
+A terceira força de influência identificada é a 
+SEGURANÇA PÚBLICA (17%). Para os moradores da 
+Rocinha e do Parque da Cidade, SEGURANÇA se traduz 
+não só na diminuição da criminalidade, mas acima 
+de tudo na garantia ao pleno exercício dos Direitos 
+Humanos e na promoção da Cidadania.  
+Essas três FORÇAS DE INFLUÊNCIA identificadas 
+pelos 
+moradores 
+da 
+Gávea-favelas 
+(EDUCAÇÃO, 
+DESENVOLVIMENTO 
+ECONÔMICO 
+e 
+SEGURANÇA 
+PÚBLICA) são capazes de alavancar os resultados dos 
+demais temas, promovendo a melhoria da percepção 
+sobre a qualidade de vida dos moradores da Rocinha e 
+do Parque da Cidade.
+Vale lembrar que a percepção sobre a segurança 
+é bem diferente quando comparados os moradores das 
+favelas com os do “asfalto”.
+Nas favelas SEGURANÇA está relacionada com a 
+garantia do exercício dos direitos e o acesso aos bens e 
+serviços sem a intermediação de grupos ligados à milícia 
+ou ao tráfico de drogas. Para muitos dos entrevistados, 
+a presença da polícia é um disparador de situações de 
+violência. Isso ocorre devido a baixa confiabilidade dos 
+moradores nas autoridades policiais. 
+Já para os moradores do “asfalto”, o aumento do 
+policiamento resultaria em mais segurança.  	
+ 
+5.3.2. Força dos Desejos: Gávea - Rocinha e 
+Parque da Cidade
+A SEGURANÇA, como vimos, é o principal foco das 
+atenções dos moradores da Gávea, independentemente 
+de onde residam.
+No ambiente das favelas, a segurança que aparece 
+como a terceira principal força de influência, é percebida 
+também como a maior dor (9% das citações). Na 
+sequência, como temas mais referidos pelos moradores, 
+estão “a falta ou a melhoria da rede de esgoto” (7%), a 
+deficiência dos serviçosde saúde e a infraestrutura (6%), 
+incluindo a melhoria das condições das ruas e vielas.
+Esses são os temas, segundo os moradores, que 
+geram mais frustrações e demandam soluções urgentes 
+por parte do “governo”. É exatamente por entenderem 
+que o “governo” não resolve os problemas, que a falta 
+de GOVERNANÇA é citada como a maior deficiência da 
+Gávea.
+5.3.3. Força Motriz: Gávea - Rocinha e Parque 
+da Cidade
+A primeira impressão é que a sensação de 
+conformismo com a situação em que vivem os moradores 
+das favelas, reflete-se claramente quando declaram que 
+“nada” será capaz de melhorar as condições de vida do bairro. 
+No entanto há que se considerar que 93% não 
+compartilham dessa opinião. Quando somados a 
+localização (7%), a beleza do lugar (6%), a tranquilidade 
+(6%), o fato de encontrar tudo perto (5%) e a valorizam 
+das relações comunitárias (4%), esses indicadores 
+totalizam 28%. Como o sentimento de orgulho associado 
+ao local é um atributo muito pessoal e a pergunta era 
+aberta, os resultados para esse item aparecem de forma 
+difusa, mas existem. 
+5.3.4. Força Sabotadora: Gávea - Rocinha e 
+Parque da Cidade
+A análise das forças sabotadoras apresenta um 
+cenário capilarizado. Exclusão e desigualdades, quando 
+somados, são sentimentos identificados por um quinto da 
+população dos moradores da Gávea-favelas. Embora baixo, 
+o descaso do governo é reconhecido como uma força 
+sabotadora da qualidade de vida. Lembrar das insatisfações 
+apontadas anteriormente ajuda a compreender esse 
+quadro. 40% dos moradores demonstram insatisfação 
+com a governança, 42% com a segurança pública e 39% 
+com a falta de acesso às TICs (nesse caso a insatisfação se 
+concentra nas dificuldades de usar a internet e os diversos 
+aplicativos que facilitam o “acesso” das pessoas aos bens, 
+serviços e produtos disponíveis na rede). Essas são as 
+principais forças sabotadoras que impedem ou dificultam 
+a melhoria da qualidade de vida destes moradores.
+
+--- Page 34 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+34
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+ 
+
+--- Page 35 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+35
+Próximas Etapas
+6.
+
+--- Page 36 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+36
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+Na sequencia dos resultados apresentados neste documento, estão previstas as seguintes atividades:
+a) Realização de até dois fóruns com stakeholders-chave para entendimento holístico das temáticas a serem tra-
+balhadas a partir dos cidadãos, bem como levantar aspectos relacionados a viabilidades técnicas e econômicas e 
+restrições regulatórias e ambientais, convergindo para um MAPA DE INOVAÇÃO DO BAIRRO (MIB). De acodo com 
+os resulaltados encontrados do diagnóstico, estes fóruns multi-stakeholders devem cobrir pelo dois temas, dentre 
+os quatro temas prioritários a seguir:
+• TEMA 1: SEGURANÇA (alavanca e dor Gávea-”asfalto”; alavanca e dor Gávea-favelas).
+• TEMA 2: EDUCAÇÃO CIDADÃ (alavanca Gávea-”asfalto”).
+• TEMA 3: GERAÇÃO DE RENDA (alavanca Gávea-favela). 
+•  TEMA 4: EDUCAÇÃO FORMAL (alavanca Gávea-favela).
+b) Realização de até seis workshops multidisciplinares de ideação, dentro e/ou fora da universidade, parte com 
+comunidade acadêmica e parte com comunidade externa.
+c) Implementação de um “living maker space” (LMS) focado em problemas da cidade.
+d) Divulgação dos resultados para ampliar o alcance de possíveis investimentos e parcerias para a implementação.
+
+--- Page 37 ---
+GÁVEA LAB | ‘Strategic Design For Smart City’ Lab | PUC-Rio 
+37
+Diagnóstico centrado na Experiência do Cidadão | Gávea
+Projeto temático FAPERJ 20/2022
+Gávea Lab
+‘Strategic Design For Smart City’ Lab | PUC-Rio 
+Diagnóstico centrado na experiência do cidadão
+RESULTADOS | DEZEMBRO DE 2023
+Diagnóstico centrado na experiência do cidadão para acelerar o 
+empreendedorismo local com foco na transição para cidades mais inteligentes 
+e sustentáveis: implementação de programa piloto no bairro da Gávea.
+FAPERJ Nº 20/2022: 
+Programa de apoio a projetos temáticos no estado do Rio de Janeiro
+LGD
+https://lgd.dad.puc-rio.br/
+REALIZAÇÃO
+APOIO
+APOIO INSTITUCIONAL
+
