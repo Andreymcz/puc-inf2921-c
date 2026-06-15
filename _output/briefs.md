@@ -1,3 +1,11 @@
+DONE | 2026-06-15 20:55 UTC | STARTED | 2026-06-15 20:43 UTC | research | best pipeline for clustering sentences — cluster in high dimension first then reduce to visualize vs reduce first then cluster
+
+---
+
+STARTED | 2026-06-15 20:19 UTC | research | model.encode(texts, normalize_embeddings=True, show_progress_bar=True) parameters to better generate embeddings for clustering in topics (education, saúde, segurança)
+
+---
+
 DONE | 2026-06-15 18:29 UTC | STARTED | 2026-06-15 18:27 UTC | implement | debug and print llm calls (plan-000042) | PLAN | 42
 
 ---
