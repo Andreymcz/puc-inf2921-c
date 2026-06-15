@@ -1,6 +1,7 @@
 """Generate cluster labels via Ollama LLM from representative posts."""
 from __future__ import annotations
 
+import logging
 import os
 
 import httpx
@@ -9,6 +10,9 @@ import pandas as pd
 
 OLLAMA_URL = os.environ.get("FALA_GAVEA_OLLAMA_URL", "http://localhost:11434/v1")
 OLLAMA_MODEL = os.environ.get("FALA_GAVEA_OLLAMA_MODEL", "qwen3:8b")
+
+log = logging.getLogger(__name__)
+_DEBUG_LLM = os.environ.get("FALA_GAVEA_DEBUG_LLM", "0") == "1"
 
 _LABEL_PROMPT = """\
 Você recebeu os seguintes relatos de cidadãos do mesmo grupo temático.
@@ -42,6 +46,9 @@ def label_clusters(df: pd.DataFrame) -> dict[int, str]:
         group = df[df["cluster_id"] == cid]
         samples = _pick_representatives(group)
         prompt = _LABEL_PROMPT.format(posts="\n".join(f"- {t}" for t in samples))
+        log.info("LLM request: model=%s cluster=%d", OLLAMA_MODEL, cid)
+        if _DEBUG_LLM:
+            log.info("[DEBUG_LLM] prompt:\n%s", prompt)
         try:
             resp = httpx.post(
                 f"{OLLAMA_URL}/chat/completions",
@@ -54,7 +61,11 @@ def label_clusters(df: pd.DataFrame) -> dict[int, str]:
             )
             resp.raise_for_status()
             label = resp.json()["choices"][0]["message"]["content"].strip()
-        except Exception:
+            log.info("LLM response: cluster=%d label=%r", cid, label)
+            if _DEBUG_LLM:
+                log.info("[DEBUG_LLM] raw response: %s", resp.text[:2000])
+        except Exception as exc:  # noqa: BLE001
+            log.warning("LLM call failed for cluster %d: %s", cid, exc)
             label = f"Cluster {cid}"
         labels[cid] = label
 

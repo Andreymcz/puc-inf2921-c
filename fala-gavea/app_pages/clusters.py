@@ -63,9 +63,9 @@ def render() -> None:
                 min_cluster_size=min_cluster_size,
             )
 
-        with st.spinner("Gerando labels com IA..."):
-            cluster_label_map = label_clusters(df)
-            df["cluster_label"] = df["cluster_id"].map(cluster_label_map)
+        df["cluster_label"] = df["cluster_id"].apply(
+            lambda cid: "Não classificado" if cid == -1 else f"Cluster {cid}"
+        )
 
         st.session_state.cluster_df = df
         n_clusters = df["cluster_id"].nunique() - (1 if -1 in df["cluster_id"].values else 0)
@@ -103,10 +103,21 @@ def render() -> None:
         for _, row in ordered.iterrows():
             label = row["cluster_label"]
             n = row["n"]
-            cluster_posts = df[df["cluster_label"] == label][["text", "territory_name"]].copy()
+            mask = df["cluster_label"] == label
+            cluster_posts = df[mask][["text", "territory_name"]].copy()
             cluster_posts.columns = ["Relato", "Territorio"]
             with st.expander(f"{label}  ({n} posts)", expanded=False):
                 st.dataframe(cluster_posts, use_container_width=True)
+                cluster_ids_in_group = df[mask]["cluster_id"].unique()
+                if not any(cid == -1 for cid in cluster_ids_in_group):
+                    if st.button("🤖 Gerar label com IA", key=f"label_btn_{label}"):
+                        cid = int(cluster_ids_in_group[0])
+                        with st.spinner(f"Gerando label para Cluster {cid}..."):
+                            new_labels = label_clusters(df[df["cluster_id"] == cid])
+                        new_label = new_labels.get(cid, label)
+                        df.loc[df["cluster_id"] == cid, "cluster_label"] = new_label
+                        st.session_state.cluster_df = df
+                        st.rerun()
 
         if save_btn:
             with st.spinner("Salvando labels nos posts..."):
