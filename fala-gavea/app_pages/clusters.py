@@ -17,6 +17,23 @@ def render() -> None:
     if "cluster_df" not in st.session_state:
         st.session_state.cluster_df = None
 
+    with st.expander("⚙️ Parâmetros de clusterização", expanded=False):
+        n_neighbors = st.slider(
+            "n_neighbors (UMAP)",
+            min_value=2, max_value=50, value=15,
+            help="Controla o balanço local/global da projeção. Reduza para datasets pequenos.",
+        )
+        min_dist = st.slider(
+            "min_dist (UMAP)",
+            min_value=0.01, max_value=0.5, value=0.1, step=0.01,
+            help="Distância mínima entre pontos. Valores menores criam clusters mais compactos.",
+        )
+        min_cluster_size = st.slider(
+            "min_cluster_size (HDBSCAN)",
+            min_value=2, max_value=20, value=5,
+            help="Tamanho mínimo de um cluster. Reduza se poucos posts formam grupos.",
+        )
+
     col1, col2 = st.columns([1, 4])
     with col1:
         run_btn = st.button("🔄 Gerar Clusters", use_container_width=True)
@@ -39,7 +56,12 @@ def render() -> None:
             return
 
         with st.spinner("Calculando clusters (embeddings já disponíveis)..."):
-            df = build_cluster_df(posts)
+            df = build_cluster_df(
+                posts,
+                n_neighbors=n_neighbors,
+                min_dist=min_dist,
+                min_cluster_size=min_cluster_size,
+            )
 
         with st.spinner("Gerando labels com IA..."):
             cluster_label_map = label_clusters(df)
@@ -48,6 +70,12 @@ def render() -> None:
         st.session_state.cluster_df = df
         n_clusters = df["cluster_id"].nunique() - (1 if -1 in df["cluster_id"].values else 0)
         st.success(f"{len(posts)} posts clusterizados em {n_clusters} clusters.")
+        noise_count = int((df["cluster_id"] == -1).sum())
+        if noise_count > 0:
+            st.info(
+                f"{noise_count} posts não foram atribuídos a nenhum cluster (ruído). "
+                "Se esse número for alto, reduza `min_cluster_size` ou `n_neighbors`."
+            )
 
     df = st.session_state.cluster_df
     if df is not None:
