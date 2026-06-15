@@ -1,3 +1,7 @@
+DONE | 2026-06-15 23:36 UTC | STARTED | 2026-06-15 22:49 UTC | reflect | Natali: misturar mapa georreferenciado; Andrey: dois casos de uso fala-gávea segurança
+
+---
+
 DONE | 2026-06-15 20:55 UTC | STARTED | 2026-06-15 20:43 UTC | research | best pipeline for clustering sentences — cluster in high dimension first then reduce to visualize vs reduce first then cluster
 
 ---
