@@ -1,3 +1,15 @@
+DONE | 2026-06-15 18:29 UTC | STARTED | 2026-06-15 18:27 UTC | implement | debug and print llm calls (plan-000042) | PLAN | 42
+
+---
+
+DONE | 2026-06-15 18:26 UTC | STARTED | 2026-06-15 18:25 UTC | plan | append on plan 42: only generate labels with AI if the user clicks on button in clusters page. each cluster shows the comments and the user can click on button to auto-generate label | PLAN | plan-000042
+
+---
+
+DONE | 2026-06-15 16:42 UTC | STARTED | 2026-06-15 16:37 UTC | plan | User can re-generate clusters modifying algorithm params. expose clustering params to user. some datasets dont clusterize using default params | PLAN | plan-000049
+
+---
+
 DONE | 2026-06-12 19:53 UTC | STARTED | 2026-06-12 19:48 UTC | implement | 47 | PLAN | plan-000047
 
 DONE | 2026-06-12 19:41 UTC | STARTED | 2026-06-12 19:38 UTC | plan | agora que salvamos os embeddings na criacao dos posts, nao precisamos recalcula-los na geracao dos clusters, podemos recuperar a informaçao já salva via api. | PLAN | plan-000047
