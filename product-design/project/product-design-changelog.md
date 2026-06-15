@@ -26,3 +26,4 @@
 2026-06-12 | plan-000045 | §0b | Fala Gávea: added "Inserção em Massa" Streamlit page (page_bulk_insert) — CSV upload, column validation, territory_level filter, 20-row preview, calls POST /citizen_posts/bulk; page count updated from 5 to 6
 2026-06-12 | plan-000043 | §0b | Fala Gávea: refactored app.py monolith into app_pages/ package — shared.py + 6 page modules (posts, new_post, label_feedback, dashboard, clusters, bulk_insert) each exporting render(); app.py now uses st.navigation() + st.Page(); USER_ID global replaced by st.session_state.user_id
 2026-06-12 | plan-000047 | §0b | Fala Gávea: build_cluster_df no longer calls embed_and_store — embeddings are now fetched directly via get_embeddings (persisted at post-creation time); spinner text updated to reflect the change
+2026-06-15 | plan-000049 | §0b | Fala Gávea: exposed n_neighbors, min_dist, min_cluster_size sliders in clusters page; noise-count hint added when posts land in cluster_id = -1
