@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fala Gávea - Intenções do Delegado</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+  <style>
+    :root { --bg1:#1a1a2e; --bg2:#16213e; --bg3:#0f3460; --accent:#e94560; --text:#e0e0e0; }
+    body { background: var(--bg1); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+    .header { background: var(--bg2); padding: 0.8rem 1.5rem; display: flex; align-items: center; gap: 1rem; }
+    .header a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+    .header h2 { margin: 0; font-size: 1rem; flex: 1; }
+    #plot { flex: 1; }
+    .empty { color: #666; text-align: center; margin-top: 4rem; font-size: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="/static/chat.html">← Chat</a>
+    <h2>Mapa de Intenções do Delegado</h2>
+    <a href="/static/index.html">Mapa de Relatos →</a>
+  </div>
+  <div id="plot"></div>
+  <div class="empty" id="empty" style="display:none">Nenhuma conversa registrada ainda. Use o chat para iniciar investigações.</div>
+
+  <script>
+    async function loadInsights() {
+      // First get all session IDs
+      const sessRes = await fetch('/chats/');
+      const sessions = await sessRes.json();
+      if (!sessions.length) { document.getElementById('empty').style.display = 'block'; return; }
+
+      const params = sessions.map(s => 'session_ids=' + s.id).join('&');
+      const res = await fetch('/chats/insights?' + params);
+      const points = await res.json();
+
+      if (!points.length) { document.getElementById('empty').style.display = 'block'; return; }
+
+      const sessionColors = {};
+      const palette = ['#e94560','#4090f0','#f0c040','#90e090','#c090f0','#f09040'];
+      const uniqSessions = [...new Set(points.map(p => p.session_id))];
+      uniqSessions.forEach((sid, i) => { sessionColors[sid] = palette[i % palette.length]; });
+
+      const traces = uniqSessions.map(sid => {
+        const pts = points.filter(p => p.session_id === sid);
+        return {
+          type: 'scatter',
+          mode: 'markers+text',
+          name: sid.slice(0, 8) + '...',
+          x: pts.map(p => p.x),
+          y: pts.map(p => p.y),
+          text: pts.map(p => p.text.slice(0, 60) + (p.text.length > 60 ? '...' : '')),
+          textposition: 'top center',
+          marker: { color: sessionColors[sid], size: 12, opacity: 0.8 },
+          hovertext: pts.map(p => p.text),
+          hoverinfo: 'text',
+        };
+      });
+
+      Plotly.newPlot('plot', traces, {
+        paper_bgcolor: '#1a1a2e',
+        plot_bgcolor: '#16213e',
+        font: { color: '#e0e0e0' },
+        title: { text: 'Clusters de Intenções — UMAP 2D', font: { color: '#e0e0e0', size: 14 } },
+        xaxis: { showticklabels: false, title: '' },
+        yaxis: { showticklabels: false, title: '' },
+        showlegend: true,
+        legend: { bgcolor: '#0f3460', font: { color: '#e0e0e0' } },
+        margin: { t: 50, l: 20, r: 20, b: 20 },
+      }, { responsive: true });
+    }
+
+    loadInsights();
+  </script>
+</body>
+</html>

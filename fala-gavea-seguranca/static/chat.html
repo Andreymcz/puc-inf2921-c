@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fala Gávea - Chat do Delegado</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    body { display: flex; flex-direction: column; height: 100vh; margin: 0; }
+    .chat-header { background: var(--bg2); padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1rem; }
+    .chat-header a { color: var(--accent); text-decoration: none; font-size: 0.85rem; }
+    .session-selector { flex: 1; display: flex; gap: 0.5rem; align-items: center; }
+    select#session-select { background: var(--bg3); color: var(--text); border: 1px solid var(--accent); border-radius: 4px; padding: 0.3rem 0.5rem; }
+    button.small { padding: 0.3rem 0.7rem; font-size: 0.8rem; background: var(--accent); color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+    .messages { flex: 1; overflow-y: auto; padding: 1rem 2rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .msg { max-width: 75%; padding: 0.6rem 0.9rem; border-radius: 8px; line-height: 1.5; }
+    .msg.user { align-self: flex-end; background: var(--accent); color: #fff; }
+    .msg.assistant { align-self: flex-start; background: var(--bg2); color: var(--text); }
+    .msg .sources { font-size: 0.7rem; margin-top: 0.4rem; opacity: 0.6; }
+    .input-row { padding: 1rem 2rem; background: var(--bg2); display: flex; gap: 0.5rem; }
+    .input-row textarea { flex: 1; background: var(--bg3); color: var(--text); border: 1px solid var(--accent); border-radius: 4px; padding: 0.5rem; resize: none; height: 48px; font-size: 0.95rem; }
+    .input-row button { background: var(--accent); color: #fff; border: none; border-radius: 4px; padding: 0 1.2rem; cursor: pointer; font-size: 1.1rem; }
+    .empty { color: #666; text-align: center; margin-top: 3rem; }
+    .spinner { display: none; color: var(--accent); text-align: center; }
+    .spinner.active { display: block; }
+    :root { --bg1:#1a1a2e; --bg2:#16213e; --bg3:#0f3460; --accent:#e94560; --text:#e0e0e0; }
+    body { background: var(--bg1); color: var(--text); font-family: 'Segoe UI', sans-serif; }
+  </style>
+</head>
+<body>
+  <div class="chat-header">
+    <a href="/static/index.html">← Mapa</a>
+    <div class="session-selector">
+      <select id="session-select"><option value="">Nova sessão...</option></select>
+      <button class="small" onclick="newSession()">+ Nova</button>
+      <a href="/static/insights.html" style="margin-left:auto;">Ver Intenções →</a>
+    </div>
+  </div>
+  <div class="messages" id="messages">
+    <div class="empty" id="empty-state">Selecione ou crie uma sessão de chat para começar.</div>
+  </div>
+  <div class="spinner" id="spinner">Consultando base de dados e IA...</div>
+  <div class="input-row">
+    <textarea id="msg-input" placeholder="Digite sua pergunta sobre segurança na Gávea..." onkeydown="handleKey(event)"></textarea>
+    <button onclick="sendMessage()">➤</button>
+  </div>
+
+  <script>
+    const API = '/chats';
+    let currentSessionId = null;
+
+    async function loadSessions() {
+      const res = await fetch(API + '/');
+      const sessions = await res.json();
+      const sel = document.getElementById('session-select');
+      sel.innerHTML = '<option value="">Nova sessão...</option>';
+      sessions.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.id;
+        opt.textContent = s.title + ' (' + new Date(s.created_at).toLocaleDateString('pt-BR') + ')';
+        sel.appendChild(opt);
+      });
+    }
+
+    document.getElementById('session-select').onchange = async (e) => {
+      currentSessionId = e.target.value || null;
+      if (currentSessionId) await loadMessages();
+      else clearMessages();
+    };
+
+    async function newSession() {
+      const title = prompt('Nome da sessão (ex: "Investigação postes Gávea"):');
+      if (!title) return;
+      const res = await fetch(API + '/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title }),
+      });
+      const session = await res.json();
+      currentSessionId = session.id;
+      await loadSessions();
+      document.getElementById('session-select').value = session.id;
+      clearMessages();
+    }
+
+    async function loadMessages() {
+      const res = await fetch(API + '/' + currentSessionId + '/messages');
+      const messages = await res.json();
+      clearMessages();
+      messages.forEach(m => appendMessage(m));
+    }
+
+    function clearMessages() {
+      const el = document.getElementById('messages');
+      el.innerHTML = '<div class="empty" id="empty-state">Inicie a conversa digitando sua pergunta.</div>';
+    }
+
+    function appendMessage(m) {
+      const empty = document.getElementById('empty-state');
+      if (empty) empty.remove();
+      const el = document.getElementById('messages');
+      const div = document.createElement('div');
+      div.className = 'msg ' + m.role;
+      let html = m.content.replace(/\n/g, '<br>');
+      if (m.role === 'assistant' && m.sources && m.sources.length > 0) {
+        html += '<div class="sources">' + m.sources.length + ' fonte(s) consultada(s)</div>';
+      }
+      div.innerHTML = html;
+      el.appendChild(div);
+      el.scrollTop = el.scrollHeight;
+    }
+
+    async function sendMessage() {
+      if (!currentSessionId) { alert('Selecione ou crie uma sessão primeiro.'); return; }
+      const input = document.getElementById('msg-input');
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      input.disabled = true;
+      document.getElementById('spinner').classList.add('active');
+      appendMessage({ role: 'user', content: text, sources: [] });
+      try {
+        const res = await fetch(API + '/' + currentSessionId + '/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content: text }),
+        });
+        const msgs = await res.json();
+        if (Array.isArray(msgs)) {
+          msgs.filter(m => m.role === 'assistant').forEach(m => appendMessage(m));
+        } else {
+          appendMessage({ role: 'assistant', content: 'Erro: ' + JSON.stringify(msgs), sources: [] });
+        }
+      } catch (e) {
+        appendMessage({ role: 'assistant', content: 'Erro de rede: ' + e.message, sources: [] });
+      } finally {
+        input.disabled = false;
+        input.focus();
+        document.getElementById('spinner').classList.remove('active');
+      }
+    }
+
+    function handleKey(e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+    }
+
+    loadSessions();
+  </script>
+</body>
+</html>

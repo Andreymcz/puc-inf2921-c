@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fala Gávea – Segurança</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div id="sidebar">
+    <div id="sidebar-header">
+      <h1>Fala Gávea</h1>
+      <p class="subtitle">Segurança Pública</p>
+    </div>
+
+    <div id="filters">
+      <h2>Filtros</h2>
+      <label>Categoria
+        <select id="filter-category">
+          <option value="">Todas</option>
+          <option value="iluminacao">Iluminação</option>
+          <option value="transito">Trânsito</option>
+          <option value="vandalismo">Vandalismo</option>
+          <option value="outro">Outro</option>
+        </select>
+      </label>
+      <label>Status
+        <select id="filter-status">
+          <option value="">Todos</option>
+          <option value="pendente">Pendente</option>
+          <option value="em_analise">Em análise</option>
+          <option value="resolvido">Resolvido</option>
+        </select>
+      </label>
+      <button id="btn-apply-filters">Aplicar</button>
+    </div>
+
+    <div id="report-list">
+      <h2>Relatos <span id="report-count"></span></h2>
+      <ul id="reports-ul"></ul>
+    </div>
+
+    <div id="form-panel" class="hidden">
+      <h2>Novo Relato</h2>
+      <form id="report-form">
+        <label>Descrição *
+          <textarea id="f-text" rows="3" required minlength="5"></textarea>
+        </label>
+        <label>Categoria *
+          <select id="f-category" required>
+            <option value="iluminacao">Iluminação</option>
+            <option value="transito">Trânsito</option>
+            <option value="vandalismo">Vandalismo</option>
+            <option value="outro">Outro</option>
+          </select>
+        </label>
+        <label>Bairro / Logradouro
+          <input id="f-territory" type="text" placeholder="ex: Gávea, Rua X" />
+        </label>
+        <input type="hidden" id="f-lat" />
+        <input type="hidden" id="f-lon" />
+        <p id="f-coords-hint" class="hint">Clique no mapa para definir a localização.</p>
+        <div class="form-buttons">
+          <button type="submit" id="btn-submit">Enviar</button>
+          <button type="button" id="btn-cancel">Cancelar</button>
+        </div>
+        <p id="f-error" class="error hidden"></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="map"></div>
+
+  <button id="btn-new-report">+ Novo Relato</button>
+  <a href="/static/chat.html" id="btn-chat">💬 Chat do Delegado</a>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

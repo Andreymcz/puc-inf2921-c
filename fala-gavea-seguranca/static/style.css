@@ -1,0 +1,101 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { display: flex; height: 100vh; font-family: system-ui, sans-serif; font-size: 14px; }
+
+#sidebar {
+  width: 300px;
+  min-width: 300px;
+  height: 100vh;
+  overflow-y: auto;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+#sidebar-header {
+  background: #16213e;
+  padding: 16px;
+  border-bottom: 1px solid #0f3460;
+}
+#sidebar-header h1 { font-size: 20px; color: #e94560; }
+#sidebar-header .subtitle { font-size: 12px; color: #aaa; margin-top: 2px; }
+
+#filters { padding: 12px 16px; border-bottom: 1px solid #0f3460; }
+#filters h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #aaa; margin-bottom: 8px; }
+#filters label { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; font-size: 12px; color: #ccc; }
+#filters select { background: #0f3460; color: #e0e0e0; border: 1px solid #e94560; border-radius: 4px; padding: 4px 6px; }
+#btn-apply-filters { width: 100%; background: #e94560; color: white; border: none; padding: 6px; border-radius: 4px; cursor: pointer; font-size: 13px; }
+#btn-apply-filters:hover { background: #c73652; }
+
+#report-list { padding: 12px 16px; flex: 1; }
+#report-list h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #aaa; margin-bottom: 8px; }
+#report-count { font-size: 11px; background: #e94560; color: white; border-radius: 10px; padding: 1px 7px; }
+#reports-ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+#reports-ul li {
+  background: #0f3460;
+  border-radius: 6px;
+  padding: 8px 10px;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: border-color 0.15s;
+}
+#reports-ul li:hover { border-left-color: #e94560; }
+#reports-ul li .r-category { font-size: 10px; text-transform: uppercase; color: #e94560; font-weight: bold; }
+#reports-ul li .r-text { font-size: 12px; margin-top: 2px; color: #ddd; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#reports-ul li .r-status { font-size: 10px; color: #aaa; margin-top: 2px; }
+
+#form-panel { padding: 12px 16px; border-top: 1px solid #0f3460; }
+#form-panel h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #aaa; margin-bottom: 10px; }
+#report-form label { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; font-size: 12px; color: #ccc; }
+#report-form textarea, #report-form input[type=text], #report-form select {
+  background: #0f3460; color: #e0e0e0; border: 1px solid #e94560; border-radius: 4px; padding: 5px 7px;
+}
+.form-buttons { display: flex; gap: 8px; margin-top: 8px; }
+#btn-submit { flex: 1; background: #e94560; color: white; border: none; padding: 7px; border-radius: 4px; cursor: pointer; }
+#btn-submit:hover { background: #c73652; }
+#btn-cancel { flex: 1; background: #0f3460; color: #ccc; border: 1px solid #e94560; padding: 7px; border-radius: 4px; cursor: pointer; }
+.hint { font-size: 11px; color: #888; margin-top: 4px; }
+.error { color: #e94560; font-size: 12px; margin-top: 6px; }
+.hidden { display: none !important; }
+
+#map { flex: 1; height: 100vh; }
+
+#btn-new-report {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #e94560;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 30px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  z-index: 1000;
+}
+#btn-new-report:hover { background: #c73652; }
+
+#btn-chat {
+  position: fixed;
+  bottom: 24px;
+  right: 170px;
+  background: #0f3460;
+  color: #e0e0e0;
+  border: 1px solid #e94560;
+  padding: 12px 18px;
+  border-radius: 30px;
+  font-size: 14px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  z-index: 1000;
+}
+#btn-chat:hover { background: #16213e; }
+
+/* Category colors for map pins */
+.pin-iluminacao { background: #f0c040; }
+.pin-transito   { background: #4090f0; }
+.pin-vandalismo { background: #f04040; }
+.pin-outro      { background: #90c090; }
