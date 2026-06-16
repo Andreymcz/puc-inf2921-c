@@ -16,6 +16,7 @@ class ReportFilter:
     lat_max: float | None = None
     lon_min: float | None = None
     lon_max: float | None = None
+    tag: str | None = None
 
 
 class SecurityReportRepository(ABC):

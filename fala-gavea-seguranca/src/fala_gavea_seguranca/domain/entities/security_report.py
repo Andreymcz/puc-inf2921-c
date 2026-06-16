@@ -37,6 +37,7 @@ class SecurityReport:
     territory_name: str | None = None
     photo_url: str | None = None
     ai_labels: list[str] = field(default_factory=list)
+    tags: list[str] = field(default_factory=list)
 
     @staticmethod
     def create(
@@ -47,6 +48,7 @@ class SecurityReport:
         lon: float | None = None,
         territory_name: str | None = None,
         photo_url: str | None = None,
+        tags: list[str] | None = None,
     ) -> SecurityReport:
         return SecurityReport(
             id=str(uuid.uuid4()),
@@ -59,4 +61,5 @@ class SecurityReport:
             lon=lon,
             territory_name=territory_name,
             photo_url=photo_url,
+            tags=tags or [],
         )
