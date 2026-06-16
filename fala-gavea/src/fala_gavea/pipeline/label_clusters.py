@@ -12,7 +12,7 @@ OLLAMA_URL = os.environ.get("FALA_GAVEA_OLLAMA_URL", "http://localhost:11434/v1"
 OLLAMA_MODEL = os.environ.get("FALA_GAVEA_OLLAMA_MODEL", "qwen3:8b")
 
 log = logging.getLogger(__name__)
-_DEBUG_LLM = os.environ.get("FALA_GAVEA_DEBUG_LLM", "0") == "1"
+_DEBUG_LLM = os.environ.get("FALA_GAVEA_DEBUG_LLM", "1") == "1"
 
 _LABEL_PROMPT = """\
 Você recebeu os seguintes relatos de cidadãos do mesmo grupo temático.

@@ -46,7 +46,7 @@ def render() -> None:
     if run_btn:
         try:
             with st.spinner("Buscando posts..."):
-                posts = api_get("/citizen_posts/", limit=500, offset=0)
+                posts = api_get("/citizen_posts/", limit=999999, offset=0)
         except Exception as e:
             st.error(f"Erro ao carregar posts: {e}")
             return

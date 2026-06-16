@@ -34,13 +34,13 @@ def embed_and_store(posts: list[dict], vectorstore_dir: Path = DEFAULT_VECTORSTO
     model = _get_model()
     collection = _get_collection(vectorstore_dir)
 
-    texts = [f"search_document: {p['text']}" for p in posts]
+    texts = [f"clustering: {p['text']}" for p in posts]
     ids = [p["id"] for p in posts]
     metadatas = [
         {"territory_name": p.get("territory_name", ""), "author_id": p.get("author_id", "")}
         for p in posts
     ]
-    vectors = model.encode(texts, normalize_embeddings=True, show_progress_bar=True)
+    vectors = model.encode(texts, normalize_embeddings=True, show_progress_bar=True, batch_size=64)
     collection.upsert(ids=ids, embeddings=vectors.tolist(), documents=texts, metadatas=metadatas)
 
 
