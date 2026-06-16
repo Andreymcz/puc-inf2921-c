@@ -1,4 +1,4 @@
-"""Download e cache local do dataset de iluminação pública (ArcGIS Hub)."""
+"""Download e cache local do dataset de iluminação pública (ArcGIS Feature Service)."""
 from __future__ import annotations
 
 import json
@@ -7,41 +7,45 @@ from pathlib import Path
 
 import httpx
 
-# ArcGIS Hub v3 API requires the layer-index suffix (_0) on the dataset ID.
-# Primary URL uses hub.arcgis.com; fallback uses opendata.arcgis.com.
-_DATASET_ID = "5322126ff10e46249be878ddfd057cc5_0"
-ARCGIS_GEOJSON_URL = (
-    f"https://hub.arcgis.com/api/v3/datasets/{_DATASET_ID}/downloads/data"
-    "?format=geojson&spatialRefId=4326"
+# ArcGIS REST Feature Service — Pontos de Iluminação Pública (Postes), Niterói/RJ
+# Item: https://www.arcgis.com/home/item.html?id=5322126ff10e46249be878ddfd057cc5
+_FEATURE_SERVICE_URL = (
+    "https://services8.arcgis.com/TpaOLI1HCh5AcRQB/arcgis/rest/services"
+    "/Grouplayer_SECONSER_ILUMPUB_AGOL/FeatureServer/10/query"
 )
-_ARCGIS_FALLBACK_URL = (
-    f"https://opendata.arcgis.com/api/v3/datasets/{_DATASET_ID}/downloads/data"
-    "?format=geojson&spatialRefId=4326"
-)
+_PAGE_SIZE = 2000  # service maxRecordCount
 _DEFAULT_CACHE = Path(__file__).parents[4] / "data" / "iluminacao.geojson"
 
 log = logging.getLogger(__name__)
 
 
 def download_iluminacao(cache_path: Path = _DEFAULT_CACHE) -> None:
-    """Baixa o GeoJSON de iluminação pública e salva no cache local."""
+    """Baixa todos os pontos de iluminação via ArcGIS REST e salva em cache GeoJSON."""
     cache_path.parent.mkdir(parents=True, exist_ok=True)
-    urls = [ARCGIS_GEOJSON_URL, _ARCGIS_FALLBACK_URL]
-    last_exc: Exception | None = None
-    for url in urls:
-        try:
-            log.info("Baixando dataset de iluminação de %s ...", url)
-            with httpx.stream("GET", url, follow_redirects=True, timeout=60) as r:
-                r.raise_for_status()
-                with cache_path.open("wb") as f:
-                    for chunk in r.iter_bytes():
-                        f.write(chunk)
-            log.info("Dataset salvo em %s", cache_path)
-            return
-        except httpx.HTTPStatusError as exc:
-            log.warning("URL %s retornou %s, tentando próxima...", url, exc.response.status_code)
-            last_exc = exc
-    raise RuntimeError(f"Não foi possível baixar o dataset de iluminação. Último erro: {last_exc}")
+    features: list[dict] = []
+    offset = 0
+    with httpx.Client(follow_redirects=True, timeout=60) as client:
+        while True:
+            params = {
+                "where": "1=1",
+                "outFields": "*",
+                "f": "geojson",
+                "outSR": "4326",
+                "resultOffset": offset,
+                "resultRecordCount": _PAGE_SIZE,
+            }
+            log.info("Baixando iluminação: offset=%d ...", offset)
+            r = client.get(_FEATURE_SERVICE_URL, params=params)
+            r.raise_for_status()
+            page = r.json()
+            batch = page.get("features", [])
+            features.extend(batch)
+            if len(batch) < _PAGE_SIZE:
+                break
+            offset += _PAGE_SIZE
+    geojson = {"type": "FeatureCollection", "features": features}
+    cache_path.write_text(json.dumps(geojson), encoding="utf-8")
+    log.info("Dataset salvo em %s (%d features)", cache_path, len(features))
 
 
 def load_iluminacao_geojson(cache_path: Path = _DEFAULT_CACHE) -> dict:
