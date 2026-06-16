@@ -1,7 +1,27 @@
 const API = '/security_reports';
 const GAVEA_CENTER = [-22.9756, -43.2296];
-const CATEGORY_COLORS = { iluminacao: '#f0c040', transito: '#4090f0', vandalismo: '#f04040', outro: '#90c090' };
-const CATEGORY_LABELS = { iluminacao: 'Iluminação', transito: 'Trânsito', vandalismo: 'Vandalismo', outro: 'Outro' };
+const CATEGORY_COLORS = {
+  furto_roubo:             '#e94560',
+  iluminacao:              '#f0c040',
+  transito:                '#4090f0',
+  espaco_publico_inseguro: '#e07020',
+  vandalismo:              '#f04040',
+  moradores_situacao_rua:  '#a060d0',
+  conflito_social:         '#d04040',
+  barulho_perturbacao:     '#60a080',
+  outro:                   '#90c090',
+};
+const CATEGORY_LABELS = {
+  furto_roubo:             'Furto / Roubo',
+  iluminacao:              'Iluminação',
+  transito:                'Trânsito',
+  espaco_publico_inseguro: 'Espaço público inseguro',
+  vandalismo:              'Vandalismo',
+  moradores_situacao_rua:  'Moradores em situação de rua',
+  conflito_social:         'Conflito / Tensão comunitária',
+  barulho_perturbacao:     'Barulho / Perturbação',
+  outro:                   'Outro',
+};
 const STATUS_LABELS = { pendente: '🔴 Pendente', em_analise: '🟡 Em análise', resolvido: '🟢 Resolvido' };
 
 // Illumination layer (lazy-loaded)
@@ -41,6 +61,22 @@ iluminacaoLayerGroup.addTo(map);
 loadIluminacao();
 L.control.layers({}, { '💡 Luminárias': iluminacaoLayerGroup }, { collapsed: false }).addTo(map);
 
+// Semantic search layer
+const searchLayerGroup = L.layerGroup().addTo(map);
+
+// Alpine.js integration: init tree on popup open
+map.on('popupopen', (e) => {
+  if (window.Alpine) Alpine.initTree(e.popup.getElement());
+});
+
+// Bbox auto-reload on moveend (debounced)
+let bboxDebounce = null;
+map.on('moveend', () => {
+  if (!document.getElementById('filter-bbox').checked) return;
+  clearTimeout(bboxDebounce);
+  bboxDebounce = setTimeout(loadReports, 300);
+});
+
 let markers = [];
 let pendingLatLng = null;
 let pendingMarker = null;
@@ -61,7 +97,71 @@ function buildQueryString() {
   const st  = document.getElementById('filter-status').value;
   if (cat) params.set('category', cat);
   if (st)  params.set('status', st);
+
+  const dateFrom = document.getElementById('filter-date-from').value;
+  const dateTo   = document.getElementById('filter-date-to').value;
+  if (dateFrom) params.set('since', new Date(dateFrom).toISOString());
+  if (dateTo)   params.set('until', new Date(dateTo + 'T23:59:59').toISOString());
+
+  if (document.getElementById('filter-bbox').checked) {
+    const b = map.getBounds();
+    params.set('lat_min', b.getSouth().toFixed(6));
+    params.set('lat_max', b.getNorth().toFixed(6));
+    params.set('lon_min', b.getWest().toFixed(6));
+    params.set('lon_max', b.getEast().toFixed(6));
+  }
+
+  const tag = document.getElementById('filter-tag').value.trim();
+  if (tag) params.set('tag', tag);
+
   return params.toString() ? '?' + params.toString() : '';
+}
+
+function buildCurationPanel(p) {
+  const catOptions = Object.entries(CATEGORY_LABELS)
+    .map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
+
+  return `
+    <div x-data="{
+      state: '${p.ai_suggested_category && p.ai_suggested_category !== p.category ? 'pending' : 'idle'}',
+      correcting: false,
+      loading: false,
+      error: null,
+      suggested: '${p.ai_suggested_category || ''}',
+      async confirm(id, cat) {
+        this.loading = true; this.error = null;
+        const r = await fetch(\`${API}/\${id}/category\`, {method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({category:cat})});
+        this.loading = false;
+        if (r.ok) { map.closePopup(); loadReports(); }
+        else { this.error = 'Erro ao confirmar'; }
+      },
+      async autocat(id) {
+        this.loading = true; this.error = null;
+        const r = await fetch(\`${API}/\${id}/auto_categorize\`, {method:'POST'});
+        this.loading = false;
+        if (r.ok) { const d = await r.json(); this.suggested = d.category; this.state = 'pending'; }
+        else { this.error = 'Ollama indisponível'; }
+      }
+    }">
+      <div x-show="state === 'idle'">
+        <button @click="autocat('${p.id}')">🤖 Categorizar por IA</button>
+      </div>
+      <div x-show="state === 'pending'" class="ai-badge">
+        🤖 Sugestão: <strong x-text="suggested"></strong>
+        <div class="curation-actions" x-show="!correcting">
+          <button @click="confirm('${p.id}', suggested)">✅ Confirmar</button>
+          <button @click="correcting = true">✏️ Corrigir</button>
+        </div>
+        <div class="curation-actions" x-show="correcting">
+          <select id="cat-fix-${p.id}">${catOptions}</select>
+          <button @click="confirm('${p.id}', document.getElementById('cat-fix-${p.id}').value)">Salvar</button>
+          <button @click="correcting = false">Cancelar</button>
+        </div>
+      </div>
+      <div x-show="loading" class="hint">⏳ Aguardando IA...</div>
+      <div x-show="error" class="hint error" x-text="error"></div>
+    </div>
+  `;
 }
 
 async function loadReports() {
@@ -80,6 +180,10 @@ async function loadReports() {
     const p = f.properties;
     const [lon, lat] = f.geometry.coordinates;
 
+    const tagsHtml = (p.tags || []).length > 0
+      ? '<br>' + p.tags.map(t => `<span class="tag-chip">${t}</span>`).join(' ')
+      : '';
+
     if (lat != null && lon != null) {
       const marker = L.marker([lat, lon], { icon: makeIcon(p.category) })
         .addTo(map)
@@ -88,8 +192,10 @@ async function loadReports() {
           ${p.text}<br>
           <em>${STATUS_LABELS[p.status] || p.status}</em>
           ${p.territory_name ? '<br>📍 ' + p.territory_name : ''}
+          ${tagsHtml}
           <br><small>${new Date(p.created_at).toLocaleDateString('pt-BR')}</small>
           <br><button onclick="updateStatus('${p.id}')">Atualizar status</button>
+          ${buildCurationPanel(p)}
         `);
       markers.push(marker);
     }
@@ -150,6 +256,7 @@ document.getElementById('report-form').onsubmit = async (ev) => {
   const errEl = document.getElementById('f-error');
   errEl.classList.add('hidden');
 
+  const tagsRaw = document.getElementById('f-tags').value;
   const body = {
     text: document.getElementById('f-text').value,
     category: document.getElementById('f-category').value,
@@ -157,6 +264,7 @@ document.getElementById('report-form').onsubmit = async (ev) => {
     territory_name: document.getElementById('f-territory').value || null,
     lat: document.getElementById('f-lat').value ? parseFloat(document.getElementById('f-lat').value) : null,
     lon: document.getElementById('f-lon').value ? parseFloat(document.getElementById('f-lon').value) : null,
+    tags: tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [],
   };
 
   const res = await fetch(API + '/', {
@@ -192,6 +300,42 @@ document.getElementById('btn-refresh-iluminacao').onclick = async () => {
   } catch (e) {
     statusEl.textContent = 'Erro: ' + e.message;
   }
+};
+
+// Semantic search
+document.getElementById('btn-search').onclick = async () => {
+  const q = document.getElementById('search-q').value.trim();
+  if (!q) return;
+  searchLayerGroup.clearLayers();
+
+  const res = await fetch(`${API}/search?q=${encodeURIComponent(q)}&n=20`);
+  const results = await res.json();
+
+  results.forEach(r => {
+    if (r.lat != null && r.lon != null) {
+      L.circleMarker([r.lat, r.lon], {
+        radius: 10,
+        color: '#7c3aed',
+        fillColor: '#7c3aed',
+        fillOpacity: 0.7,
+        weight: 2,
+      })
+        .addTo(searchLayerGroup)
+        .bindPopup(`
+          <strong>🔍 ${CATEGORY_LABELS[r.category] || r.category}</strong><br>
+          ${r.text}<br>
+          <small>Distância: ${r.distance.toFixed(3)}</small>
+        `);
+    }
+  });
+
+  document.getElementById('btn-clear-search').classList.remove('hidden');
+};
+
+document.getElementById('btn-clear-search').onclick = () => {
+  searchLayerGroup.clearLayers();
+  document.getElementById('search-q').value = '';
+  document.getElementById('btn-clear-search').classList.add('hidden');
 };
 
 // Init

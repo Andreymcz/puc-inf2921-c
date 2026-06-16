@@ -6,6 +6,7 @@
   <title>Fala Gávea – Segurança</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="/static/style.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body>
   <div id="sidebar">
@@ -19,9 +20,14 @@
       <label>Categoria
         <select id="filter-category">
           <option value="">Todas</option>
+          <option value="furto_roubo">Furto / Roubo</option>
           <option value="iluminacao">Iluminação</option>
           <option value="transito">Trânsito</option>
+          <option value="espaco_publico_inseguro">Espaço público inseguro</option>
           <option value="vandalismo">Vandalismo</option>
+          <option value="moradores_situacao_rua">Moradores em situação de rua</option>
+          <option value="conflito_social">Conflito / Tensão comunitária</option>
+          <option value="barulho_perturbacao">Barulho / Perturbação</option>
           <option value="outro">Outro</option>
         </select>
       </label>
@@ -33,7 +39,29 @@
           <option value="resolvido">Resolvido</option>
         </select>
       </label>
+      <label>De
+        <input type="date" id="filter-date-from" />
+      </label>
+      <label>Até
+        <input type="date" id="filter-date-to" />
+      </label>
+      <label>Tag
+        <input type="text" id="filter-tag" placeholder="ex: perigoso" />
+      </label>
+      <label class="checkbox-label">
+        <input type="checkbox" id="filter-bbox" />
+        Somente área visível
+      </label>
       <button id="btn-apply-filters">Aplicar</button>
+    </div>
+
+    <div id="search-panel">
+      <h2>Busca Semântica</h2>
+      <div class="search-row">
+        <input type="text" id="search-q" placeholder="Descreva o que procura..." />
+        <button id="btn-search">🔍</button>
+      </div>
+      <button id="btn-clear-search" class="secondary hidden">✕ Limpar busca</button>
     </div>
 
     <div id="iluminacao-panel">
@@ -55,14 +83,22 @@
         </label>
         <label>Categoria *
           <select id="f-category" required>
+            <option value="furto_roubo">Furto / Roubo</option>
             <option value="iluminacao">Iluminação</option>
             <option value="transito">Trânsito</option>
+            <option value="espaco_publico_inseguro">Espaço público inseguro</option>
             <option value="vandalismo">Vandalismo</option>
+            <option value="moradores_situacao_rua">Moradores em situação de rua</option>
+            <option value="conflito_social">Conflito / Tensão comunitária</option>
+            <option value="barulho_perturbacao">Barulho / Perturbação</option>
             <option value="outro">Outro</option>
           </select>
         </label>
         <label>Bairro / Logradouro
           <input id="f-territory" type="text" placeholder="ex: Gávea, Rua X" />
+        </label>
+        <label>Tags (separe por vírgulas)
+          <input id="f-tags" type="text" placeholder="ex: perigoso, noite, esquina" />
         </label>
         <input type="hidden" id="f-lat" />
         <input type="hidden" id="f-lon" />

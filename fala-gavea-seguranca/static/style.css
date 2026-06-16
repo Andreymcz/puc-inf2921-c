@@ -99,3 +99,59 @@ body { display: flex; height: 100vh; font-family: system-ui, sans-serif; font-si
 .pin-transito   { background: #4090f0; }
 .pin-vandalismo { background: #f04040; }
 .pin-outro      { background: #90c090; }
+
+/* Date inputs and checkbox in filters */
+#filters input[type=date] {
+  background: #0f3460; color: #e0e0e0; border: 1px solid #e94560;
+  border-radius: 4px; padding: 4px 6px; width: 100%;
+}
+#filters input[type=text] {
+  background: #0f3460; color: #e0e0e0; border: 1px solid #e94560;
+  border-radius: 4px; padding: 4px 6px; width: 100%;
+}
+.checkbox-label { flex-direction: row !important; align-items: center; gap: 8px !important; }
+.checkbox-label input[type=checkbox] { width: auto; cursor: pointer; }
+
+/* Tag chips in popup */
+.tag-chip {
+  display: inline-block;
+  background: #e0e7ff;
+  color: #3730a3;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 0.75rem;
+  margin: 1px 2px;
+}
+
+/* Search panel */
+#search-panel { padding: 12px 16px; border-bottom: 1px solid #0f3460; }
+#search-panel h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #aaa; margin-bottom: 8px; }
+.search-row { display: flex; gap: 4px; }
+.search-row input {
+  flex: 1;
+  background: #0f3460; color: #e0e0e0; border: 1px solid #e94560;
+  border-radius: 4px; padding: 4px 6px;
+}
+#btn-search { background: #e94560; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+#btn-search:hover { background: #c73652; }
+button.secondary { background: #6b7280; color: white; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer; margin-top: 4px; font-size: 12px; }
+button.secondary:hover { background: #4b5563; }
+
+/* AI curation badge and actions */
+.ai-badge {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: 4px 0;
+  font-size: 0.85rem;
+  color: #333;
+}
+.curation-actions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.hint.error { color: #dc2626; font-size: 0.8rem; }
