@@ -1,3 +1,7 @@
+DONE | 2026-06-16 10:23 UTC | STARTED | 2026-06-16 10:19 UTC | plan | integrar dataset de iluminação com fala-gavea-seguranca: https://www.arcgis.com/home/item.html?id=5322126ff10e46249be878ddfd057cc5#data | PLAN | 000055
+
+---
+
 DONE | 2026-06-16 00:50 UTC | STARTED | 2026-06-16 00:37 UTC | plan | source: research-000053 — Fala Gávea - Segurança roadmap: scaffold seja-clean-python + mapa Leaflet + ChromaDB RAG georreferenciado + chat RAG persistido | PLAN | roadmap-000054
 
 ---
