@@ -1,3 +1,7 @@
+DONE | 2026-06-16 21:38 UTC | STARTED | 2026-06-16 21:30 UTC | plan | source: research-000066 — implementar busca inteligente com chat NL: action envelope no endpoint de chat existente, ParseFilterIntent use case com validação server-side, chip de confirmação no frontend vanilla JS + Leaflet | PLAN | 000068
+
+---
+
 DONE | 2026-06-16 16:34 UTC | STARTED | 2026-06-16 16:28 UTC | implement | 63 | PLAN | 000063
 
 ---

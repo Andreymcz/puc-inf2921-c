@@ -1,6 +1,7 @@
 # Research 000066 | FEATURE-F | 2026-06-16 16:35 UTC | Busca inteligente com IA — chat NL intent to API + frontend state
 
 tags: nl-to-filters, intent-extraction, agentic-ui, architecture, ux
+spawned: plan-000068
 
 ## User Brief
 
