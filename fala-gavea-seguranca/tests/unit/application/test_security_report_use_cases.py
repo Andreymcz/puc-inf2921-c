@@ -8,6 +8,7 @@ from fala_gavea_seguranca.application.use_cases.create_security_report import (
 from fala_gavea_seguranca.application.use_cases.delete_security_report import DeleteSecurityReport
 from fala_gavea_seguranca.application.use_cases.get_security_report import GetSecurityReport
 from fala_gavea_seguranca.application.use_cases.list_security_reports import ListSecurityReports
+from fala_gavea_seguranca.application.use_cases.set_report_tags import SetReportTags, SetReportTagsInput
 from fala_gavea_seguranca.application.use_cases.update_security_report import UpdateSecurityReportStatus
 from fala_gavea_seguranca.domain.entities.security_report import ReportCategory, ReportStatus, SecurityReport
 from fala_gavea_seguranca.domain.exceptions import InvalidInputError, SecurityReportNotFoundError
@@ -207,3 +208,18 @@ def test_filter_until_only() -> None:
     )
     assert len(result) == 1
     assert result[0].created_at == jan
+
+
+def test_set_report_tags_success() -> None:
+    repo = FakeRepository()
+    created = CreateSecurityReport(repo).execute(VALID_INPUT)
+    new_tags = ["urgente", "verificado"]
+    updated = SetReportTags(repo).execute(SetReportTagsInput(id=created.id, tags=new_tags))
+    assert updated.tags == new_tags
+    assert repo.find_by_id(created.id).tags == new_tags
+
+
+def test_set_report_tags_not_found() -> None:
+    repo = FakeRepository()
+    with pytest.raises(SecurityReportNotFoundError):
+        SetReportTags(repo).execute(SetReportTagsInput(id="ghost", tags=["x"]))

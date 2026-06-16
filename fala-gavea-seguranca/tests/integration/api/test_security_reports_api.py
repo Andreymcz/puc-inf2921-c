@@ -163,3 +163,29 @@ def test_geojson_until_filter(client: TestClient, repo, db_session) -> None:
     ids = [f["properties"]["id"] for f in data["features"]]
     assert "old-report" in ids
     assert "new-report" not in ids
+
+
+def test_patch_tags(client: TestClient) -> None:
+    created = client.post("/security_reports/", json=VALID_PAYLOAD).json()
+    response = client.patch(
+        f"/security_reports/{created['id']}/tags",
+        json={"tags": ["urgente", "verificado"]},
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["tags"] == ["urgente", "verificado"]
+
+
+def test_get_geojson_filter_tag(client: TestClient) -> None:
+    r1 = client.post("/security_reports/", json=VALID_PAYLOAD).json()
+    r2 = client.post("/security_reports/", json={**VALID_PAYLOAD, "text": "Buraco na calçada da Gávea"}).json()
+
+    client.patch(f"/security_reports/{r1['id']}/tags", json={"tags": ["urgente"]})
+    client.patch(f"/security_reports/{r2['id']}/tags", json={"tags": ["resolvido"]})
+
+    response = client.get("/security_reports/geojson?tag=urgente")
+    assert response.status_code == 200
+    data = response.json()
+    ids = [f["properties"]["id"] for f in data["features"]]
+    assert r1["id"] in ids
+    assert r2["id"] not in ids
