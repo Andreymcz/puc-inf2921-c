@@ -4,11 +4,42 @@ const CATEGORY_COLORS = { iluminacao: '#f0c040', transito: '#4090f0', vandalismo
 const CATEGORY_LABELS = { iluminacao: 'Iluminação', transito: 'Trânsito', vandalismo: 'Vandalismo', outro: 'Outro' };
 const STATUS_LABELS = { pendente: '🔴 Pendente', em_analise: '🟡 Em análise', resolvido: '🟢 Resolvido' };
 
+// Illumination layer (lazy-loaded)
+const iluminacaoLayerGroup = L.layerGroup();
+let iluminacaoLoaded = false;
+
+async function loadIluminacao() {
+  if (iluminacaoLoaded) return;
+  try {
+    const res = await fetch('/iluminacao/geojson');
+    if (!res.ok) return;
+    const geojson = await res.json();
+    L.geoJSON(geojson, {
+      pointToLayer: (_feat, latlng) =>
+        L.circleMarker(latlng, {
+          radius: 3,
+          color: '#f0c040',
+          fillColor: '#f0c040',
+          fillOpacity: 0.6,
+          weight: 0,
+        }),
+    }).addTo(iluminacaoLayerGroup);
+    iluminacaoLoaded = true;
+  } catch (e) {
+    console.warn('Camada de iluminação não disponível:', e);
+  }
+}
+
 const map = L.map('map').setView(GAVEA_CENTER, 15);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   maxZoom: 19
 }).addTo(map);
+
+// Layer control for illumination overlay
+iluminacaoLayerGroup.addTo(map);
+loadIluminacao();
+L.control.layers({}, { '💡 Luminárias': iluminacaoLayerGroup }, { collapsed: false }).addTo(map);
 
 let markers = [];
 let pendingLatLng = null;
