@@ -13,6 +13,7 @@ Clean-architecture Python REST API — FastAPI + SQLAlchemy + SQLite + Pydantic 
 ```bash
 uv sync --extra dev
 uv run pytest -v
+uv run ./scripts/seed_reports.py
 uv run uvicorn fala_gavea_seguranca.presentation.api.main:app --reload
 ```
 
