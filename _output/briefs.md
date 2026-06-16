@@ -1,3 +1,11 @@
+DONE | 2026-06-16 14:09 UTC | STARTED | 2026-06-16 14:04 UTC | research | best front end tool for this project. Atualmente estamos servindo paginas estáticas. porem com as mudanças previstas no roadmap 56 podemos precisar de uma UI mais dinamica.
+
+---
+
+STARTED | 2026-06-16 14:03 UTC | plan | roadmap 56
+
+---
+
 DONE | 2026-06-16 13:46 UTC | STARTED | 2026-06-16 13:41 UTC | plan | ReportCategory from @knowledge/library/RELATORIO FORUM SEGURANCA_LGD.pdf — Analise os relatos dos stakeholders da segurança, para termos uma idéia melhor das categorias de interesse relacionados a segurança | PLAN | 000057
 
 ---
