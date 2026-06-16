@@ -7,10 +7,15 @@ from enum import Enum
 
 
 class ReportCategory(str, Enum):
-    ILUMINACAO = "iluminacao"
-    TRANSITO = "transito"
-    VANDALISMO = "vandalismo"
-    OUTRO = "outro"
+    FURTO_ROUBO             = "furto_roubo"
+    ILUMINACAO              = "iluminacao"
+    TRANSITO                = "transito"
+    ESPACO_PUBLICO_INSEGURO = "espaco_publico_inseguro"
+    VANDALISMO              = "vandalismo"
+    MORADORES_SITUACAO_RUA  = "moradores_situacao_rua"
+    CONFLITO_SOCIAL         = "conflito_social"
+    BARULHO_PERTURBACAO     = "barulho_perturbacao"
+    OUTRO                   = "outro"
 
 
 class ReportStatus(str, Enum):
