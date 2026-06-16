@@ -35,7 +35,7 @@ Não moveremos as categorias para uma tabela DB nesta versão — o Enum é o ca
 ### Wave 0 — Fake Dataset (sequential, nenhuma dependência)
 | # | ID | Title | Scope | Type | Plan | Status |
 |---|-----|-------|-------|------|------|--------|
-| 1 | fake-dataset | Script de seed: 250 relatos fake de Gávea | backend | technical | plan-TBD | pending |
+| 1 | fake-dataset | Enriquecer ReportCategory (9 categorias) + seed script + prompt IA | backend | technical | plan-000057 | pending |
 
 **Escopo do item 1:**
 - Script Python `fala-gavea-seguranca/scripts/seed_reports.py`
@@ -55,9 +55,9 @@ Não moveremos as categorias para uma tabela DB nesta versão — o Enum é o ca
 ### Wave 1 — Backend: Tags + AI-categorização (paralelo; dependem apenas da infra existente)
 | # | ID | Title | Scope | Type | Plan | Depends on | Status |
 |---|-----|-------|-------|------|------|-----------|--------|
-| 2 | tags-model | Tags livres: campo + API | backend | technical | plan-TBD | — | pending |
-| 3 | ai-category | AI auto-categorização + curadoria delegado | backend | technical | plan-TBD | — | pending |
-| 4 | time-filter-until | Adicionar param `until` ao backend | backend | technical | plan-TBD | — | pending |
+| 2 | tags-model | Tags livres: campo + API | backend | technical | plan-000060 | fake-dataset | pending |
+| 3 | ai-category | AI auto-categorização + curadoria delegado | backend | technical | plan-000061 | fake-dataset | pending |
+| 4 | time-filter-until | Adicionar param `until` ao backend | backend | technical | plan-000062 | — | pending |
 
 **Item 2 — Tags:**
 - Novo campo `tags: list[str]` em `SecurityReport` (dataclass) e `SecurityReportModel` (JSON column, default `[]`)
@@ -87,7 +87,7 @@ Não moveremos as categorias para uma tabela DB nesta versão — o Enum é o ca
 ### Wave 2 — Frontend: painel de filtros completo (depende de Wave 1)
 | # | ID | Title | Scope | Type | Plan | Depends on | Status |
 |---|-----|-------|-------|------|------|-----------|--------|
-| 5 | filter-ui | Painel de filtros: tempo, bbox, tags, busca | frontend | design+technical | plan-TBD | tags-model, ai-category, time-filter-until | pending |
+| 5 | filter-ui | Painel de filtros: tempo, bbox, tags, busca | frontend | design+technical | plan-000063 | tags-model, ai-category, time-filter-until | pending |
 
 **Item 5 — Frontend:**
 
@@ -118,29 +118,27 @@ Não moveremos as categorias para uma tabela DB nesta versão — o Enum é o ca
 
 ### Wave 0 (sequential — executar primeiro)
 ```
-/implement plan-TBD  # fake-dataset (item 1)
+/implement 57  # fake-dataset: enum 9 categorias + seed script + prompt IA
 ```
 
 ### Wave 1 (parallel — executar em paralelo após Wave 0)
 Os 3 itens são independentes entre si:
 ```
 # Sessão 1:
-/implement plan-TBD  # tags-model (item 2)
+/implement 60  # tags-model: tags livres campo + API
 
 # Sessão 2:
-/implement plan-TBD  # ai-category (item 3)
+/implement 61  # ai-category: auto-categorização + curadoria delegado
 
 # Sessão 3:
-/implement plan-TBD  # time-filter-until (item 4)
+/implement 62  # time-filter-until: parâmetro until no backend
 ```
 Ou em paralelo via worktree agents.
 
 ### Wave 2 (sequential — executar após Wave 1 completa)
 ```
-/implement plan-TBD  # filter-ui (item 5)
+/implement 63  # filter-ui: painel de filtros completo no frontend
 ```
-
-> Os `plan-TBD` serão substituídos pelos IDs reais após `/plan` ser invocado para cada item.
 
 ---
 

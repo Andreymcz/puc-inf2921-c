@@ -5,12 +5,12 @@
 
 | Date | Type | ID | Title | Status | File |
 |------|------|----|-------|--------|------|
-| 2026-06-16 14:06 UTC | RESERVED | 000062 | plan: ai-auto-categorizacao-curadoria-delegado | RESERVED |  |
-| 2026-06-16 14:06 UTC | RESERVED | 000063 | plan: backend-filtro-temporal-until | RESERVED |  |
 | 2026-06-16 14:06 UTC | RESERVED | 000064 | plan: frontend-painel-filtros-completo | RESERVED |  |
 | 2026-06-16 14:04 UTC | Research | 000059 | best frontend for fala-gavea-seguranca | DONE | [research-000059-best-frontend-fala-gavea-seguranca.md](research-logs/research-000059-best-frontend-fala-gavea-seguranca.md) |
 | 2026-06-16 14:03 UTC | Plan | 000060 | Tags livres em SecurityReport | OPEN | [plan-000060-tags-livres-security-report.md](plans/plan-000060-tags-livres-security-report.md) |
 | 2026-06-16 14:03 UTC | Plan | 000061 | AI auto-categorização + curadoria pelo delegado | OPEN | [plan-000061-ai-auto-categorizacao-curadoria-delegado.md](plans/plan-000061-ai-auto-categorizacao-curadoria-delegado.md) |
+| 2026-06-16 14:03 UTC | Plan | 000062 | Backend: filtro temporal `until` | OPEN | [plan-000062-backend-filtro-temporal-until.md](plans/plan-000062-backend-filtro-temporal-until.md) |
+| 2026-06-16 14:03 UTC | Plan | 000063 | Frontend: painel de filtros completo | OPEN | [plan-000063-frontend-painel-filtros-completo.md](plans/plan-000063-frontend-painel-filtros-completo.md) |
 | 2026-06-16 13:46 UTC | QA Log | 000057 | Enriquecer ReportCategory a partir do Forum de Seguranca LGD |  | [plan-000057-qa-enriched-report-category.md](plans/plan-000057-qa-enriched-report-category.md) |
 | 2026-06-16 13:44 UTC | RESERVED | 000058 | plan: enriched-report-category-from-security-forum | RESERVED |  |
 | 2026-06-16 13:41 UTC | Plan | 000057 | Enriquecer ReportCategory a partir do Forum de Seguranca LGD | OPEN | [plan-000057-enriched-report-category-security-forum.md](plans/plan-000057-enriched-report-category-security-forum.md) |

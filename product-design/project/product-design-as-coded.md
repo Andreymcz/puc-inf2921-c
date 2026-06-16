@@ -53,6 +53,25 @@ designer_description: "Implementation state mirror for kb-qa — maintained by p
 - `label_feedback` JSON column stores `{label: {"approved": bool, "user_id": str}}` — `set_label_feedback` persists `user_id` alongside the flag.
 - `LikeRecord` domain dataclass: `user_id: str, created_at: datetime`. `CitizenPostRepository` exposes `get_likes(post_id) -> list[LikeRecord]`.
 
+### 0d. Fala Gávea Segurança — ReportCategory enriquecido + seed + AI prompt (plan-000057)
+
+`ReportCategory` expandido de 4 para 9 valores derivados da análise do Fórum de Segurança da Gávea (GaveaLab/PUC-Rio, Jun/2024):
+
+**Enum** — `fala-gavea-seguranca/src/fala_gavea_seguranca/domain/entities/security_report.py`:
+- `FURTO_ROUBO = "furto_roubo"` — Furtos, roubos e assaltos (28% do dataset fake)
+- `ILUMINACAO = "iluminacao"` — Problemas de iluminação pública (22%)
+- `TRANSITO = "transito"` — Trânsito, acidentes, mobilidade (18%)
+- `ESPACO_PUBLICO_INSEGURO = "espaco_publico_inseguro"` — Espaços públicos inseguros (12%)
+- `VANDALISMO = "vandalismo"` — Depredação e pichação (8%)
+- `MORADORES_SITUACAO_RUA = "moradores_situacao_rua"` — Moradores em situação de rua (5%)
+- `CONFLITO_SOCIAL = "conflito_social"` — Conflitos comunitários e tiroteios (4%)
+- `BARULHO_PERTURBACAO = "barulho_perturbacao"` — Perturbação da ordem (2%)
+- `OUTRO = "outro"` — Residual (1%)
+
+**Seed script** — `fala-gavea-seguranca/scripts/seed_reports.py`: insere 250 relatos com `author_id LIKE 'seed-%'`; idempotente (DELETE antes do INSERT); textos pt-BR em ≥5 variantes por categoria; coordenadas na bbox da Gávea (`lat [-22.990, -22.965], lon [-43.245, -43.215]`); distribuição por `random.choices` com pesos derivados do fórum.
+
+**AI prompt template** — `fala-gavea-seguranca/src/fala_gavea_seguranca/infrastructure/ai/prompts.py`: `CATEGORIZE_PROMPT: str` — template com `/nothink`, 9 categorias descritas em pt-BR, variável `{text}`, instrução de resposta JSON `{category, confidence, justification}`. Preparado para importação por `use_cases/auto_categorize_report.py` (Wave 1 Item 3, roadmap-000056).
+
 ### 0c. Fala Gávea Segurança — Iluminação Pública (plan-000055)
 
 `fala-gavea-seguranca` gained a public-lighting overlay feature. New files:
