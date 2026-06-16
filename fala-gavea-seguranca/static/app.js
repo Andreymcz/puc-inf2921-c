@@ -179,5 +179,20 @@ document.getElementById('report-form').onsubmit = async (ev) => {
 
 document.getElementById('btn-apply-filters').onclick = loadReports;
 
+document.getElementById('btn-refresh-iluminacao').onclick = async () => {
+  const statusEl = document.getElementById('iluminacao-status');
+  statusEl.textContent = 'Baixando...';
+  try {
+    const res = await fetch('/iluminacao/refresh', { method: 'POST' });
+    if (res.ok) {
+      statusEl.textContent = 'Download iniciado. Recarregue a página em alguns segundos.';
+    } else {
+      statusEl.textContent = 'Erro ao iniciar download.';
+    }
+  } catch (e) {
+    statusEl.textContent = 'Erro: ' + e.message;
+  }
+};
+
 // Init
 loadReports();
