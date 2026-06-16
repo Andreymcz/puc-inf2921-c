@@ -1,3 +1,11 @@
+DONE | 2026-06-16 13:46 UTC | STARTED | 2026-06-16 13:41 UTC | plan | ReportCategory from @knowledge/library/RELATORIO FORUM SEGURANCA_LGD.pdf — Analise os relatos dos stakeholders da segurança, para termos uma idéia melhor das categorias de interesse relacionados a segurança | PLAN | 000057
+
+---
+
+DONE | 2026-06-16 13:35 UTC | STARTED | 2026-06-16 13:27 UTC | plan | --roadmap O que eu vou fazer agora é criar umas ferramentinhas para filtrar melhor esses relatos dos cidadaos no mapa. (janela de tempo, filtro espacial, tags dos posts, busca esperta de relatos etc...) Um dos passos é criar um dataset fake com as informacoes. estou olhando as entidades de dominio: ReportCategory quero que esta categoria seja curada pelos agentes publicos (delegado no caso) podemos usar IA para categorizar automaticamente, a partir de um conjunto de temas ou categorias já pré-estabelecidas e de interesse
+
+---
+
 DONE | 2026-06-16 12:09 UTC | STARTED | 2026-06-16 11:57 UTC | implement | 55 | PLAN | 000055
 
 ---
