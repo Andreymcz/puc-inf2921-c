@@ -17,6 +17,7 @@ from fala_gavea_seguranca.infrastructure.vector_store.chroma_client import delet
 from fala_gavea_seguranca.presentation.api.dependencies import get_security_report_repo
 from fala_gavea_seguranca.application.use_cases.auto_categorize_report import AutoCategorizeReport
 from fala_gavea_seguranca.application.use_cases.set_report_category import SetReportCategory, SetReportCategoryInput
+from fala_gavea_seguranca.application.use_cases.set_report_tags import SetReportTags, SetReportTagsInput
 from fala_gavea_seguranca.presentation.schemas.security_report_schemas import (
     AutoCategorizeResponse,
     GeoJsonCollection,
@@ -26,6 +27,7 @@ from fala_gavea_seguranca.presentation.schemas.security_report_schemas import (
     SecurityReportCreate,
     SecurityReportResponse,
     SecurityReportStatusUpdate,
+    SecurityReportTagsUpdate,
 )
 
 router = APIRouter()
@@ -96,6 +98,7 @@ def get_geojson(
     lat_max: float | None = Query(None),
     lon_min: float | None = Query(None),
     lon_max: float | None = Query(None),
+    tag: str | None = Query(None),
     repo: SQLAlchemySecurityReportRepository = Depends(get_security_report_repo),
 ) -> GeoJsonCollection:
     from fala_gavea_seguranca.domain.entities.security_report import ReportCategory, ReportStatus
@@ -108,6 +111,7 @@ def get_geojson(
         lat_max=lat_max,
         lon_min=lon_min,
         lon_max=lon_max,
+        tag=tag,
     )
     entities = ListSecurityReports(repo).execute(limit=1000, filters=filters)
     features = [
@@ -122,6 +126,8 @@ def get_geojson(
                 "author_id": e.author_id,
                 "created_at": e.created_at.isoformat(),
                 "ai_suggested_category": e.ai_suggested_category.value if e.ai_suggested_category else None,
+                "tags": e.tags,
+                "ai_labels": e.ai_labels,
             },
         )
         for e in entities
@@ -141,6 +147,7 @@ def list_security_reports(
     lat_max: float | None = Query(None),
     lon_min: float | None = Query(None),
     lon_max: float | None = Query(None),
+    tag: str | None = Query(None),
     repo: SQLAlchemySecurityReportRepository = Depends(get_security_report_repo),
 ) -> list[SecurityReportResponse]:
     from fala_gavea_seguranca.domain.entities.security_report import ReportCategory, ReportStatus
@@ -153,6 +160,7 @@ def list_security_reports(
         lat_max=lat_max,
         lon_min=lon_min,
         lon_max=lon_max,
+        tag=tag,
     )
     entities = ListSecurityReports(repo).execute(limit=limit, offset=offset, filters=filters)
     return [SecurityReportResponse(**e.__dict__) for e in entities]
@@ -231,3 +239,16 @@ def set_category(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except InvalidInputError as e:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e))
+
+
+@router.patch("/{id}/tags", response_model=SecurityReportResponse)
+def set_report_tags(
+    id: str,
+    body: SecurityReportTagsUpdate,
+    repo: SQLAlchemySecurityReportRepository = Depends(get_security_report_repo),
+) -> SecurityReportResponse:
+    try:
+        entity = SetReportTags(repo).execute(SetReportTagsInput(id=id, tags=body.tags))
+        return SecurityReportResponse(**entity.__dict__)
+    except SecurityReportNotFoundError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
