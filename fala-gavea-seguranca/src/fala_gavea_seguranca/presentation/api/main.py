@@ -7,6 +7,7 @@ from fastapi.staticfiles import StaticFiles
 
 from ...infrastructure.database.session import create_tables
 from .routers.chats import router as chats_router
+from .routers.iluminacao import router as iluminacao_router
 from .routers.security_reports import router as reports_router
 
 
@@ -23,6 +24,7 @@ def create_app() -> FastAPI:
     create_tables()
     app.include_router(reports_router, prefix="/security_reports", tags=["security_reports"])
     app.include_router(chats_router, prefix="/chats", tags=["chats"])
+    app.include_router(iluminacao_router, prefix="/iluminacao", tags=["iluminacao"])
 
     try:
         app.mount("/static", StaticFiles(directory="static"), name="static")
