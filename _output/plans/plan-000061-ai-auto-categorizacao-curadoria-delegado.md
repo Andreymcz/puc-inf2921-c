@@ -1,4 +1,4 @@
-# Plan 000061 | FEATURE-B | 2026-06-16 14:03 UTC | AI auto-categorização + curadoria pelo delegado | Review: light
+# Plan 000061 | FEATURE-B | 2026-06-16 14:03 UTC | AI auto-categorização + curadoria pelo delegado | Review: light | DONE | 2026-06-16 14:55 UTC |
 plan_format_version: 1
 
 ## Brief
@@ -73,7 +73,7 @@ Responda APENAS com JSON valido no formato:
 - **Files**: `infrastructure/ai/__init__.py`, `infrastructure/ai/prompts.py`
 - **Verify**: `uv run python -c "from fala_gavea_seguranca.infrastructure.ai.prompts import CATEGORIZE_PROMPT; print('OK')"` imprime OK
 - **Tests**: N/A
-- [ ] Done
+- [x] Done
 
 ### Step 2: Adicionar `ai_suggested_category` à entidade de domínio
 
@@ -87,7 +87,7 @@ O campo é opcional (o relato nasce sem sugestão de IA). Não alterar `Security
 - **Files**: `domain/entities/security_report.py`
 - **Interface**: `SecurityReport.ai_suggested_category: ReportCategory | None`
 - **Verify**: `uv run python -c "from fala_gavea_seguranca.domain.entities.security_report import SecurityReport; r = SecurityReport.create('t','iluminacao','u'); print(r.ai_suggested_category)"` imprime `None`
-- [ ] Done
+- [x] Done
 
 ### Step 3: Adicionar coluna `ai_suggested_category` ao modelo DB e ao repositório
 
@@ -108,7 +108,7 @@ Deletar `app.db` e reiniciar para recriar schema.
 
 - **Files**: `infrastructure/database/models.py`, `infrastructure/repositories/sqlalchemy_security_report_repository.py`, `domain/repositories/security_report_repository.py`
 - **Verify**: reiniciar app; POST novo relato; verificar que `ai_suggested_category: null` no response
-- [ ] Done
+- [x] Done
 
 ### Step 4: Criar use case `AutoCategorizeReport`
 
@@ -163,7 +163,7 @@ class AutoCategorizeReport:
 - **Files**: `application/use_cases/auto_categorize_report.py`
 - **Interface**: `AutoCategorizeReport(repo).execute(id) -> AutoCategorizeResult`
 - **Tests**: Step 6
-- [ ] Done
+- [x] Done
 
 ### Step 5: Criar use case `SetReportCategory` e schemas
 
@@ -204,7 +204,7 @@ Em `presentation/schemas/security_report_schemas.py`:
 - Adicionar `ai_suggested_category: str | None` a `SecurityReportResponse`
 
 - **Files**: `application/use_cases/set_report_category.py`, `presentation/schemas/security_report_schemas.py`
-- [ ] Done
+- [x] Done
 
 ### Step 6: Adicionar endpoints ao router
 
@@ -248,7 +248,7 @@ Atualizar `get_geojson` para incluir `"ai_suggested_category": e.ai_suggested_ca
 
 - **Files**: `presentation/api/routers/security_reports.py`
 - **Verify**: `curl -X POST http://localhost:8000/security_reports/<id>/auto_categorize` com Ollama rodando; `curl -X PATCH .../category -d '{"category":"furto_roubo"}'`
-- [ ] Done
+- [x] Done
 
 ### Step 7: Testes
 
@@ -265,7 +265,7 @@ Atualizar `get_geojson` para incluir `"ai_suggested_category": e.ai_suggested_ca
 
 - **Files**: `tests/unit/application/test_auto_categorize.py`, `tests/integration/api/test_security_reports_api.py`
 - **Verify**: `cd fala-gavea-seguranca && uv run pytest tests/ -k "categoriz" -v` passa
-- [ ] Done
+- [x] Done
 
 ---
 
