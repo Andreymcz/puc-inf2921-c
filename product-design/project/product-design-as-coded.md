@@ -53,6 +53,43 @@ designer_description: "Implementation state mirror for kb-qa — maintained by p
 - `label_feedback` JSON column stores `{label: {"approved": bool, "user_id": str}}` — `set_label_feedback` persists `user_id` alongside the flag.
 - `LikeRecord` domain dataclass: `user_id: str, created_at: datetime`. `CitizenPostRepository` exposes `get_likes(post_id) -> list[LikeRecord]`.
 
+### 0e. Fala Gávea Segurança — AI auto-categorização + curadoria pelo delegado (plan-000061)
+
+**`SecurityReport` entity** — `domain/entities/security_report.py`:
+- Novo campo `ai_suggested_category: ReportCategory | None = None` (opcional, nasce `None`).
+
+**DB model** — `infrastructure/database/models.py`:
+- Coluna `ai_suggested_category = Column(SAEnum(ReportCategory), nullable=True)`.
+
+**Repository ABC** — `domain/repositories/security_report_repository.py`:
+- `update_ai_suggested_category(id, category)` — salva sugestão sem alterar `category` confirmada.
+- `update_category(id, category)` — atualiza `category` e zera `ai_suggested_category`.
+
+**SQLAlchemy repo** — `infrastructure/repositories/sqlalchemy_security_report_repository.py`:
+- Implementação dos dois novos métodos.
+- `_to_entity` e `_to_model` atualizados para mapear `ai_suggested_category`.
+
+**Use case `AutoCategorizeReport`** — `application/use_cases/auto_categorize_report.py`:
+- `execute(id)` → busca relato; formata `CATEGORIZE_PROMPT`; chama `chat_completion`; parseia JSON; chama `update_ai_suggested_category`; retorna `AutoCategorizeResult(category, confidence, justification)`.
+- Levanta `SecurityReportNotFoundError` se relato ausente; `ValueError` se resposta do modelo inválida; `RuntimeError` (repassado) se Ollama inacessível.
+
+**Use case `SetReportCategory`** — `application/use_cases/set_report_category.py`:
+- `execute(SetReportCategoryInput(id, category))` → valida `ReportCategory`; chama `update_category`; levanta `InvalidInputError` para categoria inválida, `SecurityReportNotFoundError` para relato ausente.
+
+**Schemas** — `presentation/schemas/security_report_schemas.py`:
+- `SecurityReportCategoryUpdate(category: str)` — body do PATCH.
+- `AutoCategorizeResponse(category, confidence, justification)` — response do POST auto-categorize.
+- `SecurityReportResponse` ganhou `ai_suggested_category: str | None = None`.
+
+**Endpoints** — `presentation/api/routers/security_reports.py`:
+- `POST /security_reports/{id}/auto_categorize` → 200 `AutoCategorizeResponse`; 404 se relato ausente; 502 se Ollama falhar ou JSON inválido.
+- `PATCH /security_reports/{id}/category` → 200 `SecurityReportResponse`; 404 se relato ausente; 422 se categoria inválida.
+- `GET /security_reports/geojson` — propriedade `ai_suggested_category` adicionada ao GeoJSON features.
+
+**Testes**:
+- `tests/unit/application/test_auto_categorize.py` — 7 testes unitários com mock de `chat_completion` e repositório.
+- `tests/integration/api/test_security_reports_api.py` — 5 novos testes de integração (PATCH /category, POST /auto_categorize com Ollama mocado).
+
 ### 0d. Fala Gávea Segurança — ReportCategory enriquecido + seed + AI prompt (plan-000057)
 
 `ReportCategory` expandido de 4 para 9 valores derivados da análise do Fórum de Segurança da Gávea (GaveaLab/PUC-Rio, Jun/2024):
@@ -71,6 +108,15 @@ designer_description: "Implementation state mirror for kb-qa — maintained by p
 **Seed script** — `fala-gavea-seguranca/scripts/seed_reports.py`: insere 250 relatos com `author_id LIKE 'seed-%'`; idempotente (DELETE antes do INSERT); textos pt-BR em ≥5 variantes por categoria; coordenadas na bbox da Gávea (`lat [-22.990, -22.965], lon [-43.245, -43.215]`); distribuição por `random.choices` com pesos derivados do fórum.
 
 **AI prompt template** — `fala-gavea-seguranca/src/fala_gavea_seguranca/infrastructure/ai/prompts.py`: `CATEGORIZE_PROMPT: str` — template com `/nothink`, 9 categorias descritas em pt-BR, variável `{text}`, instrução de resposta JSON `{category, confidence, justification}`. Preparado para importação por `use_cases/auto_categorize_report.py` (Wave 1 Item 3, roadmap-000056).
+
+### 0e. Fala Gávea Segurança — Filtro temporal `until` (plan-000062)
+
+`ReportFilter` gains a symmetric `until: datetime | None = None` field (sibling of the existing `since`). The SQLAlchemy repository applies `SecurityReportModel.created_at <= filters.until` when set. Both `GET /security_reports/geojson` and `GET /security_reports/` expose `?until=` as an optional query parameter (type `datetime`, parsed by FastAPI).
+
+- **Domain** — `fala-gavea-seguranca/src/fala_gavea_seguranca/domain/repositories/security_report_repository.py`: `ReportFilter.until: datetime | None = None` added after `since`.
+- **Infrastructure** — `fala-gavea-seguranca/src/fala_gavea_seguranca/infrastructure/repositories/sqlalchemy_security_report_repository.py`: `find_all()` applies `q.filter(SecurityReportModel.created_at <= filters.until)` after the `since` block.
+- **Router** — `fala-gavea-seguranca/src/fala_gavea_seguranca/presentation/api/routers/security_reports.py`: `until: datetime | None = Query(None)` added to `get_geojson` and `list_security_reports`; passed into `ReportFilter(…, until=until, …)`.
+- **Tests** — `FakeRepository.find_all` updated to filter by `since`/`until`; `test_filter_since_until_range` and `test_filter_until_only` added (unit); `test_geojson_until_filter` added (integration).
 
 ### 0c. Fala Gávea Segurança — Iluminação Pública (plan-000055)
 

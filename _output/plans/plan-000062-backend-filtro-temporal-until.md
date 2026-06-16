@@ -1,4 +1,4 @@
-# Plan 000062 | FEATURE-B | 2026-06-16 14:03 UTC | Backend: filtro temporal `until` | Review: light
+# DONE | 2026-06-16 14:50 UTC | Plan 000062 | FEATURE-B | 2026-06-16 14:03 UTC | Backend: filtro temporal `until` | Review: light
 plan_format_version: 1
 
 ## Brief
@@ -40,7 +40,7 @@ until: datetime | None = None
 - **Interface**: `ReportFilter.until: datetime | None`
 - **Verify**: importar sem erro
 - **Tests**: Step 3
-- [ ] Done
+- [x] Done
 
 ### Step 2: Aplicar filtro `until` na query SQLAlchemy
 
@@ -53,7 +53,7 @@ if filters.until:
 - **Files**: `infrastructure/repositories/sqlalchemy_security_report_repository.py`
 - **Interface**: `find_all(filters=ReportFilter(until=datetime(...)))` aplica `created_at <= until`
 - **Verify**: teste de integração (Step 3)
-- [ ] Done
+- [x] Done
 
 ### Step 3: Expor `?until=` nos endpoints do router
 
@@ -71,7 +71,7 @@ O padrão é idêntico ao `since` já existente — apenas adicionar o parâmetr
 - **Files**: `presentation/api/routers/security_reports.py`
 - **Interface**: `GET /security_reports/geojson?since=2026-01-01T00:00:00&until=2026-06-01T00:00:00`
 - **Verify**: `curl 'http://localhost:8000/security_reports/geojson?since=2026-01-01&until=2026-03-31'` retorna apenas relatos no intervalo
-- [ ] Done
+- [x] Done
 
 ### Step 4: Testes
 
@@ -84,7 +84,7 @@ Em `tests/integration/api/test_security_reports_api.py`:
 
 - **Files**: `tests/unit/application/test_security_report_use_cases.py`, `tests/integration/api/test_security_reports_api.py`
 - **Verify**: `cd fala-gavea-seguranca && uv run pytest tests/ -k "until or filter" -v` passa
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -111,3 +111,21 @@ GET /security_reports/geojson and GET /security_reports/.
 
 Part of roadmap-000056 Wave 1 Item 4.
 ```
+
+---
+
+## Implementation Summary
+
+**Completed:** 2026-06-16 14:50 UTC | **Steps:** 4/4 | **Tests:** 30/30 passed
+
+### Changes made
+
+- [security_report_repository.py](fala-gavea-seguranca/src/fala_gavea_seguranca/domain/repositories/security_report_repository.py) — added `until: datetime | None = None` to `ReportFilter`
+- [sqlalchemy_security_report_repository.py](fala-gavea-seguranca/src/fala_gavea_seguranca/infrastructure/repositories/sqlalchemy_security_report_repository.py) — added `if filters.until: q = q.filter(...created_at <= filters.until)`
+- [security_reports.py (router)](fala-gavea-seguranca/src/fala_gavea_seguranca/presentation/api/routers/security_reports.py) — added `until: datetime | None = Query(None)` to both `get_geojson` and `list_security_reports`; passed to `ReportFilter`
+- [test_security_report_use_cases.py](fala-gavea-seguranca/tests/unit/application/test_security_report_use_cases.py) — updated `FakeRepository.find_all` to filter by `since`/`until`; added `test_filter_since_until_range` and `test_filter_until_only`
+- [test_security_reports_api.py](fala-gavea-seguranca/tests/integration/api/test_security_reports_api.py) — added `test_geojson_until_filter`
+
+### Notes
+
+Steps 1–2 (domain + SQLAlchemy) were co-committed with plan-000060 step 2 changes (linter applied both in the same save cycle). Steps 3–4 (router + tests) committed in `153d616`.
