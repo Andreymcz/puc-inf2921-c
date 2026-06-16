@@ -1,4 +1,5 @@
 import pytest
+from datetime import datetime, timezone
 
 from fala_gavea_seguranca.application.use_cases.create_security_report import (
     CreateSecurityReport,
@@ -26,10 +27,15 @@ class FakeRepository(SecurityReportRepository):
 
     def find_all(self, limit: int = 50, offset: int = 0, filters: ReportFilter | None = None) -> list[SecurityReport]:
         items = list(self._store.values())
-        if filters and filters.category:
-            items = [i for i in items if i.category == filters.category]
-        if filters and filters.status:
-            items = [i for i in items if i.status == filters.status]
+        if filters:
+            if filters.category:
+                items = [i for i in items if i.category == filters.category]
+            if filters.status:
+                items = [i for i in items if i.status == filters.status]
+            if filters.since:
+                items = [i for i in items if i.created_at >= filters.since]
+            if filters.until:
+                items = [i for i in items if i.created_at <= filters.until]
         return items[offset: offset + limit]
 
     def update_status(self, id: str, status: ReportStatus) -> SecurityReport | None:
@@ -43,6 +49,24 @@ class FakeRepository(SecurityReportRepository):
             del self._store[id]
             return True
         return False
+
+    def update_ai_suggested_category(self, id: str, category: ReportCategory | None) -> SecurityReport | None:
+        if id not in self._store:
+            return None
+        self._store[id].ai_suggested_category = category
+        return self._store[id]
+
+    def update_category(self, id: str, category: ReportCategory) -> SecurityReport | None:
+        if id not in self._store:
+            return None
+        self._store[id].category = category
+        return self._store[id]
+
+    def update_tags(self, id: str, tags: list[str]) -> SecurityReport | None:
+        if id not in self._store:
+            return None
+        self._store[id].tags = tags
+        return self._store[id]
 
 
 VALID_INPUT = CreateSecurityReportInput(
@@ -140,3 +164,46 @@ def test_delete_not_found_raises() -> None:
     repo = FakeRepository()
     with pytest.raises(SecurityReportNotFoundError):
         DeleteSecurityReport(repo).execute("ghost")
+
+
+def _make_report(created_at: datetime) -> SecurityReport:
+    return SecurityReport(
+        id=str(__import__("uuid").uuid4()),
+        text="Relato de teste para filtro temporal",
+        category=ReportCategory.ILUMINACAO,
+        status=ReportStatus.PENDENTE,
+        author_id="user-test",
+        created_at=created_at,
+    )
+
+
+def test_filter_since_until_range() -> None:
+    repo = FakeRepository()
+    jan = datetime(2026, 1, 15, tzinfo=timezone.utc)
+    mar = datetime(2026, 3, 15, tzinfo=timezone.utc)
+    jun = datetime(2026, 6, 15, tzinfo=timezone.utc)
+    for dt in (jan, mar, jun):
+        repo._store[str(__import__("uuid").uuid4())] = _make_report(dt)
+
+    result = ListSecurityReports(repo).execute(
+        filters=ReportFilter(
+            since=datetime(2026, 2, 1, tzinfo=timezone.utc),
+            until=datetime(2026, 4, 30, tzinfo=timezone.utc),
+        )
+    )
+    assert len(result) == 1
+    assert result[0].created_at == mar
+
+
+def test_filter_until_only() -> None:
+    repo = FakeRepository()
+    jan = datetime(2026, 1, 15, tzinfo=timezone.utc)
+    jun = datetime(2026, 6, 15, tzinfo=timezone.utc)
+    for dt in (jan, jun):
+        repo._store[str(__import__("uuid").uuid4())] = _make_report(dt)
+
+    result = ListSecurityReports(repo).execute(
+        filters=ReportFilter(until=datetime(2026, 3, 31, tzinfo=timezone.utc))
+    )
+    assert len(result) == 1
+    assert result[0].created_at == jan

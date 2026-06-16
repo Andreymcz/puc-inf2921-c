@@ -18,6 +18,8 @@ class SecurityReportModel(Base):
     territory_name = Column(String, nullable=True)
     photo_url = Column(String, nullable=True)
     ai_labels = Column(JSON, nullable=False, default=list)
+    tags = Column(JSON, nullable=False, default=list)
+    ai_suggested_category = Column(SAEnum(ReportCategory), nullable=True)
 
 
 class ChatSessionModel(Base):

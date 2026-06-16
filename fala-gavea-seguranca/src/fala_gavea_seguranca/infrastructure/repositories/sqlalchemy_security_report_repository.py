@@ -34,6 +34,8 @@ class SQLAlchemySecurityReportRepository(SecurityReportRepository):
                 q = q.filter(SecurityReportModel.status == filters.status)
             if filters.since:
                 q = q.filter(SecurityReportModel.created_at >= filters.since)
+            if filters.until:
+                q = q.filter(SecurityReportModel.created_at <= filters.until)
             if filters.lat_min is not None:
                 q = q.filter(SecurityReportModel.lat >= filters.lat_min)
             if filters.lat_max is not None:
@@ -42,6 +44,8 @@ class SQLAlchemySecurityReportRepository(SecurityReportRepository):
                 q = q.filter(SecurityReportModel.lon >= filters.lon_min)
             if filters.lon_max is not None:
                 q = q.filter(SecurityReportModel.lon <= filters.lon_max)
+            if filters.tag is not None:
+                q = q.filter(SecurityReportModel.tags.contains(filters.tag))
         models = (
             q.order_by(SecurityReportModel.created_at.desc())
             .offset(offset)
@@ -49,6 +53,14 @@ class SQLAlchemySecurityReportRepository(SecurityReportRepository):
             .all()
         )
         return [self._to_entity(m) for m in models]
+
+    def update_tags(self, id: str, tags: list[str]) -> SecurityReport | None:
+        model = self._session.get(SecurityReportModel, id)
+        if model is None:
+            return None
+        model.tags = tags
+        self._session.commit()
+        return self._to_entity(model)
 
     def update_status(self, id: str, status: ReportStatus) -> SecurityReport | None:
         model = self._session.get(SecurityReportModel, id)
@@ -66,6 +78,23 @@ class SQLAlchemySecurityReportRepository(SecurityReportRepository):
         self._session.commit()
         return True
 
+    def update_ai_suggested_category(self, id: str, category: ReportCategory | None) -> SecurityReport | None:
+        model = self._session.get(SecurityReportModel, id)
+        if model is None:
+            return None
+        model.ai_suggested_category = category
+        self._session.commit()
+        return self._to_entity(model)
+
+    def update_category(self, id: str, category: ReportCategory) -> SecurityReport | None:
+        model = self._session.get(SecurityReportModel, id)
+        if model is None:
+            return None
+        model.category = category
+        model.ai_suggested_category = None
+        self._session.commit()
+        return self._to_entity(model)
+
     @staticmethod
     def _to_entity(model: SecurityReportModel) -> SecurityReport:
         return SecurityReport(
@@ -80,6 +109,8 @@ class SQLAlchemySecurityReportRepository(SecurityReportRepository):
             territory_name=model.territory_name,
             photo_url=model.photo_url,
             ai_labels=model.ai_labels or [],
+            tags=model.tags or [],
+            ai_suggested_category=ReportCategory(model.ai_suggested_category) if model.ai_suggested_category else None,
         )
 
     @staticmethod
@@ -96,4 +127,6 @@ class SQLAlchemySecurityReportRepository(SecurityReportRepository):
             territory_name=entity.territory_name,
             photo_url=entity.photo_url,
             ai_labels=entity.ai_labels,
+            tags=entity.tags,
+            ai_suggested_category=entity.ai_suggested_category,
         )

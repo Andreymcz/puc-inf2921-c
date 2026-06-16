@@ -12,6 +12,7 @@ class ReportFilter:
     category: ReportCategory | None = None
     status: ReportStatus | None = None
     since: datetime | None = None
+    until: datetime | None = None
     lat_min: float | None = None
     lat_max: float | None = None
     lon_min: float | None = None
@@ -39,3 +40,12 @@ class SecurityReportRepository(ABC):
 
     @abstractmethod
     def delete(self, id: str) -> bool: ...
+
+    @abstractmethod
+    def update_ai_suggested_category(self, id: str, category: ReportCategory | None) -> SecurityReport | None: ...
+
+    @abstractmethod
+    def update_category(self, id: str, category: ReportCategory) -> SecurityReport | None: ...
+
+    @abstractmethod
+    def update_tags(self, id: str, tags: list[str]) -> SecurityReport | None: ...
