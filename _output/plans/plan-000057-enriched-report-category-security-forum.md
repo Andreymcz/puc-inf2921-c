@@ -1,4 +1,5 @@
 # Plan 000057 | FEATURE-B | 2026-06-16 13:41 UTC | Enriquecer ReportCategory a partir do Forum de Seguranca LGD | Review: light
+# DONE | 2026-06-16 14:35 UTC |
 plan_format_version: 1
 
 ## Brief
@@ -101,7 +102,7 @@ Apos a mudanca no enum, deletar `fala-gavea-seguranca/app.db` para que o DB seja
 - **Interface**: `ReportCategory` enum com 9 valores exportado de `domain/entities/security_report.py` -- usado por use cases, repository, models, router
 - **Verify**: `uv run python -c "from fala_gavea_seguranca.domain.entities.security_report import ReportCategory; print([c.value for c in ReportCategory])"` imprime os 9 valores
 - **Tests**: Atualizar / adicionar teste em `tests/` que verifica que todos os 9 valores de `ReportCategory` sao validos e que `FURTO_ROUBO` e `ESPACO_PUBLICO_INSEGURO` existem
-- [ ] Done
+- [x] Done
 
 ### Step 2: Atualizar o script de seed com as novas categorias e distribuicoes realistas
 
@@ -125,7 +126,7 @@ O script deve:
 - **Interface**: N/A (script executavel, nao modulo)
 - **Verify**: `cd fala-gavea-seguranca && uv run python scripts/seed_reports.py` termina sem erro e `uv run python -c "from src.fala_gavea_seguranca.infrastructure.database.session import get_session; from sqlalchemy import text; s = next(get_session()); print(s.execute(text('SELECT category, count(*) FROM security_reports GROUP BY category')).fetchall())"` mostra distribuicao proxima a esperada
 - **Tests**: N/A (script utilitario sem logica de negocio testavel unitariamente)
-- [ ] Done
+- [x] Done
 
 ### Step 3: Preparar template de prompt de AI-categorizacao para Wave 1 Item 3
 
@@ -164,7 +165,7 @@ Responda APENAS com JSON valido no formato:
 - **Interface**: `CATEGORIZE_PROMPT: str` -- importado por `use_cases/auto_categorize_report.py` (plano futuro, Wave 1 Item 3)
 - **Verify**: `uv run python -c "from fala_gavea_seguranca.infrastructure.ai.prompts import CATEGORIZE_PROMPT; print(CATEGORIZE_PROMPT.format(text='Teste'))"` imprime o prompt sem erro
 - **Tests**: N/A (string de template sem logica)
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -199,3 +200,17 @@ community leaders, police, and public officials.
 Also prepares the AI prompt template (infra/ai/prompts.py) for Wave 1
 Item 3 auto-categorization (roadmap-000056).
 ```
+
+---
+
+## Implementation Summary
+
+**Completed: 2026-06-16 14:35 UTC | Steps: 3/3 | All tests: 27 passed**
+
+| Step | Status | Key output |
+|------|--------|-----------|
+| 1 | Done | `ReportCategory` expanded from 4 to 9 values; `app.db` deleted; 3 new unit tests added |
+| 2 | Done | `scripts/seed_reports.py` created — 250 idempotent rows, pt-BR texts, forum-derived distribution |
+| 3 | Done | `infrastructure/ai/prompts.py` created with `CATEGORIZE_PROMPT` string template for Wave 1 Item 3 |
+
+**No partial/failed steps. No deferred items.**
