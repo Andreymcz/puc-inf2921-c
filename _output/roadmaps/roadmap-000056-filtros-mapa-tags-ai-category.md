@@ -32,10 +32,10 @@ Não moveremos as categorias para uma tabela DB nesta versão — o Enum é o ca
 
 ## Wave Summary
 
-### Wave 0 — Fake Dataset (sequential, nenhuma dependência)
+### Wave 0 — Fake Dataset ✅ DONE
 | # | ID | Title | Scope | Type | Plan | Status |
 |---|-----|-------|-------|------|------|--------|
-| 1 | fake-dataset | Enriquecer ReportCategory (9 categorias) + seed script + prompt IA | backend | technical | plan-000057 | pending |
+| 1 | fake-dataset | Enriquecer ReportCategory (9 categorias) + seed script + prompt IA | backend | technical | plan-000057 | **done** |
 
 **Escopo do item 1:**
 - Script Python `fala-gavea-seguranca/scripts/seed_reports.py`
@@ -52,12 +52,12 @@ Não moveremos as categorias para uma tabela DB nesta versão — o Enum é o ca
 
 ---
 
-### Wave 1 — Backend: Tags + AI-categorização (paralelo; dependem apenas da infra existente)
+### Wave 1 — Backend: Tags + AI-categorização ✅ DONE
 | # | ID | Title | Scope | Type | Plan | Depends on | Status |
 |---|-----|-------|-------|------|------|-----------|--------|
-| 2 | tags-model | Tags livres: campo + API | backend | technical | plan-000060 | fake-dataset | pending |
-| 3 | ai-category | AI auto-categorização + curadoria delegado | backend | technical | plan-000061 | fake-dataset | pending |
-| 4 | time-filter-until | Adicionar param `until` ao backend | backend | technical | plan-000062 | — | pending |
+| 2 | tags-model | Tags livres: campo + API | backend | technical | plan-000060 | fake-dataset | **done** |
+| 3 | ai-category | AI auto-categorização + curadoria delegado | backend | technical | plan-000061 | fake-dataset | **done** |
+| 4 | time-filter-until | Adicionar param `until` ao backend | backend | technical | plan-000062 | — | **done** |
 
 **Item 2 — Tags:**
 - Novo campo `tags: list[str]` em `SecurityReport` (dataclass) e `SecurityReportModel` (JSON column, default `[]`)
@@ -84,61 +84,62 @@ Não moveremos as categorias para uma tabela DB nesta versão — o Enum é o ca
 
 ---
 
-### Wave 2 — Frontend: painel de filtros completo (depende de Wave 1)
+### Wave 2 — Frontend: painel de filtros completo 🔴 EM FOCO
 | # | ID | Title | Scope | Type | Plan | Depends on | Status |
 |---|-----|-------|-------|------|------|-----------|--------|
-| 5 | filter-ui | Painel de filtros: tempo, bbox, tags, busca | frontend | design+technical | plan-000063 | tags-model, ai-category, time-filter-until | pending |
+| 5 | filter-ui | Painel de filtros: tempo, bbox, tags, busca, curadoria IA | frontend | design+technical | plan-000063 | Wave 1 completa ✅ | **em andamento** |
 
-**Item 5 — Frontend:**
+> **Decisão de stack (research-000059, 2026-06-16):** Adoptar Alpine.js via CDN para gerenciar estados reativos da UI (especialmente o popup de curadoria multi-estado). Manter vanilla JS para inicialização do Leaflet e chamadas fetch. Sem bundler, sem npm build. Ativar Alpine dentro dos popups Leaflet com `Alpine.initTree(e.popup.getElement())` no evento `popupopen`.
 
-*Filtro temporal:*
-- Dois `<input type="date">` (`#filter-date-from`, `#filter-date-to`) no painel de filtros do `index.html`
-- `buildQueryString()` inclui `since=<ISO>` e `until=<ISO>` quando preenchidos
+**Item 5 — Frontend (plan-000063):**
 
-*Filtro espacial (extensão do mapa):*
-- Checkbox `#filter-bbox` "Somente área visível" — quando ativo, `buildQueryString()` lê `map.getBounds()` e adiciona `lat_min`, `lat_max`, `lon_min`, `lon_max`
-- Update automático ao mover o mapa com o checkbox ativo (event `map.on('moveend', ...)`)
+*Step 1 — 9 categorias em CATEGORY_COLORS, CATEGORY_LABELS e selects:*
+- Atualizar constantes em `app.js` + dropdowns em `index.html` para as 9 categorias do Wave 0
 
-*Tags:*
-- Input `#filter-tag` (texto livre) para filtrar por tag — passa `tag=<valor>` ao endpoint
-- No popup de cada marker, exibir tags como chips `<span class="tag">` quando `p.tags.length > 0`
-- Formulário de novo relato: campo `#f-tags` (input texto com instrução "separe por vírgulas") → enviado como array `tags`
+*Step 2 — Filtro temporal (date_from / date_to):*
+- Dois `<input type="date">` (`#filter-date-from`, `#filter-date-to`) em `index.html`
+- `buildQueryString()` inclui `since=<ISO>` e `until=<ISO>`
 
-*Busca semântica:*
-- Campo `#search-q` + botão "Buscar" — chama `GET /security_reports/search?q=...&n=20` e exibe os resultados como pins roxos em layer separado (`searchLayerGroup`); ao clicar no pin, abre popup com texto e categoria
-- Botão "Limpar busca" remove o layer e volta ao estado normal
+*Step 3 — Filtro espacial (bbox área visível):*
+- Checkbox `#filter-bbox` "Somente área visível" em `index.html`
+- `buildQueryString()` lê `map.getBounds()` e adiciona `lat_min/lat_max/lon_min/lon_max`
+- `map.on('moveend', ...)` recarrega pins quando checkbox ativo + debounce 300ms
 
-*Painel "Curadoria de categoria" (delegado):*
-- No popup de cada marker: se `p.ai_suggested_category` e `p.ai_suggested_category !== p.category`, exibir badge amarelo "🤖 Sugestão: <valor>" + dois botões "✅ Confirmar" (chama `PATCH /{id}/category` com o valor sugerido) e "✏️ Corrigir" (dropdown com 9 opções)
-- Botão "🤖 Categorizar" no popup (acessível a delegado): chama `POST /{id}/auto_categorize` e reload do popup
+*Step 4 — Tags: filtro + chips no popup + campo no formulário:*
+- Input `#filter-tag` na sidebar → passa `?tag=<valor>` ao endpoint
+- Chips `<span class="tag-chip">` no popup de cada marker
+- Campo `#f-tags` no formulário de novo relato ("separe por vírgulas") → enviado como `tags[]`
+
+*Step 5 — Busca semântica:*
+- Campo `#search-q` + botão "🔍 Buscar" → `GET /security_reports/search?q=...&n=20`
+- Resultados como pins roxos em `searchLayerGroup` separado
+- Botão "✕ Limpar busca" remove o layer
+
+*Step 6 — Painel de curadoria de categoria (popup reativo):*
+- Alpine.js CDN adicionado ao `index.html` (`<script defer src="cdn.alpinejs.dev/...">`)
+- `map.on('popupopen', e => Alpine.initTree(e.popup.getElement()))` ativa Alpine nos popups
+- Popup usa `x-data`, `x-show`, `x-on` para gerenciar os 3 estados:
+  - **sem sugestão**: botão "🤖 Categorizar" (chama `POST /{id}/auto_categorize`)
+  - **sugestão pendente**: badge amarelo + "✅ Confirmar" + dropdown "✏️ Corrigir"
+  - **em loading/erro**: spinner `x-show="loading"` / badge vermelho `x-show="error"`
 
 ---
 
 ## Execution Instructions
 
-### Wave 0 (sequential — executar primeiro)
+### Wave 0 ✅ Concluída — plan-000057
+
+### Wave 1 ✅ Concluída
+- plan-000060: tags livres campo + API ✅
+- plan-000061: auto-categorização + curadoria delegado ✅
+- plan-000062: parâmetro until no backend ✅
+
+### Wave 2 🔴 EM ANDAMENTO — próximo passo
 ```
-/implement 57  # fake-dataset: enum 9 categorias + seed script + prompt IA
+/implement 63  # filter-ui: painel de filtros completo + Alpine.js + curadoria popup
 ```
 
-### Wave 1 (parallel — executar em paralelo após Wave 0)
-Os 3 itens são independentes entre si:
-```
-# Sessão 1:
-/implement 60  # tags-model: tags livres campo + API
-
-# Sessão 2:
-/implement 61  # ai-category: auto-categorização + curadoria delegado
-
-# Sessão 3:
-/implement 62  # time-filter-until: parâmetro until no backend
-```
-Ou em paralelo via worktree agents.
-
-### Wave 2 (sequential — executar após Wave 1 completa)
-```
-/implement 63  # filter-ui: painel de filtros completo no frontend
-```
+> **Nota Alpine.js (research-000059):** O plan-000063 (Step 6) deve ser executado com Alpine.js para gerenciar o popup de curadoria. A adição de `Alpine.initTree()` no evento `popupopen` é o único ajuste em relação ao plan original. Os demais steps (1-5) são vanilla JS puro.
 
 ---
 

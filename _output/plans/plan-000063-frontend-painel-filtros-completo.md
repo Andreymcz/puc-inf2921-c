@@ -7,7 +7,9 @@ plan_format_version: 1
 
 ## Agent Interpretation
 
-O frontend atual (`static/index.html` + `static/app.js`) expõe apenas `?category` e `?status`. Este plano completa o painel de filtros e expõe as capacidades do backend Wave 1, sem adicionar dependências de build — apenas HTML/CSS/vanilla JS.
+O frontend atual (`static/index.html` + `static/app.js`) expõe apenas `?category` e `?status`. Este plano completa o painel de filtros e expõe as capacidades do backend Wave 1.
+
+**Stack decision (research-000059, 2026-06-16):** Steps 1-5 são vanilla JS puro. Step 6 (popup de curadoria) adopta **Alpine.js via CDN** para gerenciar os 3 estados do popup (sem sugestão / sugestão pendente / loading+erro) sem reescrever innerHTML a cada transição. Sem bundler, sem npm build. Leaflet continua como global (`window.L`); Alpine é ativado nos popups via `Alpine.initTree(e.popup.getElement())` no evento `popupopen`.
 
 **Dependências**:
 - plan-000057: enum com 9 categorias (CATEGORY_COLORS e CATEGORY_LABELS precisam das 9 entradas)
@@ -114,15 +116,18 @@ if (document.getElementById('filter-bbox').checked) {
 }
 ```
 
-Em `app.js`, após inicialização do mapa, registrar listener:
+Em `app.js`, após inicialização do mapa, registrar listener com debounce:
 ```js
+let bboxDebounce = null;
 map.on('moveend', () => {
-  if (document.getElementById('filter-bbox').checked) loadReports();
+  if (!document.getElementById('filter-bbox').checked) return;
+  clearTimeout(bboxDebounce);
+  bboxDebounce = setTimeout(loadReports, 300);
 });
 ```
 
 - **Files**: `static/index.html`, `static/app.js`
-- **Verify**: marcar checkbox + mover mapa → lista atualiza automaticamente com relatos visíveis
+- **Verify**: marcar checkbox + mover mapa → lista atualiza automaticamente com relatos visíveis (sem flickering)
 - [ ] Done
 
 ### Step 4: Filtro por tag + campo de tag no formulário de novo relato
@@ -252,61 +257,79 @@ button.secondary:hover { background: #4b5563; }
 - **Verify**: digitar "assalto perto do parque" → pins roxos aparecem nos relatos semanticamente relacionados; "Limpar busca" remove os pins
 - [ ] Done
 
-### Step 6: Painel de curadoria de categoria no popup (ai_suggested_category)
+### Step 6: Painel de curadoria de categoria no popup com Alpine.js
 
-Ao gerar o popup de cada marcador no `geojson.features.forEach`, verificar `p.ai_suggested_category`:
+> **Abordagem:** Alpine.js via CDN para gerenciar os 3 estados do popup sem reescrever innerHTML a cada clique. Ativado com `Alpine.initTree()` no evento `popupopen` do Leaflet.
 
+**6a — Adicionar Alpine.js ao `index.html`:**
+```html
+<!-- no <head>, após os outros scripts -->
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+```
+
+**6b — Registrar `Alpine.initTree` no `popupopen` do Leaflet (em `app.js`, após `map` ser criado):**
 ```js
-// Curadoria: badge de sugestão de IA + botões de confirmar/corrigir
-let curationHtml = '';
-if (p.ai_suggested_category && p.ai_suggested_category !== p.category) {
-  const sugLabel = CATEGORY_LABELS[p.ai_suggested_category] || p.ai_suggested_category;
+map.on('popupopen', (e) => {
+  if (window.Alpine) Alpine.initTree(e.popup.getElement());
+});
+```
+
+**6c — `buildCurationPanel(p)` em `app.js` — retorna HTML com `x-data`:**
+```js
+function buildCurationPanel(p) {
   const catOptions = Object.entries(CATEGORY_LABELS)
-    .map(([v, l]) => `<option value="${v}"${v === p.ai_suggested_category ? ' selected' : ''}>${l}</option>`)
-    .join('');
-  curationHtml = `
-    <div class="ai-badge">🤖 Sugestão IA: <strong>${sugLabel}</strong></div>
-    <div class="curation-actions">
-      <button onclick="confirmCategory('${p.id}','${p.ai_suggested_category}')">✅ Confirmar</button>
-      <select id="cat-select-${p.id}">${catOptions}</select>
-      <button onclick="correctCategory('${p.id}')">✏️ Corrigir</button>
+    .map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
+
+  return `
+    <div x-data="{
+      state: '${p.ai_suggested_category && p.ai_suggested_category !== p.category ? 'pending' : 'idle'}',
+      correcting: false,
+      loading: false,
+      error: null,
+      suggested: '${p.ai_suggested_category || ''}',
+      async confirm(id, cat) {
+        this.loading = true; this.error = null;
+        const r = await fetch(\`${API}/\${id}/category\`, {method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({category:cat})});
+        this.loading = false;
+        if (r.ok) { map.closePopup(); loadReports(); }
+        else { this.error = 'Erro ao confirmar'; }
+      },
+      async autocat(id) {
+        this.loading = true; this.error = null;
+        const r = await fetch(\`${API}/\${id}/auto_categorize\`, {method:'POST'});
+        this.loading = false;
+        if (r.ok) { const d = await r.json(); this.suggested = d.category; this.state = 'pending'; }
+        else { this.error = 'Ollama indisponível'; }
+      }
+    }">
+      <!-- Estado: sem sugestão -->
+      <div x-show="state === 'idle'">
+        <button @click="autocat('${p.id}')">🤖 Categorizar por IA</button>
+      </div>
+      <!-- Estado: sugestão pendente -->
+      <div x-show="state === 'pending'" class="ai-badge">
+        🤖 Sugestão: <strong x-text="suggested"></strong>
+        <div class="curation-actions" x-show="!correcting">
+          <button @click="confirm('${p.id}', suggested)">✅ Confirmar</button>
+          <button @click="correcting = true">✏️ Corrigir</button>
+        </div>
+        <div class="curation-actions" x-show="correcting">
+          <select id="cat-fix-${p.id}">${catOptions}</select>
+          <button @click="confirm('${p.id}', document.getElementById('cat-fix-${p.id}').value)">Salvar</button>
+          <button @click="correcting = false">Cancelar</button>
+        </div>
+      </div>
+      <!-- Loading / Erro -->
+      <div x-show="loading" class="hint">⏳ Aguardando IA...</div>
+      <div x-show="error" class="hint error" x-text="error"></div>
     </div>
   `;
 }
-// Botão de auto-categorizar (sempre visível)
-const autoCatHtml = `<br><button onclick="autoCategorize('${p.id}')">🤖 Categorizar por IA</button>`;
 ```
 
-Funções globais em `app.js`:
-```js
-async function confirmCategory(id, category) {
-  const res = await fetch(`${API}/${id}/category`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ category }),
-  });
-  if (res.ok) { map.closePopup(); loadReports(); }
-  else alert('Erro: ' + (await res.json()).detail);
-}
+Chamar `buildCurationPanel(p)` dentro do template de popup de cada marcador e concatenar no final do popup HTML.
 
-async function correctCategory(id) {
-  const category = document.getElementById(`cat-select-${id}`).value;
-  await confirmCategory(id, category);
-}
-
-async function autoCategorize(id) {
-  const res = await fetch(`${API}/${id}/auto_categorize`, { method: 'POST' });
-  if (res.ok) {
-    const data = await res.json();
-    alert(`IA sugere: ${CATEGORY_LABELS[data.category] || data.category} (${data.confidence})\n${data.justification}`);
-    map.closePopup(); loadReports();
-  } else {
-    alert('Ollama indisponível. Verifique se o servidor está rodando.');
-  }
-}
-```
-
-Em `style.css`:
+**6d — Estilos em `style.css`:**
 ```css
 .ai-badge {
   background: #fef3c7;
@@ -323,11 +346,16 @@ Em `style.css`:
   flex-wrap: wrap;
   margin-top: 4px;
 }
-.curation-actions select { font-size: 0.8rem; }
+.hint.error { color: #dc2626; font-size: 0.8rem; }
 ```
 
-- **Files**: `static/app.js`, `static/style.css`
-- **Verify**: relato com `ai_suggested_category` diferente de `category` → badge amarelo aparece no popup; "✅ Confirmar" → categoria atualizada; "🤖 Categorizar" → Ollama chamado e sugestão exibida
+- **Files**: `static/index.html` (Alpine CDN), `static/app.js` (initTree + buildCurationPanel), `static/style.css`
+- **Verify**:
+  - Relato sem sugestão → botão "🤖 Categorizar por IA" aparece; ao clicar, spinner aparece e após resposta o badge de sugestão emerge
+  - Relato com `ai_suggested_category` → badge amarelo + "✅ Confirmar" + "✏️ Corrigir"
+  - "✅ Confirmar" → popup fecha, relato recarregado com nova categoria
+  - "✏️ Corrigir" → dropdown aparece; "Salvar" → confirma com valor selecionado
+  - Ollama offline → mensagem de erro aparece no popup sem fechar
 - [ ] Done
 
 ---
