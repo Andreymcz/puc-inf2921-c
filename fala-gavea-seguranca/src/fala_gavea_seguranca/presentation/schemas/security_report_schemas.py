@@ -30,6 +30,10 @@ class SecurityReportCategoryUpdate(BaseModel):
     category: str
 
 
+class SecurityReportTagsUpdate(BaseModel):
+    tags: list[str]
+
+
 class AutoCategorizeResponse(BaseModel):
     category: str
     confidence: str
@@ -49,6 +53,7 @@ class SecurityReportResponse(BaseModel):
     photo_url: str | None
     ai_labels: list[str]
     ai_suggested_category: str | None = None
+    tags: list[str] = []
 
     model_config = {"from_attributes": True}
 
