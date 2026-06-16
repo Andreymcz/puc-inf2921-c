@@ -1,3 +1,11 @@
+DONE | 2026-06-16 00:50 UTC | STARTED | 2026-06-16 00:37 UTC | plan | source: research-000053 — Fala Gávea - Segurança roadmap: scaffold seja-clean-python + mapa Leaflet + ChromaDB RAG georreferenciado + chat RAG persistido | PLAN | roadmap-000054
+
+---
+
+DONE | 2026-06-16 00:37 UTC | STARTED | 2026-06-16 00:20 UTC | research | Mapear o estado atual da skill python-scaffold e definir o delta para seja-clean-python
+
+---
+
 DONE | 2026-06-15 23:36 UTC | STARTED | 2026-06-15 22:49 UTC | reflect | Natali: misturar mapa georreferenciado; Andrey: dois casos de uso fala-gávea segurança
 
 ---
