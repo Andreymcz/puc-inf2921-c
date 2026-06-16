@@ -45,7 +45,9 @@ class SQLAlchemySecurityReportRepository(SecurityReportRepository):
             if filters.lon_max is not None:
                 q = q.filter(SecurityReportModel.lon <= filters.lon_max)
             if filters.tag is not None:
-                q = q.filter(SecurityReportModel.tags.contains(filters.tag))
+                # Use LIKE with quoted value to match exact JSON string elements
+                # (avoids false positives from substring matching on serialized JSON)
+                q = q.filter(SecurityReportModel.tags.like(f'%"{filters.tag}"%'))
         models = (
             q.order_by(SecurityReportModel.created_at.desc())
             .offset(offset)
