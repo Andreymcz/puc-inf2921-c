@@ -41,7 +41,9 @@ Não moveremos as categorias para uma tabela DB nesta versão — o Enum é o ca
 - Script Python `fala-gavea-seguranca/scripts/seed_reports.py`
 - 250 `SecurityReport` com coordenadas realistas dentro da Gávea (bbox: lat -22.965 a -22.990, lon -43.215 a -43.245)
 - Datas distribuídas nos últimos 6 meses (2025-12-16 a 2026-06-16), com concentração maior nos últimos 30 dias
-- Categorias distribuídas: 35% iluminacao, 30% transito, 20% vandalismo, 15% outro
+- Categorias distribuídas (derivadas do Forum de Seguranca LGD — plan-000057):
+  28% furto_roubo, 22% iluminacao, 18% transito, 12% espaco_publico_inseguro,
+  8% vandalismo, 5% moradores_situacao_rua, 4% conflito_social, 2% barulho_perturbacao, 1% outro
 - Textos em pt-BR plausíveis (10–30 variações por categoria, sorteio aleatório com leve variação)
 - `territory_name` de 4 zonas da Gávea (Baixo Gávea, Alto da Gávea, Comunidade da Gávea, Jardim Botânico)
 - `status`: 60% pendente, 25% em_analise, 15% resolvido
@@ -69,11 +71,11 @@ Não moveremos as categorias para uma tabela DB nesta versão — o Enum é o ca
 
 **Item 3 — AI auto-categorização + curadoria:**
 - Novo campo `ai_suggested_category: ReportCategory | None` em `SecurityReport` + DB migration (`ai_suggested_category` nullable enum column)
-- `POST /security_reports/{id}/auto_categorize` — chama Ollama com prompt pt-BR que lista as 4 categorias válidas e o texto do relato; retorna `{"category": "iluminacao"}` → salva em `ai_suggested_category`; não altera `category` (que é a categoria confirmada)
+- `POST /security_reports/{id}/auto_categorize` — chama Ollama com prompt pt-BR que lista as 9 categorias válidas (ver `CATEGORIZE_PROMPT` em `infrastructure/ai/prompts.py`, criado pelo plan-000057 Step 3) e o texto do relato; retorna `{"category": "furto_roubo", "confidence": "alta|media|baixa", "justification": "..."}` → salva em `ai_suggested_category`; não altera `category` (que é a categoria confirmada)
 - `PATCH /security_reports/{id}/category` — body `{"category": "iluminacao"}`; uso pelo delegado para confirmar/corrigir; atualiza `category` e zera `ai_suggested_category`
 - `OllamaClient` (reuso do padrão `gavealab_poc/llm.py`) via env `FALA_GAVEA_SEGURANCA_OLLAMA_URL` (default `http://localhost:11434/v1`) e `FALA_GAVEA_SEGURANCA_OLLAMA_MODEL` (default `qwen3:8b`)
 - `SecurityReportResponse` passa a incluir `ai_suggested_category: str | None`
-- Prompt template (pt-BR): lista os valores válidos do Enum + texto do relato → resposta JSON `{"category": "<valor>", "confidence": "<alta|media|baixa>", "justification": "<str>"}`
+- Prompt template (pt-BR): já implementado em `infrastructure/ai/prompts.py::CATEGORIZE_PROMPT` pelo plan-000057 Step 3 — lista as 9 categorias com descrição + texto do relato → resposta JSON `{"category": "<valor>", "confidence": "<alta|media|baixa>", "justification": "<str>"}`
 
 **Item 4 — Param `until`:**
 - Adicionar `until: datetime | None` a `ReportFilter` e à query SQLAlchemy (`created_at <= until`)
@@ -107,7 +109,7 @@ Não moveremos as categorias para uma tabela DB nesta versão — o Enum é o ca
 - Botão "Limpar busca" remove o layer e volta ao estado normal
 
 *Painel "Curadoria de categoria" (delegado):*
-- No popup de cada marker: se `p.ai_suggested_category` e `p.ai_suggested_category !== p.category`, exibir badge amarelo "🤖 Sugestão: <valor>" + dois botões "✅ Confirmar" (chama `PATCH /{id}/category` com o valor sugerido) e "✏️ Corrigir" (dropdown com 4 opções)
+- No popup de cada marker: se `p.ai_suggested_category` e `p.ai_suggested_category !== p.category`, exibir badge amarelo "🤖 Sugestão: <valor>" + dois botões "✅ Confirmar" (chama `PATCH /{id}/category` com o valor sugerido) e "✏️ Corrigir" (dropdown com 9 opções)
 - Botão "🤖 Categorizar" no popup (acessível a delegado): chama `POST /{id}/auto_categorize` e reload do popup
 
 ---
@@ -144,7 +146,8 @@ Ou em paralelo via worktree agents.
 
 ## Notes para os planos individuais
 
-- **Migrações Alembic**: o projeto usa SQLAlchemy + Alembic (padrão do roadmap-000054). Cada plano que adicionar colunas deve incluir uma migration `versions/` com `upgrade()` e `downgrade()`.
+- **ReportCategory (9 categorias)**: o enum foi enriquecido pelo plan-000057 (derivado do Forum de Seguranca LGD). Os 9 valores são: `furto_roubo`, `iluminacao`, `transito`, `espaco_publico_inseguro`, `vandalismo`, `moradores_situacao_rua`, `conflito_social`, `barulho_perturbacao`, `outro`. O prompt de IA e o seed script estão detalhados em plan-000057 Steps 2-3.
+- **Migrações**: o projeto usa `Base.metadata.create_all()` no startup (sem Alembic). Adicionar colunas requer deletar `app.db` e reiniciar (SQLite, ambiente de dev). Não há `versions/` a manter.
 - **Testes**: manter cobertura existente; cada plano de backend deve incluir testes para os novos endpoints e o filtro adicionado.
 - **Ollama**: o item 3 requer Ollama rodando localmente. Os testes do use case devem mockar a chamada HTTP.
 - **Seed idempotência**: o script do item 1 deve ser re-executável sem duplicar dados.
