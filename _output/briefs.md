@@ -1,3 +1,11 @@
+STARTED | 2026-06-16 16:28 UTC | implement | 63
+
+---
+
+DONE | 2026-06-16 16:30 UTC | STARTED | 2026-06-16 16:25 UTC | research | busca inteligente com IA — chat converte intenções em chamadas de API + mudança de estado do frontend
+
+---
+
 DONE | 2026-06-16 14:49 UTC | STARTED | 2026-06-16 14:43 UTC | implement | 62 | PLAN | 000062
 
 ---
