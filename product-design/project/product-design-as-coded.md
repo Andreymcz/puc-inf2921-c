@@ -131,6 +131,24 @@ designer_description: "Implementation state mirror for kb-qa — maintained by p
 - **Router** — `fala-gavea-seguranca/src/fala_gavea_seguranca/presentation/api/routers/security_reports.py`: `until: datetime | None = Query(None)` added to `get_geojson` and `list_security_reports`; passed into `ReportFilter(…, until=until, …)`.
 - **Tests** — `FakeRepository.find_all` updated to filter by `since`/`until`; `test_filter_since_until_range` and `test_filter_until_only` added (unit); `test_geojson_until_filter` added (integration).
 
+### 0g. Fala Gávea Segurança — Frontend: painel de filtros completo (plan-000063)
+
+`static/app.js`, `static/index.html`, and `static/style.css` updated to expose all Wave 1 backend capabilities in the UI.
+
+**`CATEGORY_COLORS` and `CATEGORY_LABELS`** — expanded from 4 to 9 entries matching the `ReportCategory` enum (furto_roubo, iluminacao, transito, espaco_publico_inseguro, vandalismo, moradores_situacao_rua, conflito_social, barulho_perturbacao, outro). Both `<select id="filter-category">` and `<select id="f-category">` in `index.html` updated with 9 `<option>` elements.
+
+**Date range filter** — `<input type="date" id="filter-date-from">` and `<input type="date" id="filter-date-to">` added inside `#filters`. `buildQueryString()` sets `?since=` (ISO date) and `?until=` (ISO date + T23:59:59) when non-empty.
+
+**Bbox filter** — `<input type="checkbox" id="filter-bbox">` checkbox added. `buildQueryString()` sets `?lat_min=&lat_max=&lon_min=&lon_max=` from `map.getBounds()` when checked. A `map.on('moveend')` listener (300 ms debounce) auto-reloads reports when the checkbox is active.
+
+**Tag filter + form field** — `<input type="text" id="filter-tag">` added to sidebar filters; `buildQueryString()` sets `?tag=` when non-empty. New `<input id="f-tags">` in the new-report form; `onsubmit` handler splits by comma and sends `tags: [...string]`. Tag chips (`.tag-chip`) rendered in marker popups from `p.tags`.
+
+**Semantic search panel** — `<div id="search-panel">` with text input `#search-q` and `#btn-search` added below filters. `btn-search` click fetches `GET /security_reports/search?q=&n=20` and renders results as purple `L.circleMarker` (radius 10, `#7c3aed`) on a dedicated `searchLayerGroup`. `#btn-clear-search` clears the layer and resets the input. Layer is persistent across `loadReports()` calls.
+
+**Alpine.js AI curation panel** — `<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js">` added in `<head>`. `map.on('popupopen')` calls `Alpine.initTree(e.popup.getElement())` to activate reactive state. `buildCurationPanel(p)` returns `x-data` HTML with three states: idle (no suggestion → "🤖 Categorizar por IA" button), pending (badge with suggested category + Confirmar/Corrigir), and loading/error. `confirm()` calls `PATCH /{id}/category`; `autocat()` calls `POST /{id}/auto_categorize`. Panel is appended to every marker popup.
+
+**CSS additions** — date inputs, tag chips (`.tag-chip`), search panel layout (`.search-row`), secondary button, `.ai-badge`, `.curation-actions`, `.hint.error`.
+
 ### 0c. Fala Gávea Segurança — Iluminação Pública (plan-000055)
 
 `fala-gavea-seguranca` gained a public-lighting overlay feature. New files:

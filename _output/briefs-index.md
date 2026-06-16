@@ -5,7 +5,7 @@
 
 | Date | Skill | Brief | Status | Plan | Head SHA | Generated |
 |------|-------|-------|--------|------|----------|-----------|
-| 2026-06-16 16:28 UTC | implement | 63 | STARTED |  |  |  |
+| 2026-06-16 16:28 UTC | implement | 63 | DONE | 000063 |  |  |
 | 2026-06-16 16:25 UTC | research | busca inteligente com IA — chat converte intenções em chamadas de API + mudança… | DONE |  |  |  |
 | 2026-06-16 14:43 UTC | implement | 62 | DONE | 000062 |  |  |
 | 2026-06-16 14:43 UTC | implement | 61 | DONE | 000061 |  |  |

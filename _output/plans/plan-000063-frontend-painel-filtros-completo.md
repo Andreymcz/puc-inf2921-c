@@ -1,4 +1,5 @@
 # Plan 000063 | FEATURE-F | 2026-06-16 14:03 UTC | Frontend: painel de filtros completo | Review: light
+# DONE | 2026-06-16 16:33 UTC |
 plan_format_version: 1
 
 ## Brief
@@ -69,7 +70,7 @@ Em `index.html`, atualizar `<select id="filter-category">` e `<select id="f-cate
 
 - **Files**: `static/app.js`, `static/index.html`
 - **Verify**: visualmente no browser — marcadores existentes exibem cor correta; dropdown mostra 9 categorias
-- [ ] Done
+- [x] Done
 
 ### Step 2: Adicionar filtros de data (date_from / date_to)
 
@@ -93,7 +94,7 @@ if (dateTo)   params.set('until', new Date(dateTo + 'T23:59:59').toISOString());
 
 - **Files**: `static/index.html`, `static/app.js`
 - **Verify**: selecionar período no filtro → apenas relatos dentro do intervalo aparecem no mapa
-- [ ] Done
+- [x] Done
 
 ### Step 3: Adicionar filtro espacial por bbox (área visível do mapa)
 
@@ -128,7 +129,7 @@ map.on('moveend', () => {
 
 - **Files**: `static/index.html`, `static/app.js`
 - **Verify**: marcar checkbox + mover mapa → lista atualiza automaticamente com relatos visíveis (sem flickering)
-- [ ] Done
+- [x] Done
 
 ### Step 4: Filtro por tag + campo de tag no formulário de novo relato
 
@@ -188,7 +189,7 @@ Em `style.css`, adicionar estilos para chips:
 
 - **Files**: `static/index.html`, `static/app.js`, `static/style.css`
 - **Verify**: criar relato com tags "perigoso,noite"; ver chips no popup; filtrar por "perigoso" → relato aparece; filtrar por "manhã" → não aparece
-- [ ] Done
+- [x] Done
 
 ### Step 5: Busca semântica (campo + layer de pins roxos)
 
@@ -255,7 +256,7 @@ button.secondary:hover { background: #4b5563; }
 
 - **Files**: `static/index.html`, `static/app.js`, `static/style.css`
 - **Verify**: digitar "assalto perto do parque" → pins roxos aparecem nos relatos semanticamente relacionados; "Limpar busca" remove os pins
-- [ ] Done
+- [x] Done
 
 ### Step 6: Painel de curadoria de categoria no popup com Alpine.js
 
@@ -356,7 +357,7 @@ Chamar `buildCurationPanel(p)` dentro do template de popup de cada marcador e co
   - "✅ Confirmar" → popup fecha, relato recarregado com nova categoria
   - "✏️ Corrigir" → dropdown aparece; "Salvar" → confirma com valor selecionado
   - Ollama offline → mensagem de erro aparece no popup sem fechar
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -391,3 +392,20 @@ Depends on: plan-000057 (9 categories), plan-000060 (tags backend),
 plan-000061 (AI categorization), plan-000062 (until filter).
 Part of roadmap-000056 Wave 2.
 ```
+
+---
+
+## Implementation Summary
+
+**Steps completed:** 6/6 | **Iterations:** 1 (manual mode, all in context)
+
+### Changes made
+
+- **`static/app.js`**: Full rewrite — updated `CATEGORY_COLORS`/`CATEGORY_LABELS` to 9 entries; `buildQueryString()` extended with `since`/`until`, bbox params, and `tag`; added `searchLayerGroup` for semantic search pins; `map.on('popupopen')` for Alpine.js `initTree`; `moveend` debounce for bbox auto-reload; `buildCurationPanel(p)` for Alpine.js curation state machine; popup HTML extended with tag chips and curation panel; form submit handler reads `f-tags`; semantic search and clear-search handlers.
+- **`static/index.html`**: Alpine.js CDN added; `filter-category` and `f-category` selects expanded to 9 options; date-from/date-to inputs; tag text input; bbox checkbox; search panel section; tags field in new-report form.
+- **`static/style.css`**: Added styles for date inputs, tag chips (`.tag-chip`), checkbox labels, search panel, secondary button, `.ai-badge`, `.curation-actions`, `.hint.error`.
+
+### Quality gate
+
+- Validation check-000067: 8/20 checks passed; all failures pre-existing. One deferred XSS finding (innerHTML with server data, accepted for MVP local use per plan Review section).
+- No new failures introduced.
