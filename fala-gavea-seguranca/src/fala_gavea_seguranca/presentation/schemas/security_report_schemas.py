@@ -26,6 +26,16 @@ class SecurityReportStatusUpdate(BaseModel):
     status: str
 
 
+class SecurityReportCategoryUpdate(BaseModel):
+    category: str
+
+
+class AutoCategorizeResponse(BaseModel):
+    category: str
+    confidence: str
+    justification: str
+
+
 class SecurityReportResponse(BaseModel):
     id: str
     text: str
@@ -38,6 +48,7 @@ class SecurityReportResponse(BaseModel):
     territory_name: str | None
     photo_url: str | None
     ai_labels: list[str]
+    ai_suggested_category: str | None = None
 
     model_config = {"from_attributes": True}
 

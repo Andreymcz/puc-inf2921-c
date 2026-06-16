@@ -38,6 +38,7 @@ class SecurityReport:
     photo_url: str | None = None
     ai_labels: list[str] = field(default_factory=list)
     tags: list[str] = field(default_factory=list)
+    ai_suggested_category: ReportCategory | None = None
 
     @staticmethod
     def create(

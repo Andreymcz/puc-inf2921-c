@@ -94,6 +94,42 @@ def test_delete_not_found_returns_404(client: TestClient) -> None:
     assert client.delete("/security_reports/ghost").status_code == 404
 
 
+def test_patch_category_returns_200(client: TestClient) -> None:
+    created = client.post("/security_reports/", json=VALID_PAYLOAD).json()
+    response = client.patch(f"/security_reports/{created['id']}/category", json={"category": "furto_roubo"})
+    assert response.status_code == 200
+    data = response.json()
+    assert data["category"] == "furto_roubo"
+    assert data["ai_suggested_category"] is None
+
+
+def test_patch_category_invalid_returns_422(client: TestClient) -> None:
+    created = client.post("/security_reports/", json=VALID_PAYLOAD).json()
+    response = client.patch(f"/security_reports/{created['id']}/category", json={"category": "categoria_invalida"})
+    assert response.status_code == 422
+
+
+def test_patch_category_not_found_returns_404(client: TestClient) -> None:
+    response = client.patch("/security_reports/nonexistent/category", json={"category": "furto_roubo"})
+    assert response.status_code == 404
+
+
+def test_post_auto_categorize_no_ollama(client: TestClient) -> None:
+    from unittest.mock import patch
+    created = client.post("/security_reports/", json=VALID_PAYLOAD).json()
+    with patch("fala_gavea_seguranca.application.use_cases.auto_categorize_report.chat_completion",
+               side_effect=RuntimeError("Ollama não está acessível")):
+        response = client.post(f"/security_reports/{created['id']}/auto_categorize")
+    assert response.status_code == 502
+
+
+def test_post_auto_categorize_not_found_returns_404(client: TestClient) -> None:
+    from unittest.mock import patch
+    with patch("fala_gavea_seguranca.application.use_cases.auto_categorize_report.chat_completion"):
+        response = client.post("/security_reports/nonexistent/auto_categorize")
+    assert response.status_code == 404
+
+
 def test_geojson_until_filter(client: TestClient, repo, db_session) -> None:
     from datetime import datetime, timezone
     from fala_gavea_seguranca.domain.entities.security_report import ReportCategory, ReportStatus, SecurityReport
