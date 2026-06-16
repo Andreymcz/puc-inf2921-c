@@ -92,3 +92,38 @@ def test_delete_returns_204(client: TestClient) -> None:
 
 def test_delete_not_found_returns_404(client: TestClient) -> None:
     assert client.delete("/security_reports/ghost").status_code == 404
+
+
+def test_geojson_until_filter(client: TestClient, repo, db_session) -> None:
+    from datetime import datetime, timezone
+    from fala_gavea_seguranca.domain.entities.security_report import ReportCategory, ReportStatus, SecurityReport
+
+    old_report = SecurityReport(
+        id="old-report",
+        text="Relato antigo para filtro until",
+        category=ReportCategory.ILUMINACAO,
+        status=ReportStatus.PENDENTE,
+        author_id="user-1",
+        created_at=datetime(2026, 1, 15, tzinfo=timezone.utc),
+        lat=-22.9756,
+        lon=-43.2296,
+    )
+    new_report = SecurityReport(
+        id="new-report",
+        text="Relato recente para filtro until",
+        category=ReportCategory.ILUMINACAO,
+        status=ReportStatus.PENDENTE,
+        author_id="user-1",
+        created_at=datetime(2026, 6, 15, tzinfo=timezone.utc),
+        lat=-22.9756,
+        lon=-43.2296,
+    )
+    repo.save(old_report)
+    repo.save(new_report)
+
+    response = client.get("/security_reports/geojson?until=2026-03-01T00:00:00")
+    assert response.status_code == 200
+    data = response.json()
+    ids = [f["properties"]["id"] for f in data["features"]]
+    assert "old-report" in ids
+    assert "new-report" not in ids

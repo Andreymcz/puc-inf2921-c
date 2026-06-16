@@ -15,10 +15,14 @@ from fala_gavea_seguranca.infrastructure.repositories.sqlalchemy_security_report
 from fala_gavea_seguranca.application.use_cases.search_reports import SearchReports
 from fala_gavea_seguranca.infrastructure.vector_store.chroma_client import delete_document, upsert_document
 from fala_gavea_seguranca.presentation.api.dependencies import get_security_report_repo
+from fala_gavea_seguranca.application.use_cases.auto_categorize_report import AutoCategorizeReport
+from fala_gavea_seguranca.application.use_cases.set_report_category import SetReportCategory, SetReportCategoryInput
 from fala_gavea_seguranca.presentation.schemas.security_report_schemas import (
+    AutoCategorizeResponse,
     GeoJsonCollection,
     GeoJsonFeature,
     SearchResultResponse,
+    SecurityReportCategoryUpdate,
     SecurityReportCreate,
     SecurityReportResponse,
     SecurityReportStatusUpdate,
@@ -87,6 +91,7 @@ def get_geojson(
     category: str | None = Query(None),
     report_status: str | None = Query(None, alias="status"),
     since: datetime | None = Query(None),
+    until: datetime | None = Query(None),
     lat_min: float | None = Query(None),
     lat_max: float | None = Query(None),
     lon_min: float | None = Query(None),
@@ -98,6 +103,7 @@ def get_geojson(
         category=ReportCategory(category) if category else None,
         status=ReportStatus(report_status) if report_status else None,
         since=since,
+        until=until,
         lat_min=lat_min,
         lat_max=lat_max,
         lon_min=lon_min,
@@ -115,6 +121,7 @@ def get_geojson(
                 "territory_name": e.territory_name,
                 "author_id": e.author_id,
                 "created_at": e.created_at.isoformat(),
+                "ai_suggested_category": e.ai_suggested_category.value if e.ai_suggested_category else None,
             },
         )
         for e in entities
@@ -129,6 +136,7 @@ def list_security_reports(
     category: str | None = Query(None),
     report_status: str | None = Query(None, alias="status"),
     since: datetime | None = Query(None),
+    until: datetime | None = Query(None),
     lat_min: float | None = Query(None),
     lat_max: float | None = Query(None),
     lon_min: float | None = Query(None),
@@ -140,6 +148,7 @@ def list_security_reports(
         category=ReportCategory(category) if category else None,
         status=ReportStatus(report_status) if report_status else None,
         since=since,
+        until=until,
         lat_min=lat_min,
         lat_max=lat_max,
         lon_min=lon_min,
@@ -189,3 +198,36 @@ def delete_security_report(
             pass
     except SecurityReportNotFoundError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+
+
+@router.post("/{id}/auto_categorize", response_model=AutoCategorizeResponse)
+def auto_categorize(
+    id: str,
+    repo: SQLAlchemySecurityReportRepository = Depends(get_security_report_repo),
+) -> AutoCategorizeResponse:
+    try:
+        result = AutoCategorizeReport(repo).execute(id)
+        return AutoCategorizeResponse(
+            category=result.category,
+            confidence=result.confidence,
+            justification=result.justification,
+        )
+    except SecurityReportNotFoundError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except (ValueError, RuntimeError) as e:
+        raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail=str(e))
+
+
+@router.patch("/{id}/category", response_model=SecurityReportResponse)
+def set_category(
+    id: str,
+    body: SecurityReportCategoryUpdate,
+    repo: SQLAlchemySecurityReportRepository = Depends(get_security_report_repo),
+) -> SecurityReportResponse:
+    try:
+        entity = SetReportCategory(repo).execute(SetReportCategoryInput(id=id, category=body.category))
+        return SecurityReportResponse(**entity.__dict__)
+    except SecurityReportNotFoundError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except InvalidInputError as e:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e))
