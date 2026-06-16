@@ -53,6 +53,30 @@ designer_description: "Implementation state mirror for kb-qa — maintained by p
 - `label_feedback` JSON column stores `{label: {"approved": bool, "user_id": str}}` — `set_label_feedback` persists `user_id` alongside the flag.
 - `LikeRecord` domain dataclass: `user_id: str, created_at: datetime`. `CitizenPostRepository` exposes `get_likes(post_id) -> list[LikeRecord]`.
 
+### 0c. Fala Gávea Segurança — Iluminação Pública (plan-000055)
+
+`fala-gavea-seguranca` gained a public-lighting overlay feature. New files:
+
+**Infrastructure loader** — `fala-gavea-seguranca/src/fala_gavea_seguranca/infrastructure/iluminacao/loader.py`:
+- `download_iluminacao(cache_path)` — streams the ArcGIS Hub Open Data GeoJSON (`5322126ff10e46249be878ddfd057cc5`) to `fala-gavea-seguranca/data/iluminacao.geojson` via `httpx.stream`. 60-second timeout.
+- `load_iluminacao_geojson(cache_path)` — loads the cached file as a Python dict; auto-downloads on first call if cache is absent.
+- `_DEFAULT_CACHE` resolves to `fala-gavea-seguranca/data/iluminacao.geojson` via `Path(__file__).parents[4] / "data" / "iluminacao.geojson"`.
+- `fala-gavea-seguranca/data/` is gitignored (derived artifact).
+
+**FastAPI router** — `fala-gavea-seguranca/src/fala_gavea_seguranca/presentation/api/routers/iluminacao.py`:
+- `GET /iluminacao/geojson` — serves the cached GeoJSON via `JSONResponse`; triggers auto-download on first call; returns 503 on failure.
+- `POST /iluminacao/refresh` — schedules a background re-download via FastAPI `BackgroundTasks`; returns 202 immediately.
+- Router registered in `main.py` with prefix `/iluminacao`, tag `iluminacao`.
+
+**Leaflet frontend** — `fala-gavea-seguranca/static/app.js`:
+- `iluminacaoLayerGroup` (`L.layerGroup()`) + `iluminacaoLoaded` flag added at module level.
+- `loadIluminacao()` async function fetches `/iluminacao/geojson` and renders yellow circle markers (`radius: 3, color: '#f0c040'`) onto the layer group via `L.geoJSON`.
+- Layer group added to map and loaded on app init; `L.control.layers` wired with `"💡 Luminárias"` toggle (non-collapsed).
+- `#btn-refresh-iluminacao` click handler POSTs to `/iluminacao/refresh` and updates `#iluminacao-status` text.
+
+**HTML sidebar** — `fala-gavea-seguranca/static/index.html`:
+- Added `#iluminacao-panel` div inside `#sidebar` (after `#filters`) with `#btn-refresh-iluminacao` button and `#iluminacao-status` hint paragraph.
+
 ### 0. GaveaLab PoC (sibling project)
 
 `gavealab-poc/` is a Streamlit + Ollama citizen-claims analysis PoC, scaffolded in plan-000008. It runs independently from kb-qa (separate `pyproject.toml`, uv venv). Key components: `GaveaLabWorkspace` (SQLite persistence), `AnalysisSession` (domain object), `gavealab_poc/llm.py` (Ollama OpenAI-compatible wrapper), and page modules for upload (plan-000009), auto-topics, manual-topics, and cruxes (stubs).
