@@ -7,7 +7,7 @@
 |------|-------|-------|--------|------|----------|-----------|
 | 2026-06-16 14:43 UTC | implement | 62 | DONE | 000062 |  |  |
 | 2026-06-16 14:43 UTC | implement | 61 | DONE | 000061 |  |  |
-| 2026-06-16 14:43 UTC | implement | 60 | STARTED |  |  |  |
+| 2026-06-16 14:43 UTC | implement | 60 | DONE | 000060 |  |  |
 | 2026-06-16 14:17 UTC | implement | 57 | DONE | 000057 |  |  |
 | 2026-06-16 14:04 UTC | research | best front end tool for this project. Atualmente estamos servindo paginas estát… | DONE |  |  |  |
 | 2026-06-16 14:03 UTC | plan | roadmap 56 | ROADMAP | 000056 | DONE |  |  |  |

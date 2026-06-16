@@ -1,4 +1,5 @@
 # Plan 000060 | FEATURE-B | 2026-06-16 14:03 UTC | Tags livres em SecurityReport | Review: light
+# DONE | 2026-06-16 15:02 UTC |
 plan_format_version: 1
 
 ## Brief
@@ -47,7 +48,7 @@ Atualizar `SecurityReport.create()` para aceitar `tags: list[str] | None = None`
 - **Interface**: `SecurityReport.tags: list[str]`; `ReportFilter.tag: str | None`
 - **Verify**: `uv run python -c "from fala_gavea_seguranca.domain.entities.security_report import SecurityReport; r = SecurityReport.create('Teste','outro','u1'); print(r.tags)"` imprime `[]`
 - **Tests**: verificado implicitamente pelos demais steps
-- [ ] Done
+- [x] Done
 
 ### Step 2: Adicionar coluna `tags` ao modelo SQLAlchemy e ao mapeamento
 
@@ -65,7 +66,7 @@ Como o projeto usa `Base.metadata.create_all()` no startup (sem Alembic), basta 
 - **Interface**: `SQLAlchemySecurityReportRepository.update_tags(id, tags) -> SecurityReport | None`
 - **Verify**: reiniciar servidor após deletar `app.db`; POST de novo relato inclui `tags: []` no response
 - **Tests**: Step 4 cobre integração
-- [ ] Done
+- [x] Done
 
 ### Step 3: Criar use case `SetReportTags`
 
@@ -99,7 +100,7 @@ Nota: `SecurityReportRepository` (ABC) deve declarar `update_tags` como `@abstra
 - **Interface**: `SetReportTags(repo).execute(SetReportTagsInput(id, tags)) -> SecurityReport`
 - **Verify**: importar sem erro
 - **Tests**: Step 4
-- [ ] Done
+- [x] Done
 
 ### Step 4: Adicionar schema `SecurityReportTagsUpdate` e atualizar `SecurityReportResponse`
 
@@ -109,7 +110,7 @@ Em `presentation/schemas/security_report_schemas.py`:
 
 - **Files**: `presentation/schemas/security_report_schemas.py`
 - **Interface**: `SecurityReportTagsUpdate`, `SecurityReportResponse.tags`
-- [ ] Done
+- [x] Done
 
 ### Step 5: Adicionar endpoint `PATCH /{id}/tags` e filtro `?tag=` no router
 
@@ -140,7 +141,7 @@ def set_report_tags(
 - **Interface**: `PATCH /security_reports/{id}/tags`, `GET /security_reports/geojson?tag=valor`
 - **Verify**: `curl -X PATCH http://localhost:8000/security_reports/<id>/tags -H 'Content-Type: application/json' -d '{"tags":["perigoso","noite"]}'` retorna o relato com `tags: ["perigoso","noite"]`; `GET /geojson?tag=perigoso` retorna apenas relatos com essa tag
 - **Tests**: Step 6
-- [ ] Done
+- [x] Done
 
 ### Step 6: Testes
 
@@ -154,7 +155,7 @@ def set_report_tags(
 
 - **Files**: `tests/unit/application/test_security_report_use_cases.py`, `tests/integration/api/test_security_reports_api.py`
 - **Verify**: `cd fala-gavea-seguranca && uv run pytest tests/ -k "tag" -v` passa
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -183,3 +184,20 @@ GeoJSON features now include tags and ai_labels properties.
 
 Part of roadmap-000056 Wave 1 Item 2.
 ```
+
+---
+
+## Implementation Summary
+
+**Steps completed:** 6/6
+**Iterations used:** 6 subagents + 2 fix commits
+**Tests:** 46/46 passed (4 new tag-specific tests)
+**Key commits:** 7808266, 2333c1c, 1b117ce, a297ae2, 6485ce5, fec9148, 9829591 (lint fix), 51ad1b5 (filter fix)
+
+**Quality gate findings resolved:**
+- JSON `contains()` false-positive fix: switched to `LIKE '%"tag"%'` for exact element matching on SQLite JSON arrays.
+
+**Advisory items deferred:**
+- `FakeRepository.find_all` does not implement tag filter (unit test gap)
+- No validators on tag length/count in `SecurityReportTagsUpdate`
+- `default=list` on Column could be made more explicit as `default=lambda: []`

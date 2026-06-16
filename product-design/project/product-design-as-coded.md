@@ -109,6 +109,19 @@ designer_description: "Implementation state mirror for kb-qa — maintained by p
 
 **AI prompt template** — `fala-gavea-seguranca/src/fala_gavea_seguranca/infrastructure/ai/prompts.py`: `CATEGORIZE_PROMPT: str` — template com `/nothink`, 9 categorias descritas em pt-BR, variável `{text}`, instrução de resposta JSON `{category, confidence, justification}`. Preparado para importação por `use_cases/auto_categorize_report.py` (Wave 1 Item 3, roadmap-000056).
 
+### 0f. Fala Gávea Segurança — Tags livres (plan-000060)
+
+`SecurityReport` now supports a `tags: list[str]` field — free-text labels assigned by citizen/operator (distinct from AI-generated `ai_labels`).
+
+- **Domain** — `domain/entities/security_report.py`: `tags: list[str] = field(default_factory=list)` added; `SecurityReport.create()` accepts optional `tags: list[str] | None = None`.
+- **Domain** — `domain/repositories/security_report_repository.py`: `ReportFilter.tag: str | None = None` added; `update_tags(id, tags)` declared as `@abstractmethod`.
+- **Infrastructure** — `infrastructure/database/models.py`: `tags = Column(JSON, nullable=False, default=list)`.
+- **Infrastructure** — `infrastructure/repositories/sqlalchemy_security_report_repository.py`: `_to_entity`/`_to_model` include `tags`; `update_tags()` method; `find_all()` filters by `tags.like('%"tag"%')` (exact JSON element match — avoids LIKE substring false positives).
+- **Use case** — `application/use_cases/set_report_tags.py`: `SetReportTagsInput(id, tags)` + `SetReportTags.execute()` → `SecurityReport | SecurityReportNotFoundError`.
+- **Schema** — `presentation/schemas/security_report_schemas.py`: `SecurityReportTagsUpdate(tags: list[str])`; `SecurityReportResponse.tags: list[str] = []`.
+- **Router** — `presentation/api/routers/security_reports.py`: `PATCH /security_reports/{id}/tags`; `?tag=` filter on `GET /geojson` and `GET /`; GeoJSON features include `tags` and `ai_labels` properties.
+- **Tests** — unit: `test_set_report_tags_success`, `test_set_report_tags_not_found`; integration: `test_patch_tags`, `test_get_geojson_filter_tag`.
+
 ### 0e. Fala Gávea Segurança — Filtro temporal `until` (plan-000062)
 
 `ReportFilter` gains a symmetric `until: datetime | None = None` field (sibling of the existing `since`). The SQLAlchemy repository applies `SecurityReportModel.created_at <= filters.until` when set. Both `GET /security_reports/geojson` and `GET /security_reports/` expose `?until=` as an optional query parameter (type `datetime`, parsed by FastAPI).
