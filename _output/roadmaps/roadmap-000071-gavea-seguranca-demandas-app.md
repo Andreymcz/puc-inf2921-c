@@ -26,7 +26,7 @@ chat como assistente de busca.
 ## Decisoes de arquitetura
 
 **D-A: Novo projeto independente via python-scaffold**
-Nao estende fala-gavea-seguranca. Novo diretorio `gavea-demandas/` gerado por `/python-scaffold`.
+Nao estende fala-gavea-seguranca. Novo diretorio `fala-gavea/` gerado por `/python-scaffold`.
 Stack: FastAPI + SQLAlchemy + SQLite + Pydantic v2 + pytest (padrao do scaffold).
 
 **D-B: Tipos de problema dinamicos via tabela `ReportType`**
@@ -117,19 +117,19 @@ Sequencia de setup (tres passos manuais antes de qualquer /plan):
 
 **Passo 1a -- python-scaffold:**
 Executar `/python-scaffold` com entidade base `Report` para gerar a estrutura inicial em
-`gavea-demandas/`. O scaffold gera: FastAPI app, SQLAlchemy + SQLite, Pydantic v2, pytest,
+`fala-gavea/`. O scaffold gera: FastAPI app, SQLAlchemy + SQLite, Pydantic v2, pytest,
 pyproject.toml, uv.lock, e uma entidade `Report` de exemplo.
 
-**Passo 1b -- seja-setup dentro de gavea-demandas:**
-Apos o scaffold, executar `/seja-setup` com o diretorio `gavea-demandas/` como alvo.
+**Passo 1b -- seja-setup dentro de fala-gavea:**
+Apos o scaffold, executar `/seja-setup` com o diretorio `fala-gavea/` como alvo.
 Isso instala o harness SEJA (skills, references, CLAUDE.md) dentro do novo projeto.
 O CLAUDE.md gerado sera customizado para esta stack e casos de uso:
 - Stack: FastAPI + SQLAlchemy + SQLite + Pydantic v2 + PyJWT + ChromaDB + OllamaClient
 - Casos de uso: ciudadao registra problema; agente cria encaminhamento; IA assiste exploracao
 - Convencoes: arquitetura limpa (domain/application/infrastructure/presentation)
 
-**Passo 1c -- /design dentro de gavea-demandas:**
-Executar `/design` dentro do contexto `gavea-demandas/` para registrar formalmente:
+**Passo 1c -- /design dentro de fala-gavea:**
+Executar `/design` dentro do contexto `fala-gavea/` para registrar formalmente:
 - Entidades de dominio (User, Report, ReportType, Forwarding, ForwardingReport)
 - Personas (R-P-001: Cidadao; R-P-002: Agente publico; R-P-003: Administrador)
 - Design intent alinhado aos casos de uso do roadmap-000071
@@ -137,11 +137,11 @@ Executar `/design` dentro do contexto `gavea-demandas/` para registrar formalmen
 
 Apos os 3 passos, a estrutura alvo e:
 ```
-gavea-demandas/
+fala-gavea/
   .claude/               -- harness SEJA (skills, references, rules)
   CLAUDE.md              -- instrucoes especificas do projeto
   product-design/        -- conventions.md, constitution.md, design intent
-  src/gavea_demandas/
+  src/fala_gavea/
     domain/entities/{user,report,report_type,forwarding}.py
     domain/repositories/*.py
     application/use_cases/*.py
@@ -210,7 +210,7 @@ PATCH /status valida enum; GET /forwardings filtra por status.
 
 **Item 4 -- Frontend agente:**
 
-Paginas estaticas (`gavea-demandas/static/`):
+Paginas estaticas (`fala-gavea/static/`):
 
 `index.html` -- mapa publico (cidadao + agente):
 - Leaflet + mapa centrado na Gavea
@@ -249,7 +249,7 @@ Paginas estaticas (`gavea-demandas/static/`):
 **Item 5 -- Semantic search:**
 
 Reuso do padrao ChromaDB ja existente no projeto (ver `fala-gavea-seguranca/infrastructure/vector_store/chroma_client.py`):
-- Nova colecao `gavea-demandas-reports` em ChromaDB
+- Nova colecao `fala-gavea-reports` em ChromaDB
 - Embed `report.text` com `nomic-ai/nomic-embed-text-v1` na criacao (POST /reports)
 - `GET /reports/search?q=<texto>&n=10` -- busca semantica; retorna relatos com score de similaridade
 - Frontend: campo de busca na sidebar do mapa; resultado como pins roxos em layer separado
@@ -276,16 +276,16 @@ Reuso do padrao OllamaClient:
 ### Wave 0 (sequential) -- ponto de partida: novo projeto do zero
 ```
 # Passo 1a: scaffold do projeto
-/python-scaffold        # entidade: Report; diretorio: gavea-demandas
+/python-scaffold        # entidade: Report; diretorio: fala-gavea
 
 # Passo 1b: instalar harness SEJA dentro do novo projeto
-/seja-setup             # alvo: gavea-demandas/ (companion workspace ou in-place)
+/seja-setup             # alvo: fala-gavea/ (companion workspace ou in-place)
 
 # Passo 1c: definir design intent do novo projeto
-/design                 # dentro de gavea-demandas/ -- entidades, personas, constituicao
+/design                 # dentro de fala-gavea/ -- entidades, personas, constituicao
 
 # Item 1: planejar e implementar o dominio completo + auth
-/plan [item 1 brief]    # a partir do contexto gavea-demandas/
+/plan [item 1 brief]    # a partir do contexto fala-gavea/
 /implement plan-TBD
 
 # Item 2: ReportType CRUD
@@ -333,11 +333,11 @@ Reuso do padrao OllamaClient:
 - **Seed de tipos**: o script de seed deve criar os 8 tipos iniciais via POST /report_types
   (nao SQL direto), para garantir que o seed exercita a API.
 
-- **ChromaDB collection**: usar path `gavea-demandas/vectorstore/` (gitignored).
-  Colecao: `gavea-demandas-reports`. Modelo: `nomic-ai/nomic-embed-text-v1`.
+- **ChromaDB collection**: usar path `fala-gavea/vectorstore/` (gitignored).
+  Colecao: `fala-gavea-reports`. Modelo: `nomic-ai/nomic-embed-text-v1`.
 
-- **Ollama**: `GAVEA_DEMANDAS_OLLAMA_URL` (default `http://localhost:11434/v1`),
-  `GAVEA_DEMANDAS_OLLAMA_MODEL` (default `qwen3:8b`).
+- **Ollama**: `FALA_GAVEA_OLLAMA_URL` (default `http://localhost:11434/v1`),
+  `FALA_GAVEA_OLLAMA_MODEL` (default `qwen3:8b`).
 
 - **Testes**: seguir padrao do scaffold (pytest + fixtures tmp_path para DB isolado).
   Mockar ChromaDB e Ollama em testes unitarios.
