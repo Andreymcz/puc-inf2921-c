@@ -1,4 +1,4 @@
-# Plan 000072 | CHORE-B | 2026-06-17 17:16 | fala-gavea scaffold e seja-setup | Review: light
+# DONE | 2026-06-17 17:43 UTC | Plan 000072 | CHORE-B | 2026-06-17 17:16 | fala-gavea scaffold e seja-setup | Review: light
 plan_format_version: 1
 
 source: roadmap-000071 -- Wave 0 Passo 1a e 1b: bootstrap do novo projeto fala-gavea (scaffold + harness SEJA)
@@ -81,7 +81,7 @@ camadas e os testes de sanidade.
 - **Interface**: N/A
 - **Verify**: `cd fala-gavea && uv sync && uv run pytest -v` deve passar 100% (aproximadamente 19 testes gerados pelo scaffold)
 - **Tests**: N/A (testes gerados automaticamente pelo scaffold; Step 2 os verifica)
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -109,7 +109,7 @@ uv run uvicorn fala_gavea.presentation.api.main:app --reload
 - **Interface**: N/A
 - **Verify**: `uv run pytest` retorna exit 0; todos os testes passam
 - **Tests**: N/A
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -164,7 +164,7 @@ servido pelo FastAPI StaticFiles.
 - **Interface**: N/A
 - **Verify**: `fala-gavea/.claude/skills/plan/SKILL.md` existe; `fala-gavea/product-design/conventions.md` contem PROJECT_NAME=fala-gavea e SRC_DIR=src/fala_gavea
 - **Tests**: N/A
-- [ ] Done
+- [x] Done
 
 ---
 
@@ -190,6 +190,14 @@ Apos este plan completo:
 - `fala-gavea/product-design/conventions.md` esta preenchido com a stack do projeto
 - `fala-gavea/CLAUDE.md` esta gerado com instrucoes especificas
 - O proximo passo e `/design` dentro de `fala-gavea/` (Passo 1c -- plan separado)
+
+## Summary
+
+All 3 steps completed successfully on 2026-06-17.
+
+- **Step 1** (python-scaffold): `fala-gavea/` scaffolded with 39 files — FastAPI clean architecture, Report entity, 18 tests (8 integration + 10 unit).
+- **Step 2** (verify tests): `uv run pytest` — 18/18 passed, 0 failures. Fixed Windows `greenlet` wheel resolution by adding `[tool.uv] required-environments` to `pyproject.toml`.
+- **Step 3** (seja-setup): Harness files copied to `fala-gavea/.claude/` (skills, references, rules, agents). `product-design/conventions.md` generated with all stack values from the plan. `CLAUDE.md` scaffolded. `product-design/project/constitution.md` created with T1–T5, Q1–Q3, S1–S3 principles. `.seja-version` set to `v0.5.0`.
 
 ## Proximos passos (fora deste plan)
 
