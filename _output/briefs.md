@@ -1,3 +1,7 @@
+DONE | 2026-06-17 11:55 UTC | STARTED | 2026-06-17 11:35 UTC | plan | --roadmap @reflection-000069 Canal Digital Comunitário para Segurança Urbana: feedback loop AI categorização, clustering semântico, urgência, encaminhamento institucional, dashboard curadoria | ROADMAP | 000070
+
+---
+
 DONE | 2026-06-17 11:29 UTC | STARTED | 2026-06-17 11:20 UTC | reflect | App Gavealab segurança - Canal Digital Comunitário para Segurança Urbana, feedback loop para classificação de relatos com fine-tuning
 
 ---
