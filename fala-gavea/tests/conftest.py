@@ -22,12 +22,12 @@ _TEST_ENGINE = create_engine(
 _db_mod.engine = _TEST_ENGINE
 _db_mod.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=_TEST_ENGINE)
 
-from fala_gavea.infrastructure.database.session import Base
-from fala_gavea.infrastructure.repositories.sqlalchemy_report_repository import (
+from fala_gavea.infrastructure.database.session import Base  # noqa: E402
+from fala_gavea.infrastructure.repositories.sqlalchemy_report_repository import (  # noqa: E402
     SQLAlchemyReportRepository,
 )
-from fala_gavea.presentation.api.dependencies import get_report_repo
-from fala_gavea.presentation.api.main import create_app
+from fala_gavea.presentation.api.dependencies import get_report_repo  # noqa: E402
+from fala_gavea.presentation.api.main import create_app  # noqa: E402
 
 
 @pytest.fixture(autouse=True)
