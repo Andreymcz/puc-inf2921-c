@@ -1,3 +1,7 @@
+DONE | 2026-06-17 21:24 UTC | STARTED | 2026-06-17 21:18 UTC | research | camadas e mapas georeferenciados para adicionar dados ao fala-gavea
+
+---
+
 DONE | 2026-06-17 17:44 UTC | STARTED | 2026-06-17 17:24 UTC | implement | fala-gavea scaffold e seja-setup | PLAN | 000072
 
 ---
