@@ -111,11 +111,36 @@ ForwardingReport   (join table: forwarding_id, report_id)
 | 1 | scaffold | python-scaffold: estrutura FastAPI + dominio + auth JWT | backend | technical | plan-TBD | pending |
 | 2 | report-types | ReportType CRUD (admin): POST/GET/PATCH/DELETE /report_types | backend | technical | plan-TBD | pending |
 
-**Item 1 -- Scaffold + dominio + auth:**
+**Item 1 -- Scaffold + SEJA + dominio + auth:**
 
-Executar `/python-scaffold` com entidade base `Report` para gerar a estrutura inicial:
+Sequencia de setup (tres passos manuais antes de qualquer /plan):
+
+**Passo 1a -- python-scaffold:**
+Executar `/python-scaffold` com entidade base `Report` para gerar a estrutura inicial em
+`gavea-demandas/`. O scaffold gera: FastAPI app, SQLAlchemy + SQLite, Pydantic v2, pytest,
+pyproject.toml, uv.lock, e uma entidade `Report` de exemplo.
+
+**Passo 1b -- seja-setup dentro de gavea-demandas:**
+Apos o scaffold, executar `/seja-setup` com o diretorio `gavea-demandas/` como alvo.
+Isso instala o harness SEJA (skills, references, CLAUDE.md) dentro do novo projeto.
+O CLAUDE.md gerado sera customizado para esta stack e casos de uso:
+- Stack: FastAPI + SQLAlchemy + SQLite + Pydantic v2 + PyJWT + ChromaDB + OllamaClient
+- Casos de uso: ciudadao registra problema; agente cria encaminhamento; IA assiste exploracao
+- Convencoes: arquitetura limpa (domain/application/infrastructure/presentation)
+
+**Passo 1c -- /design dentro de gavea-demandas:**
+Executar `/design` dentro do contexto `gavea-demandas/` para registrar formalmente:
+- Entidades de dominio (User, Report, ReportType, Forwarding, ForwardingReport)
+- Personas (R-P-001: Cidadao; R-P-002: Agente publico; R-P-003: Administrador)
+- Design intent alinhado aos casos de uso do roadmap-000071
+- Convencoes de modulo e responsabilidades
+
+Apos os 3 passos, a estrutura alvo e:
 ```
 gavea-demandas/
+  .claude/               -- harness SEJA (skills, references, rules)
+  CLAUDE.md              -- instrucoes especificas do projeto
+  product-design/        -- conventions.md, constitution.md, design intent
   src/gavea_demandas/
     domain/entities/{user,report,report_type,forwarding}.py
     domain/repositories/*.py
@@ -127,7 +152,7 @@ gavea-demandas/
   pyproject.toml
 ```
 
-Alem da estrutura do scaffold, adicionar:
+Alem da estrutura do scaffold, o plan do Item 1 adiciona:
 - Todas as 4 entidades de dominio (User, Report, ReportType, Forwarding + ForwardingReport)
 - SQLAlchemy models para todas as entidades
 - Auth: POST /auth/register, POST /auth/token (JWT Bearer, expiry 24h)
@@ -250,13 +275,20 @@ Reuso do padrao OllamaClient:
 
 ### Wave 0 (sequential) -- ponto de partida: novo projeto do zero
 ```
-# Item 1: rodar o scaffold primeiro
-/python-scaffold    # entidade: Report -- gera estrutura FastAPI
-# Em seguida, planejar e implementar o dominio completo
-/plan [item 1 brief]
+# Passo 1a: scaffold do projeto
+/python-scaffold        # entidade: Report; diretorio: gavea-demandas
+
+# Passo 1b: instalar harness SEJA dentro do novo projeto
+/seja-setup             # alvo: gavea-demandas/ (companion workspace ou in-place)
+
+# Passo 1c: definir design intent do novo projeto
+/design                 # dentro de gavea-demandas/ -- entidades, personas, constituicao
+
+# Item 1: planejar e implementar o dominio completo + auth
+/plan [item 1 brief]    # a partir do contexto gavea-demandas/
 /implement plan-TBD
 
-# Item 2: apos scaffold
+# Item 2: ReportType CRUD
 /plan [item 2 brief]
 /implement plan-TBD
 ```
