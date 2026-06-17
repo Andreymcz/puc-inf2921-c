@@ -1,4 +1,5 @@
 # Roadmap 000071 | 2026-06-17 11:55 UTC | gavea-seguranca-demandas-app
+spawned: plan-000072
 
 supersedes: roadmap-000070 (scope ampliado demais; este roadmap foca no fluxo descrito)
 

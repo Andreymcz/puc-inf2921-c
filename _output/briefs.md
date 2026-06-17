@@ -1,3 +1,7 @@
+DONE | 2026-06-17 17:19 UTC | STARTED | 2026-06-17 17:16 UTC | plan | roadmap 71 Wave 0 Passo 1a e 1b | PLAN | 000072
+
+---
+
 DONE | 2026-06-17 11:55 UTC | STARTED | 2026-06-17 11:35 UTC | plan | --roadmap @reflection-000069 Canal Digital Comunitário para Segurança Urbana: feedback loop AI categorização, clustering semântico, urgência, encaminhamento institucional, dashboard curadoria | ROADMAP | 000070
 
 ---
