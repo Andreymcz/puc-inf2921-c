@@ -7,3 +7,6 @@
 [submodule "SEJA-Florence"]
 	path = SEJA-Florence
 	url = https://github.com/PUC-Behring-Institute-for-AI/SEJA-Florence
+[submodule "fala-gavea"]
+	path = fala-gavea
+	url = https://github.com/Andreymcz/fala-gavea.git
