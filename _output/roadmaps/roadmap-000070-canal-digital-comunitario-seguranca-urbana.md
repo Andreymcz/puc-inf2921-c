@@ -71,9 +71,8 @@ O threshold para considerar few-shot util e >= 10 pares por categoria.
 Os embeddings dos relatos ja estao no ChromaDB (indexados em criacao). Reutilizar via
 `chromadb.get_collection().get(include=["embeddings"])` + UMAP + HDBSCAN. Sem re-embedding.
 
-**D-D: Urgencia como campo manual (sem sugestao IA neste roadmap)**
-`urgency: alta|media|baixa` e preenchido pelo cidadao no momento do relato.
-Sugestao automatica de urgencia e future work (apos feedback loop estabilizado).
+**D-D: Urgencia como campo a ser preenchido pelo agente curador (sem sugestao IA neste roadmap)**
+`urgency: alta|media|baixa` e preenchido por um agente curador
 
 **D-E: Encaminhamento como campo simples, nao entidade separada**
 `routed_to: str | None` e `routing_status: RoutingStatus | None` direto em `SecurityReport`.
