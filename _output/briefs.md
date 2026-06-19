@@ -1,3 +1,7 @@
+DONE | 2026-06-19 14:38 UTC | STARTED | 2026-06-19 14:33 UTC | communicate | relatorio de desenvolvimento deste projeto: histórico desde plano do atlas da amazonia, casos de uso e protótipos implementados; timeline de contexto e o que foi implementado (tecnologia, uso da IA)
+
+---
+
 DONE | 2026-06-17 21:24 UTC | STARTED | 2026-06-17 21:18 UTC | research | camadas e mapas georeferenciados para adicionar dados ao fala-gavea
 
 ---
