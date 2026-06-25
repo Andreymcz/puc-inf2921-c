@@ -1,3 +1,7 @@
+DONE | 2026-06-25 19:52 UTC | STARTED | 2026-06-25 19:44 UTC | explain | behaviour-evolution — evolução do projeto INF2921 incluindo artefatos do submodule fala-gavea
+
+---
+
 DONE | 2026-06-25 19:40 UTC | STARTED | 2026-06-25 19:29 UTC | plan | Escrita do relatório da disciplina — template para colegas de turma | PLAN | 000075
 
 ---
