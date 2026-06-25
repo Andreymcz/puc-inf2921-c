@@ -106,13 +106,15 @@ Nesse mesmo periodo (24/04/2026), surge o advisory-000002: uma exploracao sobre 
 
 O mes de maio foi o mes das exploracoes tecnicas. Dois caminhos foram abertos em paralelo.
 
-**Caminho A: Talk to the City (22-24/05/2026)**
+**Caminho A: Talk to the City PoC (22-24/05/2026) — TRL 3 alcancado**
 
 Em 22 de maio, o advisory-000003 cristalizou tres casos de uso para uma plataforma de participacao cidada. A pesquisa foi abrangente: comparou Decidim, Pol.is, Talk to the City, CitizenLab, Consul e vTaiwan. A conclusao foi clara: a arquitetura do Talk to the City (T3C) -- pipeline de embedding + clustering + rotulagem via LLM -- era buildavel sobre a stack ja existente (sentence-transformers + ChromaDB + SDK Anthropic).
 
-Em 23 de maio, o advisory-000004 explorou como rodar o T3C completamente local, sem dependencias de nuvem. Existia um fork da comunidade (`tttc-light-js-ollama`) que ja substituia OpenAI por Ollama. A ideia: monorepo Node.js (Next.js + Express + pipeline worker), substituindo Firebase, Google Cloud Storage e Pub/Sub por equivalentes locais.
+Em 23 de maio, o advisory-000004 explorou como rodar o T3C completamente local, sem dependencias de nuvem. Existia um fork da comunidade (`tttc-light-js-ollama`) que ja substituia OpenAI por Ollama. A ideia: monorepo Node.js (Next.js + Express + pyserver Python), substituindo Firebase, Google Cloud Storage e Pub/Sub por equivalentes locais. Em paralelo, o advisory-000005 ja propunha um plugin de ingestao multi-formato — uma camada LLM que normalizaria qualquer fonte de dados (CSV, XLSX, JSON, PDF, WhatsApp) para o formato de entrada do T3C.
 
-Em 24 de maio, o plan-000001 tentou executar esse TRL 3: clonar o fork, criar Docker Compose, gerar dados de teste do GaveaLab e rodar o pipeline local. Os steps 1, 2 e 3 foram executados. Steps 4 e 5 -- a demo final -- ficaram inconclusos. O sistema funcionou parcialmente, mas o esforco de adaptar o ecossistema Node.js para o contexto do grupo era maior do que o retorno.
+Em 24 de maio, o plan-000001 executou o TRL 3: clonar o fork `tttc-light-js-ollama`, criar `.env.poc` desativando servicos de nuvem, e montar um `docker-compose.yml` com tres servicos (Ollama + Express + Next.js client). **O TRL 3 foi concluido com sucesso.** O commit `e625876` ("fix: corrige pyserver, express-server e report data para PoC funcionar de ponta a ponta") documenta a resolucao de tres bugs descobertos no smoke test: (1) ImportError de imports relativos no pyserver Python -- corrigido por Dockerfile customizado que patcha os imports em build-time; (2) conflito de porta no express-server (PORT=8000 herdado do `.env.poc`); (3) formato dos dados de teste. O plan-000006 adicionou auth stubs TypeScript no next-client para o fluxo do cidadao. Ao final, o pipeline rodava localmente: CSV submetido via interface web em `localhost:3000`, clusters gerados pelo Ollama, visualizacao interativa no browser -- tudo sem internet.
+
+O diretorio `tttc-poc/` existe no repositorio com os artefatos completos: `Dockerfile.express-poc`, `Dockerfile.nextclient-poc`, `Dockerfile.pyserver-poc`, `Makefile`, `docker-compose.yml`, `README-poc.md` com instrucoes de setup e execucao, e o fork `tttc-light-js-ollama` como submodulo.
 
 **Caminho B: kb-qa (maio 2026)**
 
@@ -120,7 +122,7 @@ Enquanto o T3C era explorado, o time construiu o kb-qa: uma ferramenta RAG gener
 
 **O que o usuario experimentava:** Ao final de maio, existia uma ferramenta CLI (kb-qa) que permitia indexar PDFs de aula e consult-a-los via Claude. O T3C nao chegou a uma demo funcional end-to-end.
 
-**A virada:** A tentativa com o T3C revelou algo importante. A stack JavaScript (Next.js + Express + worker) era pesada de manter, especialmente para substituir Firebase e GCS. Ao mesmo tempo, a equipe tinha o pipeline Python do T3C praticamente entendido. A pergunta que surgiu: e se reimplementassemos o pipeline em Python puro, com Streamlit, usando Ollama local?
+**A virada estrategica (nao uma falha):** O T3C funcionou. Mas a experiencia revelou algo mais importante: o ecossistema JavaScript (Next.js + Express + pyserver Python + patches de auth) era complexo de manter e evoluir para o grupo. A equipe tinha o pipeline Python do T3C praticamente entendido apos implementar o pyserver. A pergunta que surgiu: e se reimplementassemos o pipeline em Python puro, com Streamlit, usando Ollama local -- sem as camadas Firebase/GCS/PubSub do T3C? O TRL 3 foi o trampolim, nao um beco sem saida.
 
 ---
 
@@ -261,7 +263,7 @@ O plan-000096 criou um Dockerfile para deploy no Railway. O plan-000115 corrigiu
 | 1 | 2026-04-24 | advisory-000002: Atlas Georreferenciado Amazonia -- ideias iniciais | Brainstorming | Nenhum (pre-produto) |
 | 2 | 2026-05-22 | advisory-000003: 3 casos de uso para plataforma participativa cidada; pesquisa Decidim/Pol.is/T3C | Pesquisa | Nenhum (definicao de escopo) |
 | 3 | 2026-05-23 | advisory-000004: exploracao do Talk to the City local com Ollama | Pesquisa tecnica | Nenhum |
-| 4 | 2026-05-24 | plan-000001 + kb-qa: TRL3 PoC T3C rodando parcialmente; kb-qa funcional | Implementacao | Ferramenta RAG CLI disponivel para o time |
+| 4 | 2026-05-24 | plan-000001 + plan-000006: TRL3 PoC T3C rodando end-to-end local (commit e625876 — pyserver patchado, auth stubs); advisory-000005: plugin multi-formato proposto; kb-qa funcional | Implementacao | Pipeline T3C local demonstrado; ferramenta RAG CLI disponivel para o time |
 | 5 | 2026-06-01 | roadmap-000007: decisao de reimplementar pipeline T3C em Python + Streamlit | PIVOT | --  |
 | 6 | 2026-06-02 | plans 000008-000013: GaveaLab PoC implementado em um dia (scaffold, CSV upload, topicos, claims, cruxes) | Implementacao | 1a interface de analise de relatos funcionando |
 | 7 | 2026-06-02 | D-004 (Streamlit + SQLite) e D-005 (Ollama) registrados | Decisao arquitetural | Sessoes persistentes entre navegacoes |
@@ -384,9 +386,9 @@ O roadmap-000071 documentou esta decisao arquitetural explicitamente (D-A a D-F)
 
 ## What Didn't Work
 
-### Tentativa 1: Talk to the City completo (maio 2026)
+### Decisao estrategica: pivotar do T3C para Python puro (maio→junho 2026)
 
-O plan-000001 tentou validar o TRL 3 do T3C rodando local. Os steps de criacao do Docker Compose e configuracao de ambiente funcionaram. A demo end-to-end (submit CSV, ver clusters no browser) ficou incompleta. O ecossistema JavaScript do T3C -- com Firebase, GCS, PubSub e BullMQ como dependencias -- era mais pesado do que o escopo do projeto. A alternativa correta foi reimplementar o pipeline em Python, que a equipe conhecia melhor.
+O plan-000001 + plan-000006 **concluiram com sucesso** o TRL 3 do T3C rodando local (commit `e625876`): Docker Compose com tres servicos (Ollama + Express + Next.js), pyserver Python patchado, auth stubs para o cidadao, pipeline rodando end-to-end. O que nao funcionou foi a estrategia de manter e evoluir essa stack: (1) o ecossistema JavaScript com Firebase/GCS/PubSub mockados exigia manutencao constante; (2) o pyserver Python dentro do T3C sugeria que o pipeline real poderia ser extraido; (3) o grupo dominava Python, nao Node.js. A decisao de reimplementar em Streamlit nao foi uma falha -- foi a consequencia logica de ter aprendido o suficiente com o T3C para saber que podia fazer melhor com menos.
 
 **Licao aprendida:** Adaptar um monorepo complexo de terceiros para remover dependencias de nuvem pode custar mais do que reimplementar o nucleo funcional na linguagem preferida do time.
 
