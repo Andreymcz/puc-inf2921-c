@@ -1,3 +1,7 @@
+DONE | 2026-06-25 19:40 UTC | STARTED | 2026-06-25 19:29 UTC | plan | Escrita do relatório da disciplina — template para colegas de turma | PLAN | 000075
+
+---
+
 DONE | 2026-06-17 21:24 UTC | STARTED | 2026-06-17 21:18 UTC | research | camadas e mapas georeferenciados para adicionar dados ao fala-gavea
 
 ---
