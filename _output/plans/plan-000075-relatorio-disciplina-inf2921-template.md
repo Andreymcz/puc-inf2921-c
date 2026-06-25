@@ -84,14 +84,14 @@ Cada bloco placeholder usará o formato:
 > *(Apague este bloco e insira sua contribuição aqui — 2 a 5 parágrafos)*
 ```
 
-- **Files**: `relatorio/relatorio-inf2921-grupo-c.md` (create)
+- **Files**: `relatorio/relatorio-inf2921-grupo-c.tex` (create — LaTeX a pedido do usuário), `relatorio/referencias.bib` (create), `relatorio/relatorio-inf2921-grupo-c.md` (create — Markdown intermediário, supersedido pelo .tex)
 - **References**: `product-design/project/product-design-as-intended.md`, `product-design/project/constitution.md`, `knowledge/Reuniao-23-04-2026.md`, `knowledge/casos-de-uso.md`, `knowledge/datasets.md`
 - **Interface**: N/A
-- **Verify**: Arquivo criado; seções 1–6 + Referências + Apêndice presentes; blocos `[PREENCHER]` identificáveis para cada membro; conteúdo técnico de D-001–D-005 presente na seção 3.2
-- **Tests**: N/A (documento Markdown — sem código)
-- **Docs**: O próprio documento é o artefato final; nenhuma documentação adicional necessária
+- **Verify**: `.tex` criado; seções 1–6 + Referências + Apêndices presentes; `\todo{}` identificáveis para cada membro; conteúdo técnico de D-001–D-005 presente em `\subsection{Principais Decisões Técnicas}`
+- **Tests**: N/A
+- **Docs**: O próprio documento é o artefato final
 - **Traces**: US-GL-001, US-GL-002, US-GL-003, US-GL-004, US-GL-005
-- [ ] Done
+- [x] Done — `relatorio-inf2921-grupo-c.tex` + `referencias.bib` criados; formato LaTeX (pdflatex/xelatex + biber)
 
 ---
 
@@ -121,12 +121,12 @@ Instale a extensão "Markdown PDF" → botão direito → "Markdown PDF: Export 
 [A preencher pelo grupo]
 ```
 
-- **Files**: `relatorio/COMO-PREENCHER.md` (create)
+- **Files**: `relatorio/COMO-PREENCHER.md` (create — guia de preenchimento Markdown; mantido como referência de processo)
 - **Depends on**: Step 1
 - **Interface**: N/A
-- **Verify**: Arquivo criado; contém instrução de exportação PDF via pelo menos uma ferramenta
+- **Verify**: Arquivo criado; contém instrução de exportação PDF
 - **Tests**: N/A
-- [ ] Done
+- [x] Done — `COMO-PREENCHER.md` criado; seção 6 cobre pdflatex + biber para o .tex
 
 ---
 
@@ -144,7 +144,7 @@ Perguntas orientadoras para o skill:
 - **Interface**: N/A
 - **Verify**: Arquivo de behavior-evolution gerado; contém linha do tempo com referências a pelo menos 5 planos distintos; cobre a transição kb-qa → GaveaLab
 - **Tests**: N/A
-- [ ] Done
+- [x] Done — evolution-000076 gerado e corrigido (tttc-poc TRL3 alcançado); commit 7cfbdad
 
 ---
 
@@ -190,10 +190,11 @@ Com os relatórios dos Steps 3 e 4 em mãos, atualizar `relatorio/relatorio-inf2
 
 | Artifact | Path | Status |
 |----------|------|--------|
-| Template principal | `relatorio/relatorio-inf2921-grupo-c.md` | Planned |
-| Guia de preenchimento | `relatorio/COMO-PREENCHER.md` | Planned |
-| Behavior evolution report | `_output/behavior-evolution/<gerado-pelo-skill>.md` | Planned (via `/explain behavior-evolution`) |
-| Architecture explanation | `_output/explained-architecture/<gerado-pelo-skill>.md` | Planned (via `/explain architecture`) |
+| Relatório LaTeX | `relatorio/relatorio-inf2921-grupo-c.tex` | Done |
+| Bibliografia BibTeX | `relatorio/referencias.bib` | Done |
+| Guia de preenchimento | `relatorio/COMO-PREENCHER.md` | Done |
+| Behavior evolution report | `_output/behavior-evolution/evolution-000076-evolucao-projeto-inf2921-gavealab-fala-gavea.md` | Done |
+| Architecture explanation | `_output/explained-architecture/<gerado-pelo-skill>.md` | Pending (Step 4) |
 
 ---
 

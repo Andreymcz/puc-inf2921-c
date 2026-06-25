@@ -1,0 +1,570 @@
+\documentclass[12pt,a4paper]{article}
+
+% ----- Pacotes -----
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=blue, citecolor=black}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{parskip}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{todonotes}   % \todo{} para seções pendentes
+\usepackage{csquotes}
+\usepackage[
+  backend=biber,
+  style=abnt,
+]{biblatex}
+\addbibresource{referencias.bib}
+
+% ----- Espaçamento -----
+\setstretch{1.5}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+% ----- Cabeçalho -----
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{INF2921/CIS2114 — AI Systems Design 2026.1}
+\lhead{Grupo C — PUC-Rio}
+\rfoot{\thepage}
+
+% ----- Listagens de código -----
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{gray!10},
+  frame=single,
+  breaklines=true,
+  columns=fullflexible,
+}
+
+% ============================================================
+\begin{document}
+
+% ----- Capa -----
+\begin{titlepage}
+  \centering
+  \vspace*{2cm}
+  {\Large\bfseries Pontifícia Universidade Católica do Rio de Janeiro\\[0.3em]
+  Departamento de Informática\par}
+  \vspace{1.5cm}
+  {\LARGE\bfseries Sistemas de IA para Participação Cidadã:\\[0.3em]
+  GaveaLab e Fala-Gávea\par}
+  \vspace{1cm}
+  {\large Relatório Final — INF2921/CIS2114\\
+  AI Systems Design 2026.1\par}
+  \vspace{2cm}
+  {\large\bfseries Grupo C\par}
+  \vspace{0.5cm}
+  {\large
+  Andrey Rodrigues\\
+  Herbert Medeiros\\
+  Julia Calixto\\
+  Mauro Marcelino\\
+  Natali Garcia\par}
+  \vspace{2cm}
+  {\large Rio de Janeiro, julho de 2026\par}
+  \vfill
+\end{titlepage}
+
+% ----- Resumo -----
+\begin{abstract}
+\noindent
+\todo[inline]{PREENCHER — redigir resumo coletivo (5--8 linhas) após completar as seções individuais.
+Sugestão de estrutura: (1) problema abordado; (2) abordagem; (3) produtos entregues; (4) principais resultados e lições aprendidas.}
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+% ============================================================
+\section{Introdução}
+
+\subsection{Contexto e Motivação}
+
+A análise qualitativa de relatos de cidadãos — respostas abertas a consultas públicas,
+comentários em audiências, registros de problemas urbanos — é uma tarefa intensiva que
+normalmente exige codificação manual por pesquisadores ou analistas especializados.
+Ferramentas como o \textit{Talk to the City}~\cite{tttc2023} (AIObjectives / vTaiwan)
+demonstram que \textit{pipelines} de modelos de linguagem de grande porte (LLMs) podem
+automatizar a descoberta de temas, a extração de afirmações-chave e a identificação de
+divergências genuínas em corpora de opiniões qualitativas. O precedente de Taiwan MODA
+(AI Alignment Assembly, 2023, 400+ participantes) mostrou que esta abordagem pode
+influenciar políticas públicas reais~\cite{vtaiwan2023}.
+
+O GaveaLab, organização parceira da disciplina, coleta relatos de cidadãos sobre
+problemas e necessidades do bairro da Gávea no Rio de Janeiro. O Grupo C identificou
+dois problemas concretos ao longo das reuniões iniciais: (1) não existe ferramenta leve
+para analisar esses relatos localmente sem enviar dados de cidadãos para serviços de
+nuvem; (2) não existe canal digital estruturado para que o cidadão registre um problema
+geolocalizado no mapa, acompanhe seu encaminhamento institucional e interaja com
+agentes públicos. Este relatório descreve como o grupo abordou esses dois problemas ao
+longo de oito semanas, da concepção ao deploy.
+
+\subsection{O que o grupo já conhecia}
+
+\todo[inline]{PREENCHER — Andrey: experiência prévia com LLMs, RAG, embeddings, FastAPI, React, dados geoespaciais, Talk to the City, Pol.is, vTaiwan. (2--3 parágrafos)}
+
+\todo[inline]{PREENCHER — Mauro: background técnico e de domínio; o que sabia sobre análise de feedback cidadão; ferramenta ou conceito da disciplina que mais surpreendeu. (2--3 parágrafos)}
+
+\todo[inline]{PREENCHER — Julia: experiência com Python, TypeScript, bancos de dados; sistemas de participação cidadã ou civic tech; embeddings e busca semântica. (2--3 parágrafos)}
+
+\todo[inline]{PREENCHER — Herbert: background técnico e de domínio; motivação pelo tema de IA para participação cidadã; conhecimentos prévios mais úteis. (2--3 parágrafos)}
+
+\todo[inline]{PREENCHER — Natali: experiência com IA aplicada; contato prévio com GaveaLab ou dados urbanos; conhecimentos prévios mais úteis. (2--3 parágrafos)}
+
+% ============================================================
+\section{Processo de Elaboração}
+
+\subsection{Formação da equipe e primeiras discussões}
+
+O grupo se formou em 13 de abril de 2026, quando Andrey criou um grupo de WhatsApp e
+convidou os colegas identificados na plataforma EAD da disciplina. A equipe ficou com
+cinco membros ativos: Andrey, Natali, Julia, Mauro e Herbert. A comunicação principal
+ocorreu pelo WhatsApp, com reuniões presenciais antes das aulas de quinta-feira e
+encontros virtuais para decisões técnicas.
+
+O primeiro encontro presencial (16 de abril) serviu para apresentações e
+\textit{brainstorming} de temas. Em 23 de abril, o grupo registrou as primeiras ideias
+de produto: segurança pública, mapeamento de espaços urbanos e acesso controlado à
+informação multimodal georreferenciada. A ideia inicial mais ambiciosa era um
+``atlas digital e iterativo assistido por IA'' — um repositório georreferenciado de
+informações urbanas curado por comunidades, inicialmente pensado na escala da Amazônia.
+
+\todo[inline]{PREENCHER — Todos: adicionar perspectivas sobre a dinâmica inicial da equipe (divergências, alinhamento de expectativas, definição de papéis). (1--2 parágrafos coletivos)}
+
+\subsection{Definição do tema e escopo: o ``zoom in'' progressivo}
+
+A trajetória do escopo do projeto foi de um progressivo afunilamento geográfico e
+temático, que o grupo passou a chamar internamente de ``zoom in'': Amazônia \textrightarrow{} Rio
+de Janeiro \textrightarrow{} Gávea \textrightarrow{} segurança pública na Gávea.
+
+Em 22 de maio, o grupo pesquisou ferramentas de participação cidadã
+existentes~\cite{decidim,polis} e identificou o Talk to the City~\cite{tttc2023} como
+a arquitetura mais adequada: \textit{pipeline} de \textit{embedding} + \textit{clustering}
++ rotulagem via LLM. Em paralelo, o grupo construiu o \textbf{kb-qa} — uma ferramenta
+RAG genérica para indexar materiais da própria disciplina no ChromaDB e consultá-los
+via MCP no Claude Code. Esta ferramenta resolveu um problema imediato do grupo e
+estabeleceu a base técnica (sentence-transformers, ChromaDB, FastMCP) que seria
+reutilizada nos produtos seguintes.
+
+O zoom final aconteceu em reflexão registrada (reflection-000052, 15 de junho): a
+equipe decidiu focar na Gávea, com o GaveaLab como parceiro real, trabalhando sobre o
+problema concreto de análise de relatos cidadãos do bairro.
+
+\todo[inline]{PREENCHER — Andrey / Natali: como surgiu a conexão com o GaveaLab, papel dos stakeholders, o que esperavam do projeto. (1--2 parágrafos)}
+
+\subsection{Pesquisas iniciais: ferramentas e perguntas}
+
+As primeiras pesquisas técnicas foram conduzidas com o Claude Code usando o
+\textit{harness} SEJA (\textit{Skill-Enabled Journal Architecture}), um sistema de
+gestão de sessões de IA que registra automaticamente perguntas, decisões e planos em
+arquivos Markdown versionados. Isso criou um log auditável de todo o processo de
+pesquisa, com mais de 75 planos, 5 roadmaps e dezenas de sessões de pesquisa registradas.
+
+Os exemplos abaixo ilustram as perguntas que geraram os principais artefatos de
+pesquisa:
+
+\begin{itemize}
+  \item \textit{``Como rodar o Talk to the City completamente local, sem dependências de nuvem?''} (advisory-000004)
+  \item \textit{``Quais são os principais casos de uso para uma plataforma de participação cidadã na Gávea?''} (advisory-000003)
+  \item \textit{``Como estruturar um plugin de ingestão multi-formato para o T3C usando LLM local?''} (advisory-000005)
+  \item \textit{``Qual o melhor pipeline para clustering de sentenças — clusterizar em alta dimensão e depois reduzir, ou reduzir com UMAP e depois clusterizar?''} (research-000023)
+  \item \textit{``Como fazer deploy do Fala-Gávea via Docker no Railway?''} (research-000091)
+\end{itemize}
+
+\todo[inline]{PREENCHER — Mauro / Julia / Herbert / Natali: ferramentas usadas individualmente para pesquisa; perguntas feitas; fontes mais úteis (papers, documentação, blogs, repositórios). (1 parágrafo por membro)}
+
+\subsection{Como os resultados iniciais foram refinados}
+
+A evolução do projeto passou por três grandes ciclos de refinamento, cada um motivado
+por um aprendizado concreto.
+
+\textbf{Ciclo 1: Do T3C para Python puro (maio \textrightarrow{} junho).}
+O grupo implementou com sucesso uma PoC TRL~3 do Talk to the City rodando localmente:
+Docker Compose com três serviços (Ollama + servidor Express + cliente Next.js), incluindo
+\textit{patches} para o \textit{pyserver} Python interno do T3C e \textit{stubs} de
+autenticação (commit \texttt{e625876}). A PoC funcionou — o \textit{pipeline} gerou
+\textit{clusters} e a visualização apareceu no browser sem internet. Contudo, o
+ecossistema JavaScript com Firebase/GCS/PubSub \textit{mockados} era complexo de manter
+e evoluir. A pergunta que emergiu: \textit{``e se reimplementássemos o pipeline em Python
+puro, com Streamlit, usando Ollama local?''} Em 1º de junho, um único dia de trabalho
+produziu o roadmap-000007 e o GaveaLab nasceu como produto Python.
+
+\textbf{Ciclo 2: Do GaveaLab para Fala-Gávea (junho).}
+Em 11 de junho, o research-000023 nomeou o que o grupo estava construindo: uma
+``arquitetura de dois anéis''. O GaveaLab era o anel interno — ferramenta de análise de
+corpus existente. O Fala-Gávea seria o anel externo — canal de coleta de novos relatos
+em tempo real. A primeira versão do Fala-Gávea usou Streamlit, mas rapidamente o grupo
+percebeu que um SPA React com FastAPI seria mais adequado para o fluxo cidadão~\textrightarrow{}
+agente público.
+
+\textbf{Ciclo 3: Do HTML estático para React SPA (junho).}
+A versão HTML estática do \textit{frontend} do Fala-Gávea foi substituída por um SPA
+React~18 + Vite + TypeScript + Tailwind (plan-000082). A decisão foi motivada pela
+necessidade de estado dinâmico: mapa Leaflet interativo, filtros em tempo real, chat NL
+e cesta de relatos.
+
+\todo[inline]{PREENCHER — Todos: exemplos pessoais de refinamento; momentos em que percebeu que a abordagem inicial precisava mudar; que evidência técnica ou de usuário motivou a mudança. (1--2 parágrafos por membro)}
+
+\subsection{Surpresas e tentativas que não deram certo}
+
+\todo[inline]{PREENCHER — Andrey: aspecto técnico mais surpreendente; abordagens tentadas e abandonadas; o que teria feito diferente. (2--3 parágrafos)}
+
+\todo[inline]{PREENCHER — Mauro: idem. (2--3 parágrafos)}
+
+\todo[inline]{PREENCHER — Julia: idem. (2--3 parágrafos)}
+
+\todo[inline]{PREENCHER — Herbert: idem. (2--3 parágrafos)}
+
+\todo[inline]{PREENCHER — Natali: idem. (2--3 parágrafos)}
+
+\subsection{Organização da comunicação da equipe}
+
+A equipe utilizou três canais complementares ao longo do projeto:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lll}
+\toprule
+\textbf{Canal} & \textbf{Uso} & \textbf{Frequência} \\
+\midrule
+WhatsApp & Coordenação rápida, avisos, combinação de horários & Diária \\
+GitHub (git.tecgraf.puc-rio.br) & Controle de versão, histórico de decisões & A cada commit \\
+Claude Code + harness SEJA & Log estruturado de pesquisas, planos e resultados & A cada sessão \\
+\bottomrule
+\end{tabular}
+\caption{Canais de comunicação utilizados pelo grupo.}
+\end{table}
+
+O \textit{harness} SEJA funcionou como um terceiro tipo de documentação: além do código
+(git) e das conversas (WhatsApp), cada sessão de trabalho gerou um log estruturado de
+perguntas, respostas, planos e resultados. Ao término do projeto, o repositório continha
+mais de 75 planos de implementação, 5 roadmaps, e dezenas de sessões de pesquisa e
+reflexão registradas automaticamente.
+
+\todo[inline]{PREENCHER — Todos: perspectivas sobre a comunicação; dificuldades de sincronização; o que funcionou bem. (1--2 parágrafos coletivos)}
+
+% ============================================================
+\section{Arquitetura e Decisões Técnicas}
+
+\subsection{Visão Geral da Arquitetura}
+
+O projeto entregou três artefatos interrelacionados, todos rodando em infraestrutura
+local:
+
+\begin{itemize}
+  \item \textbf{kb-qa}: ferramenta RAG (Retrieval-Augmented Generation) genérica para
+    indexar documentos da disciplina e consultá-los via MCP.
+  \item \textbf{GaveaLab}: aplicação Streamlit para análise de relatos cidadãos em CSV
+    (tópicos, \textit{claims}, cruxes, visualização UMAP).
+  \item \textbf{Fala-Gávea}: plataforma FastAPI + React para registro e encaminhamento
+    de demandas urbanas de segurança, com busca semântica e filtros por linguagem
+    natural.
+\end{itemize}
+
+O princípio arquitetural central de todos os produtos é a \textbf{soberania dos dados}:
+nenhum dado do cidadão sai da máquina do analista. Todo processamento LLM ocorre via
+Ollama local; o banco de dados é SQLite local; o deploy para Railway (Fala-Gávea) usa
+containers Docker sem serviços gerenciados de nuvem para dados.
+
+\todo[inline]{SEÇÃO AGUARDA diagrama de arquitetura — gerado por /explain architecture (plan-000075 Step 4). Inserir aqui o diagrama Mermaid ou figura gerada.}
+
+\subsection{Principais Decisões Técnicas}
+
+As decisões arquiteturais foram documentadas formalmente como entradas D-NNN nos
+arquivos de \textit{design intent} do projeto. As cinco decisões centrais do GaveaLab e
+kb-qa são descritas a seguir.
+
+\textbf{D-001 — ChromaDB como \textit{vector store}.}
+Para um \textit{vector store} local com uma base de conhecimento de tamanho pequeno a
+médio, o ChromaDB com \texttt{PersistentClient} foi escolhido por rodar embutido (sem
+processo servidor separado), persistir em diretório local e ter zero \textit{overhead}
+operacional. Alternativas consideradas e rejeitadas: Qdrant (serviço separado necessário),
+FAISS (biblioteca sem persistência nativa), pgvector (requer PostgreSQL).
+
+\textbf{D-002 — MCP (FastMCP) para exposição do kb-qa.}
+O caso de uso principal era injetar resultados da base de conhecimento em sessões
+Claude Code. O protocolo MCP (\textit{Model Context Protocol}) foi escolhido por ser o
+padrão emergente para integração de ferramentas com Claude, funcionando nativamente via
+\texttt{settings.json}. A CLI (\texttt{kb-qa ask}) permanece disponível para uso direto.
+
+\textbf{D-003 — \texttt{nomic-ai/nomic-embed-text-v1} como modelo de \textit{embeddings}.}
+O modelo foi escolhido por suporte multilíngue (pt-BR + en-US), alta qualidade semântica,
+licença MIT e tamanho razoável (~274~MB no primeiro \textit{download}). Roda localmente
+via sentence-transformers. Atualizações de modelo exigem reingestão completa da base.
+
+\textbf{D-004 — Streamlit + SQLite para o GaveaLab.}
+A UI web leve para ferramenta local \textit{single-user} usou Streamlit (Python nativo,
+multi-page, \textit{session state} integrado) e SQLite (via \texttt{sqlite3} embutido),
+sem ORM — acesso direto via classe \texttt{GaveaLabWorkspace}. Zero \textit{overhead} de
+infraestrutura; SQLite limita acesso concorrente, aceitável para uso local.
+
+\textbf{D-005 — Ollama como \textit{backend} LLM.}
+O servidor de inferência local Ollama foi escolhido em \texttt{http://localhost:11434/v1}
+com \textit{endpoint} compatível com OpenAI. Modelo padrão: \texttt{qwen3:8b}, configurável
+via variável de ambiente \texttt{GAVEALAB\_OLLAMA\_MODEL}. Todas as chamadas LLM passam
+pela classe \texttt{OllamaClient} em \texttt{gavealab\_poc/llm.py}, centralizando a
+configuração do modelo.
+
+Além dessas cinco decisões do GaveaLab + kb-qa, o Fala-Gávea acumulou decisões próprias
+documentadas no seu \textit{harness}: FastAPI + SQLAlchemy + SQLite (vs. Django/Flask);
+JWT Bearer com roles \textit{citizen/agent/admin} (vs. sessões); React~18 + Vite + TypeScript
+(vs. HTML estático); arquitetura limpa em camadas (\textit{domain / application / infrastructure / presentation});
+BERTopic para modelagem de tópicos emergentes; Railway para deploy via Docker.
+
+\subsection{Stack e Ferramentas}
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabular}{llllll}
+\toprule
+\textbf{Produto} & \textbf{Linguagem} & \textbf{Framework} & \textbf{Banco} & \textbf{LLM} & \textbf{Deploy} \\
+\midrule
+kb-qa & Python 3.13 & click + FastMCP & ChromaDB & — (RAG puro) & Local \\
+GaveaLab & Python 3.13 & Streamlit & SQLite & Ollama qwen3:8b & Local \\
+Fala-Gávea & Python 3.13 + TS & FastAPI + React 18 & SQLite + ChromaDB & Ollama qwen3:8b & Railway \\
+\bottomrule
+\end{tabular}
+\caption{Stack técnica dos três produtos entregues.}
+\end{table}
+
+Ferramentas de suporte ao desenvolvimento: \textbf{uv} (gerenciador de pacotes Python),
+\textbf{Claude Code + harness SEJA} (log estruturado de sessões), \textbf{pytest + ruff + pyright}
+(testes, \textit{linting} e verificação de tipos), \textbf{Docker + Docker Compose}
+(containerização para Railway e para a PoC do T3C).
+
+% ============================================================
+\section{Requisitos para Sistemas Confiáveis, Seguros e Socialmente Responsáveis}
+
+\subsection{Desafios identificados}
+
+O projeto enfrentou desafios em quatro dimensões:
+
+\textbf{Privacidade e soberania dos dados.}
+Relatos de cidadãos podem conter informações pessoais sensíveis — localização,
+identidade, problemas de saúde, situação econômica. Qualquer arquitetura que envie
+esses dados para APIs de nuvem (OpenAI, Anthropic, Google) cria risco de exposição.
+A soberania dos dados é um requisito ético, não apenas técnico.
+
+\textbf{Viés algorítmico na análise de opiniões.}
+Modelos LLM têm vieses treinados sobre corpora predominantemente em inglês. Quando
+aplicados a relatos em português do Brasil sobre problemas urbanos da Gávea, podem:
+(1) classificar incorretamente o tom (ironia, gíria, código-misto pt-BR/en); (2)
+superrepresentar temas com vocabulário mais formal; (3) criar \textit{cruxes} (pontos
+de divergência) que são artefatos do modelo, não divergências reais entre cidadãos.
+
+\textbf{Transparência e auditabilidade.}
+Em um sistema de participação cidadã, o analista precisa confiar nos \textit{outputs} do
+LLM antes de apresentá-los a gestores públicos. Uma ferramenta que produz ``resultados em
+caixa preta'' viola princípios de transparência exigidos por sistemas de IA responsáveis
+\cite{weisz2024}.
+
+\textbf{Acessibilidade e exclusão digital.}
+Uma plataforma de registro de demandas urbanas que só funciona via \textit{smartphone}
+moderno com conexão de qualidade exclui justamente os cidadãos mais vulneráveis — aqueles
+com menores índices de letramento digital, dispositivos mais antigos ou acesso à internet
+instável.
+
+\subsection{Como os desafios foram endereçados}
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabular}{>{\bfseries}p{3cm} p{4cm} p{6cm}}
+\toprule
+Desafio & Princípio adotado & Como implementado \\
+\midrule
+Privacidade & C1, C2 (Constituição do projeto) &
+  Ollama local; SQLite na máquina do analista; ChromaDB \textit{gitignored}; sem upload para APIs externas \\
+\addlinespace
+Viés algorítmico & Human-in-the-loop &
+  Todos os \textit{outputs} LLM são exibidos para revisão humana antes de serem tratados como resultado; botão ``Re-run'' para regenerar qualquer etapa \\
+\addlinespace
+Transparência & T1 (OllamaClient centralizado) &
+  Todas as chamadas LLM passam por \texttt{llm.py}; modelo e URL são configuráveis via \textit{env vars}; \textit{prompts} são constantes de módulo visíveis no código \\
+\addlinespace
+Auditabilidade & T2 (GaveaLabWorkspace) &
+  Sessões persistem no SQLite; analista pode revisar resultados anteriores; harness SEJA cria log de todas as decisões de desenvolvimento \\
+\addlinespace
+Acessibilidade & — &
+  \textbf{Não endereçado adequadamente} (ver Seção~\ref{sec:limitacoes}) \\
+\bottomrule
+\end{tabular}
+\caption{Mapeamento de desafios éticos e como foram endereçados no projeto.}
+\end{table}
+
+\subsection{Perspectiva de cada membro}
+
+\todo[inline]{PREENCHER — Andrey: em que medida a escolha ``local-first'' é suficiente para garantir privacidade; limites éticos do uso de LLM para interpretar opiniões de cidadãos; o que seria necessário para uso em consulta pública real. (3--4 parágrafos)}
+
+\todo[inline]{PREENCHER — Mauro: risco de viés algorítmico nos outputs do GaveaLab; salvaguardas que adicionaria em produção; o que significa responsabilidade social para um sistema que analisa dados de cidadãos vulneráveis. (3--4 parágrafos)}
+
+\todo[inline]{PREENCHER — Julia: design da interface e inclusão/exclusão de perfis de cidadãos; riscos de segurança identificados na implementação JWT; o que Weisz et al. (2024) sugere que ainda falta no sistema. (3--4 parágrafos)}
+
+\todo[inline]{PREENCHER — Herbert: como garantir que o sistema de encaminhamento não se torne um ``buraco negro'' para as demandas dos cidadãos; responsabilidade do desenvolvedor quando IA classifica incorretamente um relato de emergência; transparência algorítmica em modelos locais. (3--4 parágrafos)}
+
+\todo[inline]{PREENCHER — Natali: impacto do viés de representação nos dados de treinamento quando usados para analisar vozes de comunidades periféricas; uso responsável vs. irresponsável do conceito de ``crux'' em consultas públicas; limites éticos aprendidos no projeto. (3--4 parágrafos)}
+
+% ============================================================
+\section{Resultados e Estado Atual}
+
+\subsection{Funcionalidades implementadas}
+
+\textbf{kb-qa (ferramenta RAG de suporte).}
+Ingestão incremental de arquivos \texttt{.md} e \texttt{.pdf} via ChromaDB (identificação
+por \textit{hash} MD5, sem duplicatas); CLI \texttt{kb-qa ingest / status / ask}; MCP
+\textit{tool} \texttt{query\_knowledge} via FastMCP (consultado automaticamente pelo
+Claude Code nas sessões da equipe).
+
+\textbf{GaveaLab (análise de relatos cidadãos).}
+Upload de CSV com coluna \texttt{text} ou \texttt{comment} — cria sessão persistente no
+SQLite. Cinco páginas de análise: (1) \textit{temas automáticos} — LLM gera árvore
+tópico/subtópico; (2) \textit{categorização manual} — usuário define temas, LLM classifica
+cada relato; (3) \textit{claims} — extração de afirmações-chave por tópico com citação
+do relato original; (4) \textit{cruxes} — detecção de pontos de divergência genuína;
+(5) \textit{visualização UMAP} — \textit{scatter plot} 2D interativo (Plotly) das
+\textit{claims} embedadas, com \textit{hover} mostrando texto e tópico, coloração por
+tópico.
+
+\textbf{Fala-Gávea (plataforma de demandas urbanas).}
+Autenticação JWT com três \textit{roles} (cidadão, agente, admin). Para o cidadão:
+registro de relato geolocalizado via mapa Leaflet, seleção de tipo de demanda e urgência,
+acompanhamento de status. Para o agente público: mapa de todos os relatos com filtros
+avançados; \textit{busca semântica} (ChromaDB + nomic-embed, \textit{query} em linguagem
+natural retorna relatos semanticamente similares); \textit{filtros por intenção NL}
+(chat que converte linguagem natural em filtros estruturados); \textit{relatos similares}
+(top-K mais próximos no espaço semântico); BERTopic (modelagem de tópicos emergentes);
+\textit{cesta de relatos} (seleção de múltiplos relatos para encaminhamento conjunto);
+\textit{forwardings} (encaminhamento formal para órgão responsável). Deploy em Railway via
+Docker.
+
+\subsection{Limitações e Trabalho Futuro}
+\label{sec:limitacoes}
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabular}{llc}
+\toprule
+\textbf{Limitação} & \textbf{Tipo} & \textbf{Prioridade} \\
+\midrule
+Acessibilidade para cidadãos com baixo letramento digital & Produto & Alta \\
+Ausência de \textit{feedback loop} humano → modelo (\textit{fine-tuning}) & IA & Alta \\
+Exportação de resultados GaveaLab para CSV/JSON & Produto & Média \\
+Filtro de tópico/território na visualização UMAP & Produto & Média \\
+Indicadores de progresso nas etapas LLM & UX & Média \\
+\textit{Scores} de similaridade visíveis no \texttt{kb-qa ask} & Produto & Baixa \\
+Síntese LLM no \texttt{kb-qa ask --synthesize} & Produto & Baixa \\
+\bottomrule
+\end{tabular}
+\caption{Limitações identificadas e prioridade de endereçamento futuro.}
+\end{table}
+
+% ============================================================
+\section{Conclusão}
+
+\todo[inline]{PREENCHER — Andrey (rascunho) + todos (revisão). Perguntas orientadoras: (1) O que este projeto demonstrou sobre a viabilidade de sistemas de IA para participação cidadã rodando localmente? (2) Quais foram as lições mais importantes — técnicas, de processo e de design responsável? (3) O que vocês fariam diferente se recomeçassem? (4) Que perguntas abertas este projeto deixa para investigação futura? (4--6 parágrafos coletivos)}
+
+% ============================================================
+\printbibliography[title={Referências}]
+
+% ============================================================
+\appendix
+
+\section{Linha do Tempo do Projeto}
+
+Extraída do relatório de evolução evolution-000076, gerado automaticamente pelo harness
+SEJA a partir do histórico de planos e sessões de pesquisa.
+
+\begin{longtable}{>{\small}c >{\small}p{2cm} >{\small}p{6cm} >{\small}p{2cm} >{\small}p{3cm}}
+\toprule
+\textbf{\#} & \textbf{Data} & \textbf{Evento} & \textbf{Tipo} & \textbf{Impacto} \\
+\midrule
+\endhead
+1 & 2026-04-13 & Formação da equipe — grupo de WhatsApp & Processo & — \\
+2 & 2026-04-23 & Brainstorming: segurança pública, atlas digital Amazônia & Pesquisa & — \\
+3 & 2026-05-22 & advisory-000003: pesquisa de ferramentas (Pol.is, T3C, vTaiwan) & Pesquisa & — \\
+4 & 2026-05-23 & advisory-000004: exploração do T3C local com Ollama & Pesquisa técnica & — \\
+5 & 2026-05-24 & \textbf{TRL3 alcançado}: PoC T3C end-to-end local (pyserver patchado, auth stubs, clusters no browser); kb-qa funcional & Impl. & Pipeline local demonstrado; RAG disponível \\
+6 & 2026-06-01 & \textbf{PIVOT}: roadmap-000007 — reimplementar pipeline T3C em Python + Streamlit & Decisão & — \\
+7 & 2026-06-02 & GaveaLab v1: 5 páginas Streamlit (upload, tópicos, claims, categorização, cruxes) — executado em 1 dia & Impl. & Análise completa de relatos \\
+8 & 2026-06-02 & Decisões D-004 (Streamlit + SQLite) e D-005 (Ollama) registradas & Arquitetura & — \\
+9 & 2026-06-09 & Visualização UMAP: \textit{scatter plot} 2D de \textit{claim embeddings} & Feature & Mapa visual de clusters de opiniões \\
+10 & 2026-06-11 & research-000023: arquitetura de dois anéis (GaveaLab + Fala-Gávea) & Pesquisa & — \\
+11 & 2026-06-11 & Fala-Gávea v1 (Streamlit): posts de cidadãos, likes, clusters UMAP & Impl. & Cidadão registra relato \\
+12 & 2026-06-15 & reflection-000052: ``zoom in'' Amazônia → Gávea formalizado & Reflexão & — \\
+13 & 2026-06-17 & \textbf{PIVOT}: roadmap-000071 — Fala-Gávea refundado em FastAPI + clean architecture + JWT & Decisão & — \\
+14 & 2026-06-18 & Fala-Gávea v2: domínio completo (User/Report/ReportType/Forwarding), auth JWT, React SPA 4 telas & Impl. & Cidadão registra; agente encaminha \\
+15 & 2026-06-19 & Wave semântica: ChromaDB + busca semântica + relatos similares + BERTopic + RAG chat & Feature & Agente explora por similaridade e chat NL \\
+16 & 2026-06-20 & Workspace \textit{grid} + filtros avançados + NL filter parser & Feature & Filtros por intenção em linguagem natural \\
+17 & 2026-06-22 & Cesta de relatos + jornadas de transparência cidadã & Feature & Cidadão acompanha status do encaminhamento \\
+18 & 2026-06-24 & Fala-Gávea deployed no Railway (Docker) & Deploy & Sistema acessível via URL pública \\
+\bottomrule
+\end{longtable}
+
+\section{Jornadas de Usuário}
+
+\subsection{JM-TB-001: Pesquisadora analisa relatos com GaveaLab}
+
+\textbf{Persona:} Pesquisadora do GaveaLab com corpus de 200 relatos de consulta pública.\\
+\textbf{Objetivo:} Transformar CSV bruto em \textit{insight} estruturado.\\
+\textbf{Pré-condições:} \texttt{streamlit run gavealab-poc/app.py} rodando; Ollama com \texttt{qwen3:8b} em \texttt{localhost:11434}.
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabular}{clllp{3cm}}
+\toprule
+\textbf{\#} & \textbf{Ação} & \textbf{Interface} & \textbf{Emoção} & \textbf{Dificuldade} \\
+\midrule
+1 & Abre o app Streamlit & Streamlit UI & Orientada & Nenhuma \\
+2 & Upload CSV; nomeia a sessão & Página Upload & Confiante & Nenhuma \\
+3 & Clica ``Gerar temas automáticos'' & Página Auto-topics & Curiosa & LLM demora \textasciitilde{}30s sem progresso \\
+4 & Revisa árvore de tópicos gerada & Página Auto-topics & Satisfeita & Tópicos às vezes genéricos \\
+5 & Explora \textit{scatter plot} UMAP & Plotly & Deleitada & Primeiro run calcula \textit{embeddings} \\
+6 & Identifica cluster de reclamações & Plotly & \textit{Insightful} & — \\
+7 & Lê \textit{cruxes} identificados & Página Cruxes & Reflexiva & \textit{Cruxes} às vezes repetem em vez de contrastar \\
+\bottomrule
+\end{tabular}
+\caption{Jornada JM-TB-001 — análise de relatos com GaveaLab.}
+\end{table}
+
+\subsection{JM-TB-002: Cidadão registra demanda e agente cria encaminhamento (Fala-Gávea)}
+
+\textbf{Personas:} Cidadão da Gávea sem experiência técnica; Delegado como agente público.\\
+\textbf{Objetivo:} Problema de iluminação pública registrado e encaminhado formalmente.
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabular}{cllll}
+\toprule
+\textbf{\#} & \textbf{Quem} & \textbf{Ação} & \textbf{Interface} & \textbf{Emoção} \\
+\midrule
+1 & Cidadão & Clica no mapa para geoposicionar o problema & Leaflet map & Confiante \\
+2 & Cidadão & Preenche descrição; seleciona tipo ``Iluminação'' & Formulário & Rápido \\
+3 & Agente & Recebe novo relato; abre na listagem & Painel admin & Atento \\
+4 & Agente & Busca ``iluminação pública quebrada'' no chat NL & NL filter & Satisfeito \\
+5 & Agente & Vê relatos similares; identifica padrão recorrente & Mapa + similares & \textit{Insightful} \\
+6 & Agente & Seleciona 3 relatos relacionados para a cesta & Cesta UI & Eficiente \\
+7 & Agente & Cria encaminhamento para RIOLUZ com os 3 relatos & Formulário & Confiante \\
+8 & Cidadão & Vê status ``Encaminhado para RIOLUZ'' no app & \textit{Status view} & Satisfeito \\
+\bottomrule
+\end{tabular}
+\caption{Jornada JM-TB-002 — registro de demanda e encaminhamento no Fala-Gávea.}
+\end{table}
+
+\end{document}
