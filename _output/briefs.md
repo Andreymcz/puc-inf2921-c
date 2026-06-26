@@ -1,3 +1,11 @@
+DONE | 2026-06-26 22:38 UTC | STARTED | 2026-06-26 22:32 UTC | communicate | CREATE A TIMELINE FOR THIS PROJECT to help develop a relatorio and a presentation; gather all plans, reflections and roadmaps to build a timeline based on user cases and prototypes; use kb-qa for knowledge base info; fala-gavea is the SEJA product to ship; build on communication 75
+
+---
+
+STARTED | 2026-06-22 11:53 UTC | plan | Baseado nos arquivos Herbert (knowledge/), criar/reescrever prompt gerador de CSV de relatos seed para fala-gavea com fontes embutidas
+
+---
+
 DONE | 2026-06-19 14:38 UTC | STARTED | 2026-06-19 14:33 UTC | communicate | relatorio de desenvolvimento deste projeto: histórico desde plano do atlas da amazonia, casos de uso e protótipos implementados; timeline de contexto e o que foi implementado (tecnologia, uso da IA)
 
 ---
