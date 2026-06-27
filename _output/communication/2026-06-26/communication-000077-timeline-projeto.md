@@ -22,6 +22,7 @@ do relatório, e links que aprofundam: 🟢 slide → 🟡 relatório SEJA → �
 **Relatório & Apresentação** — documento único · INF2921/CIS2114 (AI Systems Design, PUC-Rio, 2026.1)
 **Equipe:** Andrey · Mauro · Julia · Herbert · Natali · Sheila
 **Data:** 26/06/2026 · `communication-000077` (v3)
+**Repositório (público):** https://github.com/Andreymcz/puc-inf2921-c · **Produto:** https://github.com/Andreymcz/fala-gavea
 
 > *Tese:* fala-gávea é um **"zoom in" deliberado e documentado** — do Atlas Digital da Amazônia (continental) para um canal de **segurança urbana** no bairro da Gávea — preservando dois invariantes desde a origem: **camada geoespacial** e **soberania de dados** (toda IA roda localmente).
 
@@ -51,6 +52,33 @@ RELATÓRIO. A ideia de profundidade progressiva resolve um problema real de
 comunicação de projeto: a banca precisa do overview; o avaliador técnico precisa
 do código e das decisões. Em vez de dois documentos, um só, com links que
 descem do conceitual ao técnico.
+-->
+
+---
+
+## Reprodução e navegação
+
+**Repositório público:** https://github.com/Andreymcz/puc-inf2921-c
+**Produto (submódulo):** https://github.com/Andreymcz/fala-gavea
+
+**1. Baixar o projeto + sub-repositórios** (necessário para os links 🔴 de `fala-gavea/`):
+```bash
+# clone já trazendo os submódulos:
+git clone --recurse-submodules https://github.com/Andreymcz/puc-inf2921-c
+# ou, se já clonou sem submódulos:
+git submodule update --init fala-gavea      # (ou --recursive para todos)
+```
+
+**2. Abrir este documento:** abra o arquivo `.html` no navegador → os links **🟢 slide / 🟡 relatório / 🔴 artefato** abrem os arquivos originais (`.md`, `.pdf`, código) por **caminho relativo**.
+
+**3. Apresentar como slides:** abra o `.md` no VS Code com a extensão **Marp for VS Code** → *Export slide deck* → **PDF / PPTX**.
+
+> ℹ️ Só o submódulo **`fala-gavea`** é necessário para os links deste documento. `rd-cbir-api` (privado/Tecgraf), `SEJA-Florence` e `tttc-poc` são opcionais. PDFs abrem a partir do `.html` aberto localmente.
+
+<!--
+RELATÓRIO. Reprodutibilidade: o documento é "vivo" e auto-suficiente desde que o
+submódulo fala-gavea esteja populado. Sem os submódulos, os links 🔴 de fala-gavea/
+apontam para caminhos inexistentes; o resto (knowledge/, _output/) funciona direto.
 -->
 
 ---
