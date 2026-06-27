@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Communication 000081 Casos De Uso Prototipos</title>
+  <style>
+body {
+  max-width: 48em;
+  margin: 2em auto;
+  padding: 0 1em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: #222;
+}
+h1, h2, h3 { margin-top: 1.4em; }
+code { background: #f4f4f4; padding: 0.15em 0.3em; border-radius: 3px; }
+pre  { background: #f4f4f4; padding: 1em; overflow-x: auto; border-radius: 4px; }
+pre code { background: none; padding: 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #ddd; padding: 0.5em 0.75em; text-align: left; }
+th { background: #f8f8f8; }
+blockquote { border-left: 4px solid #ddd; margin: 1em 0; padding: 0.5em 1em; color: #555; }
+a { color: #0366d6; }
+
+  </style>
+</head>
+<body>
+
+<h1 id="casos-de-uso-e-provas-de-conceito-por-prototipo">Casos de uso e provas de conceito por protótipo</h1>
+<p><strong>Material de apoio para o relatório final</strong> · INF2921/CIS2114 (AI Systems Design, PUC-Rio, 2026.1)
+<strong>Equipe:</strong> Andrey · Mauro · Julia · Herbert · Natali · Sheila
+<strong>Data:</strong> 27/06/2026 · <code>communication-000081</code>
+<strong>Referência-mãe:</strong> <a href="../2026-06-26/communication-000077-timeline-projeto.md">communication-000077 — timeline do projeto</a></p>
+<blockquote>
+<p><strong>Para que serve este documento.</strong> É um <em>scaffold de fontes</em> para você escrever, com suas próprias palavras, a seção do relatório dedicada aos <strong>casos de uso</strong> e às <strong>provas de conceito (PoCs)</strong> de cada protótipo. Cada fase reúne: (1) o protótipo daquela etapa, (2) <strong>2–3 casos de uso</strong> levantados/formalizados, e (3) os <strong>links de fonte in-place</strong> (🔴) para os artefatos originais — para que cada afirmação do relatório seja rastreável. O texto aqui é deliberadamente enxuto: a redação final é sua.</p>
+</blockquote>
+<p><strong>Legenda de profundidade (mesma de <a href="../2026-06-26/communication-000077-timeline-projeto.md">077</a>):</strong> 🟢 visão geral · 🟡 artefato SEJA (plano/reflexão/research) · 🔴 fonte original (<code>.md</code>, <code>.pdf</code>, código).</p>
+<hr />
+<h2 id="fase-0-origem-atlas-da-amazonia-prototipo-kb-qa-abr2026">Fase 0 — Origem: Atlas da Amazônia · protótipo <strong>kb-qa</strong> (abr/2026)</h2>
+<p><strong>Protótipo (PoC):</strong> <strong>kb-qa</strong> — RAG local (ChromaDB + sentence-transformers + MCP). Recuperação de trechos de documentos para ancorar respostas de IA, com inferência 100% local.</p>
+<p><strong>Intenção futura (não implementada):</strong> arquitetura em camadas (RAG textual + <em>engine</em> geoespacial + <code>render_map</code>), LLM local-ou-nuvem, serviço dual MCP+REST. Princípios <strong>CARE/OCAP</strong> → invariante <strong>"inferência local"</strong>.</p>
+<p><strong>Casos de uso (eixos do Atlas Digital Georreferenciado da Amazônia):</strong></p>
+<ul>
+<li><strong>UC-0.1 — Acesso curado a informação georreferenciada.</strong> <em>Problema:</em> acesso controlado e curado a informação <strong>multimodal referenciada geograficamente</strong> (datazoom.amazônia, Nova Cartografia Social da Amazônia). <em>Produto:</em> atlas digital iterativo assistido por IA para buscar informação <strong>armazenada, mantida e curada por uma comunidade</strong>.</li>
+<li><strong>UC-0.2 — Segurança pública territorial.</strong> Vigilância (uso de câmeras), <strong>mapeamento de espaços, territórios e fluxos</strong>, revitalização de espaços de menor fluxo.</li>
+<li><strong>UC-0.3 — Educação.</strong> Eixo nomeado na concepção inicial (sem detalhamento).</li>
+</ul>
+<blockquote>
+<p>🔎 <em>Nota de continuidade:</em> a <strong>camada geoespacial</strong> e a <strong>soberania de dados (IA local)</strong> nascem aqui e sobrevivem a todas as fases — são os dois invariantes do projeto.</p>
+</blockquote>
+<p>🔴 <a href="../../../knowledge/Reuniao-23-04-2026.md">Reuniao-23-04-2026.md</a> · 🟡 <a href="../2026-06-26/communication-000077-timeline-projeto.md#fase-0">077 §Fase 0</a></p>
+<hr />
+<h2 id="fase-1-casos-de-uso-e-participacao-cidada-poc-talk-to-the-city-local-mai2026">Fase 1 — Casos de uso e participação cidadã · PoC <strong>Talk to the City local</strong> (mai/2026)</h2>
+<p><strong>Protótipo (PoC):</strong> estudo comparativo de plataformas de participação cidadã (<strong>Decidim, Pol.is, Talk to the City, Consul, vTaiwan</strong>) → convergência para <strong>Talk to the City local</strong>; PoC em <strong>TRL3 com Docker + Ollama</strong>.</p>
+<p><strong>Casos de uso (três casos seminais, levantados após reunião com stakeholders):</strong></p>
+<ul>
+<li><strong>UC-1.1 — Cidadão.</strong> "Como <strong>cidadão</strong>, quero um espaço virtual para discutir problemas e ideias a respeito do meu território."</li>
+<li><strong>UC-1.2 — Gestor / Investidor.</strong> "Como <strong>investidor / gestor público</strong>, quero conhecer os problemas de um território para tomar decisões embasadas nas necessidades do cidadão."</li>
+<li><strong>UC-1.3 — GaveaLab.</strong> "Como <strong>GaveaLab</strong>, quero uma ferramenta que ajude a coletar e sintetizar pesquisas com cidadãos, democratizar o acesso à informação e consolidar perfis e necessidades."</li>
+</ul>
+<p>🔴 <a href="../../../knowledge/casos-de-uso.md">casos-de-uso.md</a> · 🔴 <a href="../../../knowledge/Reunioes-stakeholders-1-2.pdf">Reunioes-stakeholders-1-2.pdf</a> · 🟡 <a href="../../plans/plan-000001-trl3-poc-tttc-local-ollama.md">plan-000001 (PoC TRL3 TTTC local)</a></p>
+<hr />
+<h2 id="fase-2-gavealab-poc-analise-textual-poc-streamlit-sqlite-ollama-jun2026">Fase 2 — GaveaLab PoC: análise textual · PoC <strong>Streamlit + SQLite + Ollama</strong> (jun/2026)</h2>
+<p><strong>Protótipo (PoC):</strong> <strong>Streamlit + SQLite + Ollama</strong>, stack simplificada. Pipeline: <strong>upload → temas → reivindicações (claims) → categorização manual → reivindicações contraditórias (cruxes) → clusterização com UMAP</strong>. Mantém os casos de uso da Fase 1, agora <strong>formalizados</strong> sobre a <strong>tríade sistêmica</strong> (relatos cidadãos + perguntas dos decisores + ferramentas de IA com validação humana), com <strong>LGPD</strong> e <strong>PL 2338</strong>.</p>
+<p><strong>Casos de uso (formalizados):</strong></p>
+<ul>
+<li><strong>UC-2.1 — CU01: Consulta para tomada de decisão</strong> (<em>Ator: Gestor Público / Investidor</em>). Visão estruturada e segmentada das reivindicações. <em>Fluxo:</em> dashboard por território (Rocinha / Gávea-asfalto / Parque da Cidade) → painel de <strong>clusters temáticos</strong> (segurança, mobilidade, saúde, educação) → filtros por tema/urgência → aprofundamento em relatos representativos e <strong>opiniões divergentes</strong> → <strong>exporta relatório</strong> para embasar política/investimento. <em>Ética:</em> anonimização (LGPD); segmentação obrigatória <strong>asfalto × favela</strong> para evitar médias enganosas.</li>
+<li><strong>UC-2.2 — CU02: Coleta, Síntese e Gestão da Base de Conhecimento</strong> (<em>Ator: GaveaLab</em>). <em>Fluxo:</em> upload de CSV → normalização (texto + metadados origem/data/território) → pipeline de IA (extrai claims → agrupa em tópicos/subtópicos → identifica opiniões divergentes) → <strong>revisão humana</strong> (valida/edita títulos, move claims) → consolida versão aprovada no dashboard (alimenta o CU01). <em>Fluxo alternativo:</em> coleta por <strong>áudio</strong> (transcrição speech-to-text; áudio original descartado para anonimato). <em>Ética:</em> <strong>validação humana obrigatória</strong> antes de publicar qualquer síntese de IA.</li>
+</ul>
+<p>🔴 <a href="../../../knowledge/Casos_de_uso_10-06-2026_1.md">Casos_de_uso_1 (CU01 + CU02 formais)</a> · 🟡 <a href="../../plans/plan-000008-gavealab-poc-scaffold.md">plan-000008 (scaffold PoC)</a> · 🟡 <a href="../../plans/plan-000016-gavealab-poc-umap-visualization.md">plan-000016 (UMAP)</a></p>
+<hr />
+<h2 id="fase-3-fala-gavea-1a-encarnacao-poc-fastapi-streamlit-twitter-like-jun2026">Fase 3 — fala-gávea, 1ª encarnação · PoC <strong>FastAPI + Streamlit "Twitter-like"</strong> (jun/2026)</h2>
+<p><strong>Protótipo (PoC):</strong> protótipo <strong>"Twitter-like"</strong> — usuários <strong>postam relatos</strong> com opção de <strong>like</strong>; o sistema <strong>clusteriza e cria tópicos</strong>. Backend <strong>FastAPI</strong> (<code>CitizenPost</code>, likes, <em>label feedback</em>) + <strong>Streamlit</strong> (4 páginas) + <strong>seed de 1000 relatos</strong>.</p>
+<p><strong>Casos de uso (versão de campo, centrada no território da Gávea/Rocinha/Parque da Cidade):</strong></p>
+<ul>
+<li><strong>UC-3.1 — CU01: Morador registra e acompanha uma demanda local</strong> (<em>Ator: cidadão · canal: app móvel ou tótem físico</em>). <em>Contexto exemplo:</em> iluminação pública apagada há três semanas na entrada da Rocinha. <em>Fluxo:</em> acesso inclusivo (suporte offline básico) → <strong>registro simplificado</strong> por texto/voz/foto, IA <strong>categoriza, infere localização e sugere prioridade</strong> com base em relatos similares → <strong>validação coletiva</strong> (outros moradores confirmam com 1 clique) → triagem e encaminhamento ao órgão com prazo → <strong>acompanhamento</strong> com notificações; reabertura sem resolução vira <strong>métrica de abandono institucional</strong>.</li>
+<li><strong>UC-3.2 — CU02: Agente público analisa demandas e formula intervenção baseada em dados</strong> (<em>Ator: agente de decisão · canal: painel web</em>). <em>Fluxo:</em> <strong>visão territorial</strong> (mapa de calor por micro-área, asfalto × comunidade; filtros por tema/período/urgência) → <strong>análise qualitativa com IA</strong> (resumo narrativo com nuances que a média estatística esconde) → <strong>priorização colaborativa</strong> (lideranças comunitárias auditam a lista da IA) → <strong>formulação da intervenção</strong> com referências diretas aos relatos → <strong>monitoramento de impacto</strong> pós-intervenção.</li>
+</ul>
+<p>🔴 <a href="../../../knowledge/Casos_de_uso_10-06-2026_2.md">Casos_de_uso_2 (CU01 cidadão + CU02 agente)</a> · 🟡 <a href="../../reflections/reflection-000037-fala-gavea-missing-analysis-pipeline.md">reflection-000037 (pipeline de análise faltante)</a> · 🟡 <a href="../../plans/plan-000027-fala-gavea-setup-streamlit.md">plan-000027 (setup Streamlit)</a></p>
+<hr />
+<h2 id="fase-4-novo-fala-gavea-relatos-georreferenciados-produto-clean-architecture-jun2026">Fase 4 — Novo fala-gávea: relatos georreferenciados · produto <strong>clean architecture</strong> (jun/2026)</h2>
+<p><strong>Protótipo (produto):</strong> após a reunião com a <strong>Fabiene</strong> (acesso aos <strong>Projetos 06 e 8</strong> do GaveaLab), novo protótipo: o <strong>cidadão envia relatos georreferenciados</strong>; o app ajuda <strong>agentes públicos</strong> a <strong>categorizar, clusterizar e encaminhar demandas para os órgãos responsáveis</strong>. Retorno explícito à <strong>camada geoespacial</strong> da Fase 0, agora em escala de bairro.</p>
+<p><strong>Casos de uso (os dois CUs consolidados no produto):</strong></p>
+<ul>
+<li><strong>UC-4.1 — CU1: Cidadão.</strong> "Um poste da minha rua está apagado. Tiro uma foto, envio a localização do GPS, escrevo uma mensagem — e tudo vai para uma base pública." <strong>Registra e acompanha</strong> a demanda; outros moradores <strong>confirmam com um clique</strong>.</li>
+<li><strong>UC-4.2 — CU2: Agente público.</strong> "Filtro demandas, seleciono as semelhantes/repetidas e crio um <strong>encaminhamento</strong> para um órgão, com status e solução proposta." A <strong>IA assiste a exploração</strong>: busca semântica, relatos similares, chat em linguagem natural.</li>
+<li><strong>UC-4.3 — Projeto 08: Mapa colaborativo de dados</strong> (desafio da Fabiene). Reunir, em um <strong>mapa colaborativo</strong>, iluminação, áreas percebidas como inseguras, circulação e percepções dos moradores, a partir de fontes públicas (Censo, bases oficiais) e contribuições da população — com <strong>dimensão educativa</strong>.</li>
+</ul>
+<p>🔴 <a href="../../../knowledge/Casos_de_uso_10-06-2026_2.md">Casos_de_uso_2 (CU1 cidadão)</a> · 🔴 <a href="../../../knowledge/Casos_de_uso_10-06-2026_1.md">Casos_de_uso_1 (CU2 agente)</a> · 🔴 <a href="../../../knowledge/CENARIOS_AGENTS_PUBLICOS_TOPICOS_HERBERT.txt">CENÁRIOS de agentes públicos (seed)</a> · 🔴 <a href="../../../knowledge/RELATOS_HERBERT.txt">RELATOS de cidadãos (seed)</a> · 🟡 <a href="../../research-logs/research-000074-camadas-georeferenciadas-fala-gavea.md">research-000074 (Projeto 08 — camadas geo)</a></p>
+<blockquote>
+<p>🔒 <em>Governança:</em> o enunciado do <strong>Projeto 08</strong> e o documento de validação são de terceiros (Fabiene/GaveaLab) — <strong>pedir autorização</strong> antes de reproduzir na entrega pública (ver <a href="../2026-06-26/communication-000077-timeline-projeto.md">077 §Governança</a>).</p>
+</blockquote>
+<hr />
+<h2 id="sintese-caso-de-uso-prototipo-ao-longo-das-fases">Síntese — caso de uso → protótipo ao longo das fases</h2>
+<p>Tabela-âncora para o relatório (estende o <a href="../2026-06-26/communication-000077-timeline-projeto.md">Anexo A da 077</a>):</p>
+<table>
+<thead>
+<tr>
+<th>Caso de uso (família)</th>
+<th>Concepção</th>
+<th>Protótipo intermediário</th>
+<th>Implementação final</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cidadão registra e acompanha</td>
+<td>F1 (UC-1.1) → F3 (UC-3.1)</td>
+<td>Post + like (FastAPI/Streamlit)</td>
+<td>Relato georreferenciado + "meus relatos" (F4, UC-4.1)</td>
+</tr>
+<tr>
+<td>Gestor/agente consulta para decidir</td>
+<td>F1 (UC-1.2) → F2 (UC-2.1)</td>
+<td>Pipeline temas→claims→cruxes (Streamlit)</td>
+<td>Painel do agente + busca + chat NL (F4, UC-4.2)</td>
+</tr>
+<tr>
+<td>GaveaLab coleta e sintetiza</td>
+<td>F1 (UC-1.3) → F2 (UC-2.2)</td>
+<td>Upload CSV + clusterização + revisão humana</td>
+<td>Ingestão + clustering + curadoria humana (F4)</td>
+</tr>
+<tr>
+<td>Validação coletiva (1 clique)</td>
+<td>F3 (UC-3.1)</td>
+<td>likes / label feedback</td>
+<td>Confirmação coletiva / votos (F4)</td>
+</tr>
+<tr>
+<td>Encaminhamento institucional</td>
+<td>F3 (UC-3.2)</td>
+<td>triagem no painel</td>
+<td><code>Forwarding</code> órgão + status + solução (F4, UC-4.2)</td>
+</tr>
+<tr>
+<td>Camada geoespacial</td>
+<td>F0 (UC-0.1/0.2)</td>
+<td><code>render_map</code> (intenção)</td>
+<td>Mapa + relatos georreferenciados; Projeto 08 (F4, UC-4.3)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="fontes-consultadas-para-este-documento">Fontes consultadas para este documento</h3>
+<ul>
+<li>🔴 Knowledge: <a href="../../../knowledge/Reuniao-23-04-2026.md">Reuniao-23-04-2026.md</a> · <a href="../../../knowledge/casos-de-uso.md">casos-de-uso.md</a> · <a href="../../../knowledge/Casos_de_uso_10-06-2026_1.md">Casos_de_uso_1</a> · <a href="../../../knowledge/Casos_de_uso_10-06-2026_2.md">Casos_de_uso_2</a> · <a href="../../../knowledge/Reunioes-stakeholders-1-2.pdf">Reunioes-stakeholders-1-2.pdf</a> · <a href="../../../knowledge/CENARIOS_AGENTS_PUBLICOS_TOPICOS_HERBERT.txt">CENARIOS…HERBERT.txt</a> · <a href="../../../knowledge/RELATOS_HERBERT.txt">RELATOS_HERBERT.txt</a></li>
+<li>🟡 SEJA: <a href="../2026-06-26/communication-000077-timeline-projeto.md">communication-000077</a> · <a href="../../research-logs/research-000074-camadas-georeferenciadas-fala-gavea.md">research-000074</a> · <a href="../../reflections/reflection-000037-fala-gavea-missing-analysis-pipeline.md">reflection-000037</a> · planos <a href="../../plans/plan-000001-trl3-poc-tttc-local-ollama.md">000001</a> / <a href="../../plans/plan-000008-gavealab-poc-scaffold.md">000008</a> / <a href="../../plans/plan-000016-gavealab-poc-umap-visualization.md">000016</a> / <a href="../../plans/plan-000027-fala-gavea-setup-streamlit.md">000027</a></li>
+</ul>
+
+</body>
+</html>

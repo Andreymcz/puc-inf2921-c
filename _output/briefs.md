@@ -1,3 +1,7 @@
+DONE | 2026-06-27 20:39 UTC | STARTED | 2026-06-27 20:35 UTC | communicate | escrever parte do relatório final exportando casos de uso e provas de conceito por fase, com fontes in-place no html; usar communicate 77 como referência
+
+---
+
 DONE | 2026-06-27 02:46 UTC | STARTED | 2026-06-27 02:30 UTC | research | montar seed dataset considerando fluxos de jornadas agent e cidadao na plataforma (agente: postes queimados nao resolvidos ultimos 30 dias; cidadao: andamento do seu relato + listar relatos nao resolvidos)
 
 ---
