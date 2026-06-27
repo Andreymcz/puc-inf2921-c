@@ -296,7 +296,7 @@ quanto o helper self-docs do fala-gavea. Assim o conteúdo do Dropbox "soma" com
 | Item | Situação | Ação |
 |---|---|---|
 | Texto do **Projeto 08** ([research-074](../../research-logs/research-000074-camadas-georeferenciadas-fala-gavea.md)) | copiado | **pedir autorização da Fabiene** para citar |
-| **Dump do WhatsApp** da equipe ([arquivo](../../../knowledge/dump-grupo-wpp-24-05-2026.txt)) | no repo | **autorização de TODOS os membros** antes de tornar público |
+| **Dump do WhatsApp** da equipe | removido do tree (cópia fora do git); histórico antigo a purgar | **autorização de TODOS os membros**; depois rewrite + force-push (consultar time) |
 | Diagnóstico FAPERJ / docs do GaveaLab | de terceiros | citar com crédito; confirmar permissão de redistribuição |
 | Coordenadas de relatos | PII potencial | truncar lat/lon (privacidade) — [research-074 R3](../../research-logs/research-000074-camadas-georeferenciadas-fala-gavea.md) |
 
@@ -480,7 +480,7 @@ Helper self-docs SEJA-aware (D-017); **AiBadge** de proveniência (D-015); sínt
 - **Formato sugerido:** um apêndice "Excertos de conversas da equipe (com autorização)" com data, autor (ou inicial), citação e a decisão que ela embasou. Vincular a reflexões/decisões SEJA correspondentes.
 - **Soberania de dados:** coerente com o princípio do projeto — só publicamos o que foi consentido.
 
-🔴 [dump-grupo-wpp-24-05-2026.txt](../../../knowledge/dump-grupo-wpp-24-05-2026.txt) (uso interno até autorização)
+🔒 Dump do WhatsApp — **removido do repositório por privacidade** (cópia mantida fora do git, em `private/`). O histórico antigo (commit `047cc9c`+) ainda contém o arquivo: **purga pendente** (rewrite + force-push) a combinar com o time. Uso interno apenas mediante autorização de todos.
 
 ---
 
@@ -503,7 +503,7 @@ Helper self-docs SEJA-aware (D-017); **AiBadge** de proveniência (D-015); sínt
 
 ## Anexo G — Índice de fontes originais (documento vivo)
 
-**Knowledge (`knowledge/`):** [Reuniao-23-04-2026.md](../../../knowledge/Reuniao-23-04-2026.md) · [casos-de-uso.md](../../../knowledge/casos-de-uso.md) · [Casos_de_uso_1](../../../knowledge/Casos_de_uso_10-06-2026_1.md) · [Casos_de_uso_2](../../../knowledge/Casos_de_uso_10-06-2026_2.md) · [Reunioes-stakeholders-1-2.pdf](../../../knowledge/Reunioes-stakeholders-1-2.pdf) · [Diagnóstico FAPERJ (PDF)](../../../knowledge/Strategic%20Design%204%20Smart%20City%20Lab%20_Gavea%20Lab%20diagnostico_onepage.pdf) · [CENARIOS…HERBERT.txt](../../../knowledge/CENARIOS_AGENTS_PUBLICOS_TOPICOS_HERBERT.txt) · [RELATOS_HERBERT.txt](../../../knowledge/RELATOS_HERBERT.txt) · [dump-wpp](../../../knowledge/dump-grupo-wpp-24-05-2026.txt)
+**Knowledge (`knowledge/`):** [Reuniao-23-04-2026.md](../../../knowledge/Reuniao-23-04-2026.md) · [casos-de-uso.md](../../../knowledge/casos-de-uso.md) · [Casos_de_uso_1](../../../knowledge/Casos_de_uso_10-06-2026_1.md) · [Casos_de_uso_2](../../../knowledge/Casos_de_uso_10-06-2026_2.md) · [Reunioes-stakeholders-1-2.pdf](../../../knowledge/Reunioes-stakeholders-1-2.pdf) · [Diagnóstico FAPERJ (PDF)](../../../knowledge/Strategic%20Design%204%20Smart%20City%20Lab%20_Gavea%20Lab%20diagnostico_onepage.pdf) · [CENARIOS…HERBERT.txt](../../../knowledge/CENARIOS_AGENTS_PUBLICOS_TOPICOS_HERBERT.txt) · [RELATOS_HERBERT.txt](../../../knowledge/RELATOS_HERBERT.txt) · ~~dump-wpp~~ (removido por privacidade)
 
 **SEJA repo-pai (`_output/`):** [research-074](../../research-logs/research-000074-camadas-georeferenciadas-fala-gavea.md) · [check-073](../../check-logs/check-000073-validate-fala-gavea-scaffold.md) · [roadmap-070](../../roadmaps/roadmap-000070-canal-digital-comunitario-seguranca-urbana.md) · [roadmap-071](../../roadmaps/roadmap-000071-gavea-seguranca-demandas-app.md) · [reflection-052](../../reflections/reflection-000052-atlas-da-amazonia-zoom-in-gavea.md) · [comm-075](../2026-06-19/communication-000075-academics.md)
 
