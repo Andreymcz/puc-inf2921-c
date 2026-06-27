@@ -1,3 +1,11 @@
+STARTED | 2026-06-27 00:20 UTC | reflect | Alerta: Criar alerta: este projeto foi gerado usando IA
+
+---
+
+DONE | 2026-06-26 22:52 UTC | STARTED | 2026-06-26 22:46 UTC | research | timeline v2: link das fases detalhadas na tabela macro + coluna de frase-chave; Fase 4 reuniao Fabiene e Projetos 6 e 8; HTML como documento vivo com links para os arquivos originais (.md/.pdf) | COMM | 000077
+
+---
+
 DONE | 2026-06-26 22:38 UTC | STARTED | 2026-06-26 22:32 UTC | communicate | CREATE A TIMELINE FOR THIS PROJECT to help develop a relatorio and a presentation; gather all plans, reflections and roadmaps to build a timeline based on user cases and prototypes; use kb-qa for knowledge base info; fala-gavea is the SEJA product to ship; build on communication 75
 
 ---
