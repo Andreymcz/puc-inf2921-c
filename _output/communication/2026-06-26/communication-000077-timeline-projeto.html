@@ -659,6 +659,22 @@ são o relatório técnico completo.
 <blockquote>
 <p>⚠️ Links de <code>fala-gavea/</code> requerem o submódulo populado (<code>git submodule update --init</code>). PDFs abrem a partir do <code>.html</code> aberto localmente.</p>
 </blockquote>
+<hr />
+<h2 id="anexo-h-mensagem-ao-grupo-autorizacoes">Anexo H — Mensagem ao grupo (autorizações)</h2>
+<blockquote>
+<p>Rascunho para enviar no WhatsApp/e-mail da equipe. Cobre: (1) o que aconteceu com o dump, (2) o OK para purgar o histórico, (3) a autorização para usar trechos curados como documentação da disciplina.</p>
+</blockquote>
+<p><strong>Assunto:</strong> Dump do WhatsApp no repositório — preciso do OK de vocês (2 coisas)</p>
+<blockquote>
+<p>Pessoal, dois pontos rápidos sobre privacidade dos nossos dados no repositório do projeto 👇</p>
+<p><strong>1. O que aconteceu.</strong> O arquivo com o nosso histórico de conversa do WhatsApp (<code>dump-grupo-wpp-24-05-2026.txt</code>) acabou sendo commitado e enviado ao GitHub há algumas semanas. Ele tem conteúdo pessoal e sensível (inclusive assuntos não ligados ao projeto). <strong>Já removi o arquivo do repositório</strong> (não está mais na versão atual) e guardei uma cópia segura fora do git. Mas ele <strong>ainda existe no histórico antigo</strong> dos commits.</p>
+<p><strong>2. Preciso do OK para "apagar de vez" do histórico.</strong> Para remover o arquivo também do histórico, preciso <strong>reescrever o histórico do git e fazer um <code>force-push</code></strong>. Isso troca os commits no GitHub e, depois disso, <strong>cada um vai precisar re-clonar o repositório</strong> (ou rodar <code>git fetch &amp;&amp; git reset --hard origin/main</code>). Combinamos uma janela para fazer isso quando todo mundo tiver enviado o que tem. ⚠️ Importante: como já esteve publicado, devemos tratar o conteúdo como "já exposto" — a limpeza reduz, mas não garante que ninguém tenha copiado.</p>
+<p>👉 <strong>Respondam:</strong> posso reescrever o histórico e fazer o force-push? Alguém tem trabalho local não enviado que eu precise esperar?</p>
+<p><strong>3. Podemos usar trechos das nossas conversas na entrega da disciplina?</strong> As conversas mostram muito bem como tomamos as decisões de design — seria ótimo material de processo para o relatório. Para usar publicamente, preciso da autorização de <strong>todos</strong>: usaríamos <strong>apenas trechos curados</strong> (data + autor + a decisão que a fala embasou), <strong>sem</strong> dados pessoais/sensíveis e <strong>sem</strong> o log bruto. Trechos que mencionem terceiros (ex.: Fabiene) só com OK deles ou anonimizados.</p>
+<p>👉 <strong>Respondam:</strong> autorizam o uso de trechos curados das nossas conversas (com seu nome ou anonimizado — digam a preferência) na documentação da disciplina?</p>
+<p>Qualquer um pode vetar qualquer trecho específico depois. Obrigado! 🙏</p>
+</blockquote>
+<p>🟡 Contexto técnico da purga: <a href="../../runbook-purge-whatsapp-dump.md">runbook</a> · governança: <a href="#anexo-e--dump-do-whatsapp-como-documentacao-publica">Anexo E</a></p>
 
 </body>
 </html>

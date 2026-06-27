@@ -510,3 +510,27 @@ Helper self-docs SEJA-aware (D-017); **AiBadge** de proveniência (D-015); sínt
 **Produto (`fala-gavea/`):** [README](../../../fala-gavea/README.md) · [CLAUDE.md](../../../fala-gavea/CLAUDE.md) · [plan-073](../../../fala-gavea/_output/plans/plan-000073-feature-b-wave-0-item-1-domain-auth-reports.md) · [plan-082 SPA](../../../fala-gavea/_output/plans/plan-000082-feature-f-wave-1-item-4-frontend-spa-react.md) · [plan-100 RAG](../../../fala-gavea/_output/plans/plan-000100-rag-chat-nl-assistant.md) · [plan-177 helper](../../../fala-gavea/_output/plans/plan-000177-chat-helper-plataforma-rag-self-docs.md) · [plan-183 seed](../../../fala-gavea/_output/plans/plan-000183-local-showcase-seed-pipeline.md) · docs: [125](../../../fala-gavea/docs/communication-000125-evaluators.md)/[126](../../../fala-gavea/docs/communication-000126-clients.md)/[127](../../../fala-gavea/docs/communication-000127-end-users.md)/[128](../../../fala-gavea/docs/communication-000128-academics.md)
 
 > ⚠️ Links de `fala-gavea/` requerem o submódulo populado (`git submodule update --init`). PDFs abrem a partir do `.html` aberto localmente.
+
+---
+
+## Anexo H — Mensagem ao grupo (autorizações)
+
+> Rascunho para enviar no WhatsApp/e-mail da equipe. Cobre: (1) o que aconteceu com o dump, (2) o OK para purgar o histórico, (3) a autorização para usar trechos curados como documentação da disciplina.
+
+**Assunto:** Dump do WhatsApp no repositório — preciso do OK de vocês (2 coisas)
+
+> Pessoal, dois pontos rápidos sobre privacidade dos nossos dados no repositório do projeto 👇
+>
+> **1. O que aconteceu.** O arquivo com o nosso histórico de conversa do WhatsApp (`dump-grupo-wpp-24-05-2026.txt`) acabou sendo commitado e enviado ao GitHub há algumas semanas. Ele tem conteúdo pessoal e sensível (inclusive assuntos não ligados ao projeto). **Já removi o arquivo do repositório** (não está mais na versão atual) e guardei uma cópia segura fora do git. Mas ele **ainda existe no histórico antigo** dos commits.
+>
+> **2. Preciso do OK para "apagar de vez" do histórico.** Para remover o arquivo também do histórico, preciso **reescrever o histórico do git e fazer um `force-push`**. Isso troca os commits no GitHub e, depois disso, **cada um vai precisar re-clonar o repositório** (ou rodar `git fetch && git reset --hard origin/main`). Combinamos uma janela para fazer isso quando todo mundo tiver enviado o que tem. ⚠️ Importante: como já esteve publicado, devemos tratar o conteúdo como "já exposto" — a limpeza reduz, mas não garante que ninguém tenha copiado.
+>
+> 👉 **Respondam:** posso reescrever o histórico e fazer o force-push? Alguém tem trabalho local não enviado que eu precise esperar?
+>
+> **3. Podemos usar trechos das nossas conversas na entrega da disciplina?** As conversas mostram muito bem como tomamos as decisões de design — seria ótimo material de processo para o relatório. Para usar publicamente, preciso da autorização de **todos**: usaríamos **apenas trechos curados** (data + autor + a decisão que a fala embasou), **sem** dados pessoais/sensíveis e **sem** o log bruto. Trechos que mencionem terceiros (ex.: Fabiene) só com OK deles ou anonimizados.
+>
+> 👉 **Respondam:** autorizam o uso de trechos curados das nossas conversas (com seu nome ou anonimizado — digam a preferência) na documentação da disciplina?
+>
+> Qualquer um pode vetar qualquer trecho específico depois. Obrigado! 🙏
+
+🟡 Contexto técnico da purga: [runbook](../../runbook-purge-whatsapp-dump.md) · governança: [Anexo E](#anexo-e--dump-do-whatsapp-como-documentacao-publica)
