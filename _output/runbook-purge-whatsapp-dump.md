@@ -46,6 +46,36 @@ git clone https://github.com/Andreymcz/puc-inf2921-c
 git fetch origin && git reset --hard origin/main
 ```
 
+## Parte 2 — Limpar os vector stores locais (KB) ⚠️ não esquecer
+
+A purga do git **não** limpa a base vetorial. Se alguma máquina rodou `kb-qa ingest` enquanto o
+arquivo estava em `knowledge/`, o conteúdo do dump pode estar em `knowledge/vectorstore/`
+(ChromaDB, gitignored) como chunks + embeddings.
+
+> **Resolução (26/06): falso alarme.** A suspeita de que o dump estaria no vector store local
+> (notebook do Tecgraf) não se confirmou como problema. O passo abaixo fica como **precaução**:
+> rodar de qualquer forma é barato e garante consistência.
+
+**Em CADA máquina que rodou `kb-qa ingest`:**
+```bash
+rm -rf knowledge/vectorstore/     # apaga o índice ChromaDB local
+uv run kb-qa ingest               # reconstrói SEM o dump (ja removido de knowledge/)
+uv run kb-qa status               # conferir contagem de chunks
+```
+
+> O `fala-gavea` tem ChromaDB próprio (`chroma_data/`, `local-data/chromadb`) que indexa
+> **relatos**, não o dump — não precisa ser limpo por causa disto.
+
+> Cópia de segurança do dump: `private/` (gitignored). Mover para o Dropbox/local seguro.
+
+## Achado: impacto no projeto ≈ zero
+
+O dump **não foi fonte de nenhum artefato**: o nome do arquivo nunca foi citado em planos,
+researches, reflexões, advisories ou product-design (toda a história do git), e seu conteúdo
+distintivo não aparece reproduzido em lugar nenhum. As personas/casos de uso vieram de outras
+fontes (diagnóstico FAPERJ, `Casos_de_uso_*`, `Reunioes-stakeholders-1-2.pdf`, conversa de 15/06
+colada na reflection-000052). Ou seja: remover o dump (git + vector store) **não quebra nada**.
+
 ## ⚠️ Limites importantes
 - A reescrita **não desfaz** o fato de o dado já ter sido publicado. Se o repo é/foi público ou alguém já clonou, **trate o conteúdo como já divulgado** e avise o grupo.
 - O GitHub pode reter o blob em caches/PRs/forks. Para remoção real do lado deles, **abrir ticket no GitHub Support** pedindo purga do objeto.

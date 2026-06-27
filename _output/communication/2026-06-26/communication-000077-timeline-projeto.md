@@ -480,6 +480,14 @@ Helper self-docs SEJA-aware (D-017); **AiBadge** de proveniência (D-015); sínt
 - **Formato sugerido:** um apêndice "Excertos de conversas da equipe (com autorização)" com data, autor (ou inicial), citação e a decisão que ela embasou. Vincular a reflexões/decisões SEJA correspondentes.
 - **Soberania de dados:** coerente com o princípio do projeto — só publicamos o que foi consentido.
 
+**Achado da investigação (26/06) — falso alarme, impacto ≈ zero.** Rastreamos o uso do dump no repositório e a conclusão é que **ele não foi fonte de nenhum artefato**:
+- O **nome do arquivo nunca foi citado** em planos, researches, reflexões, advisories ou product-design (em toda a história do git).
+- Seu **conteúdo distintivo não aparece reproduzido** em nenhum artefato. As menções a "WhatsApp" existentes são de **outra** fonte (a conversa de 15/06 colada na [reflection-000052](../../reflections/reflection-000052-atlas-da-amazonia-zoom-in-gavea.md); e um exemplo genérico em advisory-000005) — **não** deste dump (24/05).
+- As personas e casos de uso vieram de outras fontes ([diagnóstico FAPERJ](../../../knowledge/Strategic%20Design%204%20Smart%20City%20Lab%20_Gavea%20Lab%20diagnostico_onepage.pdf), [Casos_de_uso_1](../../../knowledge/Casos_de_uso_10-06-2026_1.md)/[_2](../../../knowledge/Casos_de_uso_10-06-2026_2.md), [Reunioes-stakeholders](../../../knowledge/Reunioes-stakeholders-1-2.pdf)).
+- Sobre a base vetorial: a verificação de que o dump estaria no vector store local (notebook do Tecgraf) foi **falso alarme**. Como precaução, basta reconstruir o índice em cada máquina que rodou ingest (ver [runbook](../../runbook-purge-whatsapp-dump.md) — Parte 2).
+
+➡️ **Conclusão:** remover o dump (do tree, do histórico e dos vector stores locais) **não quebra nada** — nenhum plano/research/artefato depende dele.
+
 🔒 Dump do WhatsApp — **removido do repositório por privacidade** (cópia mantida fora do git, em `private/`). O histórico antigo (commit `047cc9c`+) ainda contém o arquivo: **purga pendente** (rewrite + force-push) a combinar com o time. Uso interno apenas mediante autorização de todos.
 
 ---
