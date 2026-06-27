@@ -1,3 +1,7 @@
+DONE | 2026-06-27 02:46 UTC | STARTED | 2026-06-27 02:30 UTC | research | montar seed dataset considerando fluxos de jornadas agent e cidadao na plataforma (agente: postes queimados nao resolvidos ultimos 30 dias; cidadao: andamento do seu relato + listar relatos nao resolvidos)
+
+---
+
 DONE | 2026-06-27 02:18 UTC | STARTED | 2026-06-27 02:12 UTC | research | criar prompt para repo resqml-expert (SEJA-seeded) gerar apresentação no padrão communication-000077, sobre estudo da criação do kb-qa comparando LLM+RAG one-shot vs LLM+RAG+SEJA
 
 ---
