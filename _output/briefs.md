@@ -1,3 +1,11 @@
+DONE | 2026-06-28 20:40 UTC | STARTED | 2026-06-28 20:36 UTC | plan | source: research-000080 montar seed dataset para jornadas agente e cidadao no fala-gavea | PLAN | 000084
+
+---
+
+STARTED | 2026-06-28 20:18 UTC | reflect | software developers as users in kb-qa and the context of this project. use recent communications
+
+---
+
 DONE | 2026-06-27 20:45 UTC | STARTED | 2026-06-27 20:40 UTC | communicate | academics
 
 ---
