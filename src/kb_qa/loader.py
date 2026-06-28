@@ -12,6 +12,8 @@ logger = logging.getLogger(__name__)
 _CHUNK_MAX_CHARS = 2000
 _PDF_CHUNK_WORDS = 512
 _PDF_OVERLAP_WORDS = 64
+_TXT_CHUNK_LINES = 30
+_TXT_OVERLAP_LINES = 6
 
 
 class Document(TypedDict):
@@ -97,9 +99,46 @@ def load_pdf_chunks(path: Path) -> list[Document]:
     return chunks
 
 
+def load_txt_chunks(path: Path) -> list[Document]:
+    """Split a plain-text file into overlapping line windows.
+
+    Unlike the Markdown loader (which splits on H2 headings), plain-text files
+    such as chat exports have no structural headings, so a sliding window of
+    lines with overlap keeps nearby messages together for retrieval while
+    preserving each line's leading date/sender prefix.
+    """
+    source = str(path)
+    name = path.stem
+    lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
+    if not lines:
+        return []
+
+    chunks: list[Document] = []
+    step = _TXT_CHUNK_LINES - _TXT_OVERLAP_LINES
+    for i in range(0, len(lines), step):
+        window = lines[i : i + _TXT_CHUNK_LINES]
+        text = "\n".join(window).strip()
+        if text:
+            chunks.append(
+                Document(
+                    text=text[:_CHUNK_MAX_CHARS],
+                    metadata={
+                        "type": "txt",
+                        "source": source,
+                        "name": name,
+                        "lines": f"{i + 1}-{i + len(window)}",
+                    },
+                )
+            )
+        if i + _TXT_CHUNK_LINES >= len(lines):
+            break
+    return chunks
+
+
 LOADER_REGISTRY: list[LoaderConfig] = [
     LoaderConfig(".", "**/*.md", load_md_chunks),
     LoaderConfig(".", "**/*.pdf", load_pdf_chunks),
+    LoaderConfig(".", "**/*.txt", load_txt_chunks),
 ]
 
 
