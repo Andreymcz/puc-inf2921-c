@@ -1,6 +1,6 @@
 # Research 000080 | research/fala-gavea | 2026-06-27 02:30 UTC | Montar seed dataset para jornadas de agente e cidadão
 tags: seed-data, fala-gavea, journeys, forwardings, demo-fixtures
-spawned: plan-000084, plan-000084
+spawned: plan-000084, plan-000084, research-000085
 
 ## User brief
 

@@ -1,3 +1,7 @@
+DONE | 2026-06-28 21:36 UTC | STARTED | 2026-06-28 21:28 UTC | research | me ajude a gerar prints para as jornadas de usuário no fala-gavea (roteiro guiado, relatório Fase 5, desktop web, incluindo IA)
+
+---
+
 DONE | 2026-06-28 20:53 UTC | STARTED | 2026-06-28 20:42 UTC | implement | source: research-000080 montar seed dataset para jornadas de agente e cidadão no fala-gavea (plan 000084) | PLAN | 000084
 
 ---
