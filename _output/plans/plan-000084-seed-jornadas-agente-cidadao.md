@@ -1,3 +1,4 @@
+# DONE | 2026-06-28 20:52 UTC |
 # Plan 000084 | plan/fala-gavea | 2026-06-28 20:36 UTC | Seed dataset para jornadas de agente e cidadão | Review: light
 plan_format_version: 1
 source: research-000080
@@ -145,23 +146,27 @@ Resultado visível: 5 pendente + 3 em andamento = **8 não resolvidos**; 2 resol
 
 ## Critérios de aceitação
 
-- [ ] `data/seed_journey_anchors.csv` existe, cabeçalho exato de 7 colunas, 20 linhas,
+- [x] `data/seed_journey_anchors.csv` existe, cabeçalho exato de 7 colunas, 20 linhas,
       tópicos válidos (sem acento), datas em 2026-05-29…2026-06-26, lat/lon no bounding box.
-- [ ] `scripts/seed_journey_anchors.py` sobe o CSV via `POST /admin/seed/relatos`, é
-      idempotente (guarda por `text`), aceita `--force`, e tem type annotations.
-- [ ] `seed_all.py` roda "Journey anchors" como **última** fase, com `--skip-journey-anchors`.
-- [ ] Após `make seed` (showcase), `POST /reports/query` com
-      `report_type_ids=[<Iluminacao>]`, `statuses=["pendente","em_analise"]`,
-      `since="2026-05-29"` retorna **≥10** relatos (worklist do agente não-vazia).
-- [ ] citizen01 tem forwarding A em `solucao_em_andamento` **com comentário** de agente
+      *(validado por script: 20 linhas, 10/5/5, todas as datas/coords/ascii OK).*
+- [x] `scripts/seed_journey_anchors.py` sobe o CSV via `POST /admin/seed/relatos`, é
+      idempotente (guarda por `text` via `/reports/query`), aceita `--force`, e tem type
+      annotations. *(ruff + pyright limpos).*
+- [x] `seed_all.py` roda "Journey anchors" como **última** fase (Fase 9, após lifecycle),
+      com `--skip-journey-anchors`.
+- [~] Após `make seed` (showcase), `POST /reports/query` retorna **≥10** relatos. **Runtime**
+      — requer API + Ollama no ar; CSV garante 10 linhas `Iluminacao publica` `pendente`.
+- [x] citizen01 tem forwarding A em `solucao_em_andamento` **com comentário** de agente
       e forwarding B em `finalizado` **com comentário**; `created_ids[5:10]` ficam `pendente`.
-- [ ] `GET /reports/{id}/forwardings` para um relato do forwarding A devolve status
-      `solucao_em_andamento` (andamento visível ao cidadão).
-- [ ] `POST /reports/query` com `author_id=<citizen01>` e o mix de estados é coerente
-      (8 não resolvidos via join forwarding, 2 finalizados).
-- [ ] Lifecycle (fase 8) **não** altera os forwardings A/B do citizen01 (já fora de
-      `aguardando_solucao`).
-- [ ] SCHEMA.md/CLAUDE.md documentam a fase de âncoras, a demo date e os payloads de demo.
+      *(implementado e revisado em seed_citizen01.py).*
+- [~] `GET /reports/{id}/forwardings` devolve `solucao_em_andamento`. **Runtime** — coberto
+      pelo PATCH de status em seed_citizen01.py.
+- [~] `POST /reports/query` com `author_id=<citizen01>` mix coerente. **Runtime** —
+      8 não resolvidos (5 pendente + 3 em andamento) / 2 finalizados, por construção.
+- [x] Lifecycle (fase 8) **não** altera os forwardings A/B do citizen01 (já fora de
+      `aguardando_solucao`). *(verificado contra o filtro `status == aguardando_solucao`
+      em seed_forwarding_lifecycle.py; pin acontece na fase 4, antes da fase 8).*
+- [x] SCHEMA.md/CLAUDE.md documentam a fase de âncoras, a demo date e os payloads de demo.
 
 ## Verificação
 
@@ -209,3 +214,38 @@ Resultado visível: 5 pendente + 3 em andamento = **8 não resolvidos**; 2 resol
   tópicos/cabeçalho conferidos contra `seed.py`/`SCHEMA.md` ✓.
 - Determinismo: âncoras como última fase (nunca encaminhadas); pin do citizen01 na fase 4
   (antes do lifecycle) — ambos verificados contra a ordem real de `seed_all.py`.
+
+## Resumo da implementação (manual mode, 2026-06-28 20:52 UTC)
+
+**5/5 passos concluídos.** Todos os arquivos no repositório `fala-gavea/`.
+
+| # | Passo | Arquivos |
+|---|-------|----------|
+| 1 | CSV de âncoras (20 linhas: 10 iluminação + 5 lixo + 5 segurança) | `data/seed_journey_anchors.csv` (criado) |
+| 2 | Script de upload idempotente | `scripts/seed_journey_anchors.py` (criado) |
+| 3 | Fase 9 + `--skip-journey-anchors` + bloco de verificação das jornadas | `scripts/seed_all.py` |
+| 4 | citizen01: forwarding A `solucao_em_andamento`+comentário, forwarding B `finalizado`+comentário, `[5:10]` `pendente` | `scripts/seed_citizen01.py` (helpers `_create_forwarding`/`_set_forwarding_status`/`_add_forwarding_comment`) |
+| 5 | Docs: arquivo de âncoras, demo date fixa, payloads de verificação | `seeds/relatos/SCHEMA.md`, `CLAUDE.md` |
+
+**Contratos de API confirmados em código** antes de implementar: header CSV mapeado em
+`routers/seed.py` (`texto_relato→descricao`, `latitude→lat`, `longitude→lon`,
+`user_id`/`id_cidadao`); `/reports/query` expõe `text`/`since`/`statuses`/`report_type_ids`/
+`author_id`/`total`; comentários em `POST /forwardings/{id}/comments` `{"text"}` (1–500);
+status em `PATCH /forwardings/{id}/status` `{"status"}`.
+
+**Frase âncora canônica** (guarda de idempotência): *"Tres postes consecutivos apagados na
+Rua Professor Saboia Ribeiro"* — substring da linha 1 do CSV; sem colisão com os textos do
+citizen01.
+
+**Quality gate:** `ruff check` (limpo nos arquivos alterados; o único erro restante é
+pré-existente em `train_topic_classifier.ipynb`, fora de escopo), `pyright` 0 erros nos 3
+scripts, `pytest` **308 passed**. `py_compile` OK.
+
+**Verificações de runtime pendentes (3 critérios `[~]`):** exigem API + Ollama no ar +
+`make seed`. Garantidas por construção (CSV/lógica), a conferir na demo. Nota de fora de
+escopo do plano: a leitura "não resolvido" no front (join relato→forwarding) é
+responsabilidade do frontend.
+
+**Nota:** o working tree do `fala-gavea` tinha mudanças de frontend não relacionadas
+(`ForwardingsPage.tsx`, `PublicForwardingsPage.tsx`, `api.ts`) anteriores a este plano —
+não fazem parte deste commit.
