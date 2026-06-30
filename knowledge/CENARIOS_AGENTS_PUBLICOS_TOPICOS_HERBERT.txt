@@ -1,0 +1,125 @@
+Caso de Uso  — Política de Iluminação Pública  
+
+Ator: Pesquisador/gestor da Secretaria Municipal de Conservação e Serviços Públicos 
+
+Contexto: 
+A prefeitura pretende ampliar investimentos em iluminação pública na região da Gávea. O pesquisador acessa a plataforma para identificar quais áreas concentram mais relatos relacionados à escuridão das vias, sensação de insegurança, dificuldades de circulação e demais impactos na vida dos moradores. 
+
+ 
+
+Caso de Uso — Investimento Social 
+
+Ator: Analista público 
+
+Contexto: 
+A prefeitura pretende investir em projetos de impacto social na Rocinha, mas deseja identificar prioridades apontadas pelos próprios moradores. O analista utiliza a plataforma para compreender problemas de segurança que apresentam maior recorrência e afetam múltiplas áreas da vida comunitária. 
+
+ 
+
+Caso de Uso — Mobilidade e Acesso  
+
+Ator: Pesquisador da Secretaria Municipal de Transportes 
+
+Contexto: 
+A prefeitura pretende revisar a oferta de transporte público e melhorar os deslocamentos entre a Rocinha, a Gávea e outras áreas da cidade. O pesquisador consulta a plataforma para identificar relatos sobre dificuldades de deslocamento, circulação, pontos de risco e barreiras de acesso. 
+
+Caso de Uso – Política de educação 
+
+Ator: Pesquisador da Secretaria da Educação 
+
+Contexto: 
+Pesquisador(a) responsável por acompanhar indicadores educacionais identifica um aumento da evasão escolar em determinadas áreas da Rocinha. Ele utiliza a plataforma para compreender como problemas de segurança, mobilidade, iluminação pública e violência podem estar afetando a frequência dos estudantes. 
+
+ 
+
+Caso de Uso - Mulher e Direitos Humanos 
+
+Ator: Pesquisadora da Secretaria de Políticas para as Mulheres 
+
+Contexto: 
+A secretaria pretende mapear obstáculos à circulação segura de mulheres no território. A pesquisadora consulta a plataforma para identificar relatos relacionados à iluminação pública, transporte, assédio e percepção de risco. 
+
+ 
+
+Caso de Uso — Segurança Viária 
+
+Ator: Técnico da CET-Rio 
+
+Contexto: 
+Após o aumento de acidentes em determinadas vias da região, o pesquisador busca identificar cruzamentos perigosos, falta de sinalização, problemas de travessia e locais frequentemente apontados pelos moradores como áreas de risco. 
+
+ 
+
+Caso de Uso — Saúde (Mulher e Direitos Humanos) 
+
+Ator: Pesquisador da Secretaria Municipal de Saúde 
+
+Contexto: 
+A secretaria observa aumento de notificações de atendimentos no SUS registrando casos de violência contra a mulher. O pesquisador(a) utiliza a plataforma para identificar se há incidência de relatos de abusos e tentativas de feminicídio. 
+
+ 
+
+Caso de Uso  — Desenvolvimento Urbano 
+
+Ator: Urbanista da Prefeitura 
+
+Contexto: 
+A prefeitura pretende realizar intervenções em espaços públicos da região. O urbanista utiliza a plataforma para identificar quais áreas concentram mais reclamações relacionadas à circulação, iluminação, barreiras arquitetônicas etc. 
+
+ 
+
+Caso de Uso - Saúde 
+
+Ator: Pesquisador(a) da Atenção Primária (SUS/SUAS) 
+
+Contexto: 
+Foi registrada uma queda na procura por serviços de unidades básicas de saúde no período noturno em região da Gávea. A gestora busca a plataforma para entender se problemas de mobilidade, iluminação ou segurança estão afetando a participação da população. 
+
+ 
+
+Caso de Uso — Segurança Pública 
+
+Ator: Pesquisador do Instituto de Segurança Pública 
+
+Contexto: 
+Pesquisas de opinião apontam aumento da sensação de insegurança entre os moradores da região. O pesquisador acessa a plataforma buscando compreender quais problemas urbanos estão contribuindo para essa percepção, e quais os problemas mais incidentes. 
+
+ 
+
+Caso de Uso — Assistência Social 
+
+Ator: Coordenadora do CRAS 
+
+Contexto: 
+A coordenação percebe redução na participação das famílias em oficinas e atividades comunitárias. A gestora acessa a plataforma para investigar se questões relacionadas à mobilidade e segurança podem estar dificultando o acesso aos serviços socioassistenciais. 
+
+ 
+
+Caso de Uso — Segurança Pública 
+
+Ator: Gestor da Guarda Municipal 
+
+Contexto: 
+A Guarda Municipal recebe demandas recorrentes relacionadas à ocupação de espaços públicos. O gestor utiliza a plataforma para identificar padrões territoriais e compreender quais fatores estão gerando conflitos e insegurança. 
+
+ 
+
+Caso de Uso – Política de educação 
+
+Ator: Pesquisador da Secretaria da Educação 
+
+Contexto: 
+Pesquisador(a) identifica um aumento da evasão escolar no período noturno da modalidade EJA na região, ele utiliza a plataforma para compreender como problemas de segurança, mobilidade, iluminação pública e violência podem estar afetando a frequência dos estudantes. 
+
+ 
+
+Caso de Uso — Meio Ambiente e Saneamento 
+
+Ator: Pesquisador da Fundação Rio-Águas 
+
+Contexto: 
+Após episódios de alagamento em determinadas áreas do território, o pesquisador busca compreender como os moradores percebem os impactos da drenagem urbana sobre a mobilidade, a segurança e o acesso a serviços públicos. 
+
+ 
+
+ 
