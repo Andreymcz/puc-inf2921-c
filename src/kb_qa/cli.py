@@ -59,7 +59,7 @@ def status(knowledge_dir: Path, vectorstore_dir: Path) -> None:
 @cli.command()
 @click.argument("question")
 @click.option("--n-results", default=5, type=int)
-@click.option("--type", "doc_type", default=None, type=click.Choice(["md", "pdf"]))
+@click.option("--type", "doc_type", default=None, type=click.Choice(["md", "pdf", "txt"]))
 @click.option("--vectorstore-dir", type=click.Path(path_type=Path), default=VECTORSTORE_DIR)
 def ask(question: str, n_results: int, doc_type: str | None, vectorstore_dir: Path) -> None:
     """Retrieve chunks and print them."""

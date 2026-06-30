@@ -3,6 +3,55 @@ DONE | 2026-06-25 19:52 UTC | STARTED | 2026-06-25 19:44 UTC | explain | behavio
 ---
 
 DONE | 2026-06-25 19:40 UTC | STARTED | 2026-06-25 19:29 UTC | plan | Escrita do relatório da disciplina — template para colegas de turma | PLAN | 000075
+DONE | 2026-06-28 21:36 UTC | STARTED | 2026-06-28 21:28 UTC | research | me ajude a gerar prints para as jornadas de usuário no fala-gavea (roteiro guiado, relatório Fase 5, desktop web, incluindo IA)
+
+---
+
+DONE | 2026-06-28 20:53 UTC | STARTED | 2026-06-28 20:42 UTC | implement | source: research-000080 montar seed dataset para jornadas de agente e cidadão no fala-gavea (plan 000084) | PLAN | 000084
+
+---
+
+DONE | 2026-06-28 20:40 UTC | STARTED | 2026-06-28 20:36 UTC | plan | source: research-000080 montar seed dataset para jornadas agente e cidadao no fala-gavea | PLAN | 000084
+
+---
+
+STARTED | 2026-06-28 20:18 UTC | reflect | software developers as users in kb-qa and the context of this project. use recent communications
+
+---
+
+DONE | 2026-06-27 20:45 UTC | STARTED | 2026-06-27 20:40 UTC | communicate | academics
+
+---
+
+DONE | 2026-06-27 20:39 UTC | STARTED | 2026-06-27 20:35 UTC | communicate | escrever parte do relatório final exportando casos de uso e provas de conceito por fase, com fontes in-place no html; usar communicate 77 como referência
+
+---
+
+DONE | 2026-06-27 02:46 UTC | STARTED | 2026-06-27 02:30 UTC | research | montar seed dataset considerando fluxos de jornadas agent e cidadao na plataforma (agente: postes queimados nao resolvidos ultimos 30 dias; cidadao: andamento do seu relato + listar relatos nao resolvidos)
+
+---
+
+DONE | 2026-06-27 02:18 UTC | STARTED | 2026-06-27 02:12 UTC | research | criar prompt para repo resqml-expert (SEJA-seeded) gerar apresentação no padrão communication-000077, sobre estudo da criação do kb-qa comparando LLM+RAG one-shot vs LLM+RAG+SEJA
+
+---
+
+STARTED | 2026-06-27 00:20 UTC | reflect | Alerta: Criar alerta: este projeto foi gerado usando IA
+
+---
+
+DONE | 2026-06-26 22:52 UTC | STARTED | 2026-06-26 22:46 UTC | research | timeline v2: link das fases detalhadas na tabela macro + coluna de frase-chave; Fase 4 reuniao Fabiene e Projetos 6 e 8; HTML como documento vivo com links para os arquivos originais (.md/.pdf) | COMM | 000077
+
+---
+
+DONE | 2026-06-26 22:38 UTC | STARTED | 2026-06-26 22:32 UTC | communicate | CREATE A TIMELINE FOR THIS PROJECT to help develop a relatorio and a presentation; gather all plans, reflections and roadmaps to build a timeline based on user cases and prototypes; use kb-qa for knowledge base info; fala-gavea is the SEJA product to ship; build on communication 75
+
+---
+
+STARTED | 2026-06-22 11:53 UTC | plan | Baseado nos arquivos Herbert (knowledge/), criar/reescrever prompt gerador de CSV de relatos seed para fala-gavea com fontes embutidas
+
+---
+
+DONE | 2026-06-19 14:38 UTC | STARTED | 2026-06-19 14:33 UTC | communicate | relatorio de desenvolvimento deste projeto: histórico desde plano do atlas da amazonia, casos de uso e protótipos implementados; timeline de contexto e o que foi implementado (tecnologia, uso da IA)
 
 ---
 

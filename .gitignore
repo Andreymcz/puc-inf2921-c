@@ -47,3 +47,7 @@ Thumbs.db
 
 # fala-gavea-seguranca data (downloaded at runtime, not committed)
 fala-gavea-seguranca/data/
+
+# Private / sensitive — kept out of git (WhatsApp dump etc.; pending history purge)
+/private/
+knowledge/dump-grupo-wpp-24-05-2026.txt

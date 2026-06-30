@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Communication 000082 Academics</title>
+  <style>
+body {
+  max-width: 48em;
+  margin: 2em auto;
+  padding: 0 1em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: #222;
+}
+h1, h2, h3 { margin-top: 1.4em; }
+code { background: #f4f4f4; padding: 0.15em 0.3em; border-radius: 3px; }
+pre  { background: #f4f4f4; padding: 1em; overflow-x: auto; border-radius: 4px; }
+pre code { background: none; padding: 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #ddd; padding: 0.5em 0.75em; text-align: left; }
+th { background: #f8f8f8; }
+blockquote { border-left: 4px solid #ddd; margin: 1em 0; padding: 0.5em 1em; color: #555; }
+a { color: #0366d6; }
+
+  </style>
+</head>
+<body>
+
+<h1 id="communication-000082-acd-2026-06-27-utc-academics">Communication 000082 | ACD | 2026-06-27 UTC | Academics</h1>
+<blockquote>
+<p><strong>Relatorio de pesquisa para avaliacao academica</strong> do capstone INF2921/CIS2114 (AI Systems Design, PUC-Rio, 2026.1). Equipe: Andrey, Mauro, Julia, Herbert, Natali, Sheila.
+Sucessor de <a href="../2026-06-19/communication-000075-academics.md">communication-000075</a> (19/06): estende a narrativa das Fases 0-6 para as <strong>Fases 7-10</strong> (produto MVP, camada de IA, participacao/transparencia e meta-IA) e adiciona o enquadramento teorico (engenharia semiotica / metacomunicacao) e a agenda de pesquisa.
+Documento-mae da trajetoria: <a href="../2026-06-26/communication-000077-timeline-projeto.md">communication-000077 — timeline do projeto</a>. Casos de uso -&gt; prototipos: <a href="communication-000081-casos-de-uso-prototipos.md">communication-000081</a>.</p>
+</blockquote>
+<p><strong>Legenda de profundidade (mesma de <a href="../2026-06-26/communication-000077-timeline-projeto.md">077</a>):</strong> 🟢 visao geral · 🟡 artefato SEJA (plano / reflexao / research / roadmap) · 🔴 fonte original (<code>.md</code>, <code>.pdf</code>, codigo).</p>
+<hr />
+<h2 id="0-sintese-executiva-para-o-leitor-academico">0. Sintese executiva (para o leitor academico)</h2>
+<p>Este documento descreve o <strong>fala-gavea</strong> — um canal comunitario digital de seguranca urbana para o bairro da Gavea (Rio de Janeiro) — como <strong>objeto de pesquisa duplo</strong>, relevante para quem investiga (a) engenharia de software assistida por IA, (b) interacao humano-computador e engenharia semiotica, e (c) sistemas de IA com humano-no-comando aplicados a participacao civica.</p>
+<p>O argumento central tem tres camadas:</p>
+<ol>
+<li>
+<p><strong>Produto como artefato de design research.</strong> O fala-gavea nao foi concebido de cima para baixo. Ele resultou de um <strong>"zoom in" deliberado e documentado</strong> — de um Atlas Digital Georreferenciado da Amazonia (escala continental) para um canal de seguranca de bairro — preservando <strong>dois invariantes</strong> desde a origem: a <strong>camada geoespacial</strong> e a <strong>soberania de dados</strong> (toda inferencia de IA roda localmente). A trajetoria e, ela propria, um estudo de caso de reducao de escopo iterativa ancorada em evidencia de campo. 🟡 <a href="../../reflections/reflection-000052-atlas-da-amazonia-zoom-in-gavea.md">reflection-000052</a></p>
+</li>
+<li>
+<p><strong>Processo como corpus auditavel.</strong> Todo o desenvolvimento ocorreu sob o harness <strong>SEJA</strong> sobre Claude Code, no ciclo <code>/research -&gt; /plan -&gt; /implement -&gt; /check -&gt; /document | /communicate -&gt; /reflect</code>. O resultado e um corpus numerado e datado (planos, roadmaps, reflexoes, decisoes <code>D-NNN</code>, comunicacoes, telemetria) que permite reconstruir <strong>o que, como e por que</strong> de cada inflexao. Para uma disciplina de <em>AI Systems Design</em>, este corpus e dado empirico, nao apenas documentacao.</p>
+</li>
+<li>
+<p><strong>Metacomunicacao como espinha dorsal.</strong> O design intent do projeto e escrito na voz designer-&gt;usuario da <strong>engenharia semiotica</strong> ("eu projetei X para que voce Y"), tornando a <em>mensagem de metacomunicacao</em> um artefato inspecionavel — e levantando a questao de pesquisa de como essa mensagem se comporta quando <strong>uma IA media o vao entre designer e usuario</strong>.</p>
+</li>
+</ol>
+<p>A contribuicao que oferecemos a outro pesquisador nao e um produto acabado, e sim um <strong>par (artefato, registro)</strong> suficientemente completo para ser reconstruido, criticado ou usado como caso comparativo.</p>
+<hr />
+<h2 id="1-fundamentacao-teorica">1. Fundamentacao teorica</h2>
+<blockquote>
+<p><em>Diataxis: Explanation.</em> Esta secao expoe os compromissos teoricos do projeto e os conecta a literatura. Distinguimos <strong>afirmacoes apoiadas em evidencia</strong> (marcadas como tal) de <strong>hipoteses de design</strong> (idem).</p>
+</blockquote>
+<h3 id="11-engenharia-semiotica-e-metacomunicacao">1.1 Engenharia semiotica e metacomunicacao</h3>
+<p>A engenharia semiotica (de Souza) trata a interface como uma <strong>mensagem unidirecional do designer para o usuario</strong> — uma metacomunicacao cujo conteudo e, em parafrase, <em>"eis o que eu, designer, entendi sobre quem voce e, o que voce quer, e como projetei este sistema para voce atingir esses objetivos desta forma."</em> A qualidade dessa mensagem e a <strong>comunicabilidade</strong>: a capacidade do sistema de transmitir, na propria interacao, a intencao de design.</p>
+<p>No fala-gavea, essa mensagem nao fica implicita no codigo: ela e <strong>textualizada</strong> no design intent do produto, escrito na primeira pessoa do designer. Cada feature carrega uma <em>intencao de metacomunicacao</em> na forma "I have designed X so that you Y". Exemplos extraidos do registro do produto:</p>
+<ul>
+<li><em>Upload/registro de relato:</em> "projetei o registro para criar uma demanda persistente imediatamente, para que voce sempre possa retornar a um acompanhamento sem reenviar seus dados."</li>
+<li><em>Sugestao automatica de categoria:</em> "projetei a sugestao da IA como ponto de partida, nao como veredito — voce confirma ou corrige — para que a estrutura nunca trave a sua leitura do territorio."</li>
+<li><em>AiBadge de proveniencia:</em> "marquei na UI todo conteudo gerado por IA para que voce sempre saiba o que e maquina e o que e humano."</li>
+</ul>
+<p>🔴 <a href="../../../fala-gavea/product-design/project/product-design-as-intended.md">decisoes do fala-gavea (<code>product-design-as-intended.md</code>)</a> · 🔴 <a href="../../../fala-gavea/_output/plans/plan-000178-aibadge-provenance-marker.md">fg:plan-000178 — AiBadge</a></p>
+<blockquote>
+<p><strong>Hipotese de design (H1).</strong> Tornar a mensagem de metacomunicacao um <em>artefato de primeira classe</em> — versionado, ligado a decisoes <code>D-NNN</code> e a planos — aumenta a comunicabilidade do sistema porque a intencao deixa de ser inferida e passa a ser auditavel. Esta e uma hipotese; nao a medimos formalmente (ver §3, ameacas a validade).</p>
+</blockquote>
+<h3 id="12-o-harness-como-sistema-de-atos-comunicativos">1.2 O harness como sistema de atos comunicativos</h3>
+<p>A arquitetura do SEJA pode ser lida em chave semiotica: cada <strong>skill</strong> e um <em>ato comunicativo</em> com pre-condicoes e pos-condicoes; cada <strong>perspectiva de revisao</strong> (<code>/check</code>) e uma <em>lente de avaliacao</em>; cada <strong>camada de onboarding</strong> e um <em>andaime de conhecimento</em>. O ciclo <code>/research -&gt; /plan -&gt; /implement -&gt; /check -&gt; /document | /communicate -&gt; /reflect</code> e uma cadeia de signos em que o output de um ato e o input interpretado do proximo. O proprio ato de <code>/communicate</code> (que produziu este documento) e a metacomunicacao do designer <em>sobre o processo</em>, dirigida a um publico-alvo especifico (aqui, o academico).</p>
+<h3 id="13-ia-mediando-o-vao-designer-usuario">1.3 IA mediando o vao designer-usuario</h3>
+<p>O ponto teoricamente mais original do projeto e que <strong>a IA aparece dos dois lados da mensagem</strong>:</p>
+<ul>
+<li><strong>Na producao da mensagem (processo):</strong> o agente (Claude, sob SEJA) co-redige planos, codigo, documentacao e <em>as proprias comunicacoes</em>. O designer humano permanece como <em>preposto</em> (na acepcao da engenharia semiotica) — quem responde pela intencao — mas parte da emissao e delegada a um interlocutor de IA.</li>
+<li><strong>Na recepcao e re-emissao (produto):</strong> o fala-gavea categoriza, agrupa e responde em linguagem natural; e ate <strong>explica a si mesmo</strong> via um helper RAG (<code>POST /nl/help</code>) que reenvia ao usuario uma versao da intencao de design indexada na documentacao. 🔴 <a href="../../../fala-gavea/_output/plans/plan-000177-chat-helper-plataforma-rag-self-docs.md">fg:plan-000177</a></li>
+</ul>
+<blockquote>
+<p><strong>Questao de pesquisa (RQ).</strong> Quando uma IA media o vao designer-&gt;usuario — emitindo a mensagem no processo e re-emitindo-a no produto — <em>de quem</em> e a metacomunicacao percebida pelo usuario final, e como medir sua comunicabilidade? (Desenvolvida em §4.)</p>
+</blockquote>
+<h3 id="14-linhagem-metodologica-deliberacao-publica-computacional">1.4 Linhagem metodologica: deliberacao publica computacional</h3>
+<p>O produto herda a linhagem de <strong>Talk to the City</strong> (T3C) e <strong>Polis/Pol.is</strong> — sistemas que transformam grandes volumes de opiniao cidada em estrutura navegavel (topicos, claims, pontos de divergencia). A Fase 1 sintetizou explicitamente esse campo (Decidim, Pol.is, T3C, Consul, vTaiwan) antes de convergir para um T3C local. 🔴 <a href="../../../knowledge/casos-de-uso.md">casos-de-uso.md</a> · 🟡 <a href="../../plans/plan-000001-trl3-poc-tttc-local-ollama.md">plan-000001</a></p>
+<p>A contribuicao incremental em relacao a esses sistemas e tripla: (i) <strong>soberania de dados por construcao</strong> (inferencia 100% local via Ollama, contra deployments em nuvem); (ii) <strong>ancoragem geoespacial</strong> dos claims (relatos georreferenciados + mapa colaborativo, o "Projeto 08"); e (iii) o <strong>feedback loop few-shot human-in-the-loop</strong> como alternativa de baixo custo ao fine-tuning.</p>
+<hr />
+<h2 id="2-metodologia-design-research-documentado">2. Metodologia: design research documentado</h2>
+<blockquote>
+<p><em>Diataxis: Explanation, com componente de Reference no Anexo A.</em> Aqui descrevemos <em>como</em> o conhecimento foi produzido, em detalhe suficiente para reconstrucao ou critica.</p>
+</blockquote>
+<h3 id="21-problema-ancorado-em-evidencia-de-campo">2.1 Problema ancorado em evidencia de campo</h3>
+<p>O problema <strong>nao foi inventado</strong>. Ele deriva do <strong>Diagnostico GaveaLab 2023 (FAPERJ No 20/2022)</strong>, pesquisa de campo conduzida pelo Laboratorio de Gestao em Design (LGD/PUC-Rio) entre junho e novembro de 2023, com <strong>380 entrevistados</strong> em tres recortes territoriais do mesmo bairro (Gavea-"asfalto", Rocinha, Parque da Cidade). Achados que ancoram o escopo:</p>
+<ul>
+<li>O <strong>Mapa de Forcas Locais Atuantes (MFLA)</strong> identifica <strong>SEGURANCA (24%)</strong> e <strong>EDUCACAO (22%)</strong> como temas alavancadores no "asfalto"; para os moradores das favelas, os tres prioritarios sao EDUCACAO, DESENVOLVIMENTO ECONOMICO e SEGURANCA PUBLICA.</li>
+<li>Seguranca e a <strong>maior dor</strong> (20% das citacoes espontaneas no asfalto, 9% nas favelas).</li>
+<li><strong>Divergencia decisiva de sentido:</strong> no asfalto, "seguranca" significa <em>mais policiamento</em>; nas favelas, significa <em>garantia de direitos e ausencia de violencia policial</em>.</li>
+</ul>
+<p>Esse ultimo achado e o que justifica o produto: um instrumento que <strong>capture a multiplicidade de vozes sobre o mesmo territorio</strong>, em vez de uma media estatistica que apaga o conflito de sentido. Coordenacao do diagnostico: Profa. Fabienne Torres Schiavo (Doutora em Design, CAPES), com os Profs. Carlo Franzato e Claudio Freitas de Magalhaes.</p>
+<p>🔴 <a href="../../../knowledge/Strategic%20Design%204%20Smart%20City%20Lab%20_Gavea%20Lab%20diagnostico_onepage.pdf">Diagnostico FAPERJ 2023 (PDF)</a> · 🔴 <a href="../../../knowledge/Reunioes-stakeholders-1-2.pdf">Reunioes de stakeholders (PDF)</a></p>
+<blockquote>
+<p>🔒 <strong>Governanca de citacao.</strong> O diagnostico FAPERJ e documentos do GaveaLab sao de terceiros: citar com credito e confirmar permissao de redistribuicao. O enunciado do <strong>Projeto 08</strong> e o documento de validacao (Fabiene) exigem <strong>autorizacao previa</strong> antes de reproducao publica. O dump de WhatsApp da equipe <strong>nao</strong> e fonte deste trabalho e nao deve ser publicado (ver <a href="../2026-06-26/communication-000077-timeline-projeto.md">077 §Governanca / Anexo E</a>).</p>
+</blockquote>
+<h3 id="22-a-linhagem-de-prototipos-como-iteracao-de-design-research">2.2 A linhagem de prototipos como iteracao de design research</h3>
+<p>Cada fase produziu um <strong>prototipo executavel</strong> que testou uma hipotese de design e gerou aprendizado registrado em uma reflexao. A reducao de escopo foi <em>guiada por viabilidade, validacao institucional e reaproveitamento de capacidades ja construidas</em> — nao por abandono.</p>
+<table>
+<thead>
+<tr>
+<th>Fase</th>
+<th>Quando</th>
+<th>Prototipo (PoC)</th>
+<th>Hipotese testada / aprendizado</th>
+<th>Artefato-fonte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>abr/26</td>
+<td><strong>kb-qa</strong> (RAG local + MCP)</td>
+<td>Recuperacao local ancora respostas de IA sem nuvem; cobre ~20-30% de um atlas completo</td>
+<td>🔴 <a href="../../../knowledge/Reuniao-23-04-2026.md">Reuniao-23-04</a></td>
+</tr>
+<tr>
+<td>1</td>
+<td>mai/26</td>
+<td><strong>T3C local</strong> (Docker + Ollama, TRL3)</td>
+<td>Deliberacao publica computacional roda local; convergencia para T3C</td>
+<td>🟡 <a href="../../plans/plan-000001-trl3-poc-tttc-local-ollama.md">plan-000001</a></td>
+</tr>
+<tr>
+<td>2</td>
+<td>jun/26</td>
+<td><strong>Streamlit + SQLite + Ollama</strong></td>
+<td>Pipeline temas-&gt;claims-&gt;cruxes-&gt;UMAP e viavel; formaliza CU01/CU02 (LGPD, PL 2338)</td>
+<td>🟡 <a href="../../plans/plan-000008-gavealab-poc-scaffold.md">plan-000008</a> · <a href="../../plans/plan-000016-gavealab-poc-umap-visualization.md">plan-000016</a></td>
+</tr>
+<tr>
+<td>3</td>
+<td>jun/26</td>
+<td><strong>fala-gavea "Twitter-like"</strong> (FastAPI + Streamlit)</td>
+<td>Relatos + likes + clusters; reflexao detecta pipeline de analise faltante</td>
+<td>🟡 <a href="../../reflections/reflection-000037-fala-gavea-missing-analysis-pipeline.md">reflection-000037</a> · <a href="../../plans/plan-000027-fala-gavea-setup-streamlit.md">plan-000027</a></td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>15/jun</strong></td>
+<td><strong>Zoom in p/ Gavea</strong></td>
+<td><em>O clustering ja construido E o motor do caso de uso do agente; o mapa e uma nova camada, nao um novo projeto.</em> Validacao da Fabiene -&gt; Projeto 08</td>
+<td>🟡 <a href="../../reflections/reflection-000052-atlas-da-amazonia-zoom-in-gavea.md">reflection-000052</a> · <a href="../../research-logs/research-000074-camadas-georeferenciadas-fala-gavea.md">research-000074</a></td>
+</tr>
+<tr>
+<td>5</td>
+<td>jun/26</td>
+<td><strong>Chat NL intent-to-filter</strong></td>
+<td>Lacuna do feedback loop (correcoes do agente nao viravam sinal); roadmap do "Waze comunitario"</td>
+<td>🟡 <a href="../../reflections/reflection-000069-gavealab-feedback-loop-categorizacao.md">reflection-000069</a> · <a href="../../roadmaps/roadmap-000070-canal-digital-comunitario-seguranca-urbana.md">roadmap-000070</a></td>
+</tr>
+<tr>
+<td>6</td>
+<td>jun/26</td>
+<td><strong>Clean architecture</strong> (FastAPI + SQLAlchemy + Pydantic v2)</td>
+<td>Reescrita testavel; <code>fala-gavea</code> vira submodulo com harness SEJA proprio</td>
+<td>🟡 <a href="../../roadmaps/roadmap-000071-gavea-seguranca-demandas-app.md">roadmap-000071</a> · <a href="../../plans/plan-000072-fala-gavea-scaffold-e-seja-setup.md">plan-000072</a> · <a href="../../check-logs/check-000073-validate-fala-gavea-scaffold.md">check-000073</a></td>
+</tr>
+</tbody>
+</table>
+<p>A leitura detalhada de cada fase e os casos de uso associados estao em <a href="communication-000081-casos-de-uso-prototipos.md">communication-000081</a> e nas Fases 0-6 da <a href="../2026-06-26/communication-000077-timeline-projeto.md#2-fases-detalhadas">077</a>.</p>
+<h3 id="23-continuacao-da-timeline-fases-7-10-novidade-em-relacao-a-075">2.3 Continuacao da timeline: Fases 7-10 (novidade em relacao a 075)</h3>
+<p>A comunicacao academica anterior (<a href="../2026-06-19/communication-000075-academics.md">075</a>) parou na Fase 6. Desde entao, o submodulo <code>fala-gavea</code> evoluiu de scaffold para <strong>produto MVP entregavel</strong>, com seu <strong>proprio corpus SEJA</strong> (planos ate ~000183, 4 roadmaps, 11 reflexoes, <strong>17 decisoes <code>D-NNN</code></strong>, 4 comunicacoes por publico).</p>
+<table>
+<thead>
+<tr>
+<th>Fase</th>
+<th>Marco</th>
+<th>Significado para a pesquisa</th>
+<th>Artefato-fonte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>7</strong> — Produto MVP</td>
+<td>Auth JWT por roles (citizen/agent/admin) + Reports + <code>ReportType</code> dinamico + <code>Forwarding</code> (agregacao N relatos) + <strong>SPA React</strong> (mapa, formulario com geolocalizacao, painel do agente)</td>
+<td>Materializa CU1 (cidadao) e CU2 (agente); o <code>Forwarding</code> many-to-many e a operacionalizacao do "encaminhamento institucional"</td>
+<td>🔴 <a href="../../../fala-gavea/_output/plans/plan-000073-feature-b-wave-0-item-1-domain-auth-reports.md">fg:plan-000073</a> · <a href="../../../fala-gavea/_output/plans/plan-000082-feature-f-wave-1-item-4-frontend-spa-react.md">fg:plan-000082 (SPA)</a></td>
+</tr>
+<tr>
+<td><strong>8</strong> — Camada de IA</td>
+<td>Embeddings + ingestao; busca semantica + relatos similares; <strong>BERTopic</strong>; <strong>chat NL RAG</strong>; sugestao plugavel de <code>ReportType</code> (humano no comando)</td>
+<td>Reintroduz o pipeline de clustering como servico do produto; substitui UMAP/HDBSCAN exploratorio por BERTopic de producao</td>
+<td>🔴 <a href="../../../fala-gavea/_output/plans/plan-000094-semantic-search-similar-reports-wave1.md">fg:plan-000094 (busca)</a> · <a href="../../../fala-gavea/_output/plans/plan-000100-rag-chat-nl-assistant.md">fg:plan-000100 (RAG chat)</a> · <a href="../../../fala-gavea/_output/plans/plan-000174-pluggable-report-type-suggestion.md">fg:plan-000174 (sugestao plugavel)</a></td>
+</tr>
+<tr>
+<td><strong>9</strong> — Participacao + transparencia</td>
+<td>Votos + comentarios + relato anonimo; "meus relatos" / "meus encaminhamentos"; filtros salvos; grid cross-filter</td>
+<td>Operacionaliza a "validacao coletiva com 1 clique" do diagnostico; transparencia do ciclo de vida da demanda</td>
+<td>🔴 <a href="../../../fala-gavea/_output/roadmaps/roadmap-000151-citizen-feedback-votes-comments-anonymization.md">fg:roadmap-000151</a> · <a href="../../../fala-gavea/_output/plans/plan-000164-meus-relatos-nav-inline-votes-sort.md">fg:plan-000164</a></td>
+</tr>
+<tr>
+<td><strong>10</strong> — Meta-IA + entrega</td>
+<td>Helper self-docs SEJA-aware (<strong>D-017</strong>); <strong>AiBadge</strong> de proveniencia (<strong>D-015</strong>); sintese de comentarios; Docker + Railway; seed showcase; docs para 4 publicos</td>
+<td>A plataforma <strong>explica a si mesma</strong> e marca a proveniencia da IA — o no onde os dois eixos de IA (produto e processo) se encontram</td>
+<td>🔴 <a href="../../../fala-gavea/_output/plans/plan-000177-chat-helper-plataforma-rag-self-docs.md">fg:plan-000177 (helper)</a> · <a href="../../../fala-gavea/_output/plans/plan-000178-aibadge-provenance-marker.md">fg:plan-000178 (AiBadge)</a> · <a href="../../../fala-gavea/_output/plans/plan-000183-local-showcase-seed-pipeline.md">fg:plan-000183 (seed)</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-decisoes-de-design-de-ia-com-racional">3. Decisoes de design de IA, com racional</h2>
+<blockquote>
+<p><em>Diataxis: Explanation.</em> Cada decisao e apresentada como <em>contexto -&gt; escolha -&gt; consequencia</em>, a forma DRR usada nas decisoes <code>D-NNN</code> do projeto.</p>
+</blockquote>
+<h3 id="31-dois-eixos-de-ia">3.1 Dois eixos de IA</h3>
+<p>Para a avaliacao academica, separamos <strong>IA no produto</strong> de <strong>IA no processo</strong>.</p>
+<p><strong>IA no produto (local, auditavel, human-in-the-loop):</strong></p>
+<ul>
+<li>Inferencia local via <strong>Ollama</strong> (<code>qwen3:8b</code>), endpoint OpenAI-compativel, modelo configuravel por variavel de ambiente.</li>
+<li><strong>Categorizacao/sugestao</strong> de relatos; <strong>clustering semantico</strong> (embeddings + BERTopic; UMAP/HDBSCAN na linhagem exploratoria).</li>
+<li><strong>Busca semantica</strong> (ChromaDB) e relatos similares; <strong>chat NL -&gt; filtros de API</strong> (intent-to-filter) e <strong>chat RAG</strong>.</li>
+<li><strong>Feedback loop few-shot:</strong> o agente confirma ou corrige a categoria sugerida; a correcao e gravada como evento append-only (<code>CategoryCurationEvent</code>) e <strong>injetada no prompt</strong> da proxima categorizacao — <em>sem fine-tuning</em>.</li>
+<li><strong>AiBadge:</strong> todo conteudo gerado por IA e marcado na UI (proveniencia).</li>
+</ul>
+<p><strong>IA no processo (o metodo como resultado):</strong> o ciclo SEJA descrito em §1.2 e §2, cujo corpus e o objeto de estudo.</p>
+<p>🔴 <a href="../../../fala-gavea/_output/plans/plan-000100-rag-chat-nl-assistant.md">fg:plan-000100 — chat RAG</a> · 🟡 <a href="../../roadmaps/roadmap-000070-canal-digital-comunitario-seguranca-urbana.md">roadmap-000070 — feedback loop</a></p>
+<h3 id="32-decisoes-chave-racional-resumido">3.2 Decisoes-chave (racional resumido)</h3>
+<table>
+<thead>
+<tr>
+<th>Decisao</th>
+<th>Contexto</th>
+<th>Escolha</th>
+<th>Consequencia</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Inferencia local</strong></td>
+<td>Dados de cidadaos/comunidades; principios CARE/OCAP herdados do Atlas amazonico</td>
+<td>Ollama local, sem nuvem</td>
+<td>Soberania de dados por construcao; custo de hardware e latencia local</td>
+</tr>
+<tr>
+<td><strong>Few-shot em vez de fine-tuning</strong></td>
+<td>Correcoes do agente sao escassas e continuas; fine-tuning e caro e opaco</td>
+<td>Injecao few-shot a partir de <code>CategoryCurationEvent</code> append-only</td>
+<td>Aprendizado barato, <strong>auditavel</strong> e com humano no comando; teto de capacidade do prompt</td>
+</tr>
+<tr>
+<td><strong>Zoom in Atlas -&gt; Gavea</strong></td>
+<td>Atlas continental inviavel no prazo; existia clustering reaproveitavel e validacao institucional</td>
+<td>Reduzir a 1 bairro, 1 vertical (seguranca), 2 personas</td>
+<td>Artefato pequeno, executavel e validado; perda de abrangencia geografica</td>
+</tr>
+<tr>
+<td><strong>AiBadge (D-015)</strong></td>
+<td>Necessidade de distinguir conteudo humano de gerado por IA</td>
+<td>Marcar proveniencia na UI</td>
+<td>Transparencia (alinha a PL 2338); custo de design de UI</td>
+</tr>
+<tr>
+<td><strong>Helper SEJA-aware (D-017)</strong></td>
+<td>A plataforma deveria poder se explicar a diferentes perfis</td>
+<td>RAG self-docs com enquadramento "meta" para admin</td>
+<td>Auto-documentacao; risco de exposicao de detalhes internos -&gt; escopo por role</td>
+</tr>
+</tbody>
+</table>
+<p>🔴 <a href="../../../fala-gavea/product-design/project/product-design-as-intended.md">decisoes do fala-gavea (<code>D-NNN</code>)</a></p>
+<blockquote>
+<p><strong>Afirmacao apoiada por evidencia.</strong> O papel da IA "como auxiliadora da curadoria, nao como curador principal" e uma formulacao registrada da equipe (transcricoes de reuniao) e implementada como o padrao human-in-the-loop do agente. 🔴 <a href="../../../knowledge/Reunioes-stakeholders-1-2.pdf">Reunioes-stakeholders-1-2.pdf</a></p>
+</blockquote>
+<hr />
+<h2 id="4-agenda-de-pesquisa-questoes-em-aberto">4. Agenda de pesquisa (questoes em aberto)</h2>
+<blockquote>
+<p><em>Diataxis: Explanation.</em> O projeto, lido como artefato de pesquisa, abre questoes que excedem a entrega da disciplina. Sao <strong>convites a estudo</strong>, nao resultados.</p>
+</blockquote>
+<ul>
+<li><strong>RQ1 — Metacomunicacao mediada por IA.</strong> Quando o agente co-emite a mensagem de design (processo) e o produto a re-emite (helper RAG), de quem e a comunicabilidade percebida? Metodo sugerido: estudo de comunicabilidade adaptado (MAC/MIS) com etiquetas de rupturas comunicativas, comparando interfaces com e sem AiBadge.</li>
+<li><strong>RQ2 — Efeito do registro estruturado.</strong> A textualizacao da intencao ("I designed X so that you Y") ligada a <code>D-NNN</code> melhora mensuravelmente a manutenibilidade e a fidelidade designer-codigo? Metodo: estudo de caso comparativo com/sem o registro, medindo <em>spec-drift</em> ao longo do tempo.</li>
+<li><strong>RQ3 — Few-shot auditavel vs. fine-tuning.</strong> Em curadoria continua de baixo volume, qual a curva de qualidade/custo do feedback loop few-shot append-only frente ao fine-tuning? Metodo: experimento controlado sobre o corpus de <code>CategoryCurationEvent</code>.</li>
+<li><strong>RQ4 — Limites do modelo do harness.</strong> Onde o ciclo SEJA falha como modelo comunicativo? (Ex.: quando a intencao do designer e tacita; quando a IA "alucina" intencao; quando a reflexao pos-hoc reescreve a historia.) Metodo: analise critica do proprio corpus, buscando descontinuidades entre <code>reflection-NNN</code> e os commits que ela narra.</li>
+<li><strong>RQ5 — Etica da multiplicidade de vozes.</strong> Como evitar que clustering e medias apaguem o conflito de sentido (asfalto x favela) documentado no diagnostico? Metodo: avaliacao de fairness por subgrupo territorial sobre as categorias sugeridas pela IA.</li>
+</ul>
+<hr />
+<h2 id="5-etica-e-governanca">5. Etica e governanca</h2>
+<p>O projeto adota tres compromissos formais, alinhados a constituicao do projeto e aos documentos da disciplina:</p>
+<ul>
+<li><strong>Soberania de dados (data sovereignty).</strong> Toda inferencia roda localmente (Ollama); relatos de cidadaos e resultados de analise nunca deixam a maquina local. Heranca direta dos principios <strong>CARE/OCAP</strong> do contexto do Atlas amazonico.</li>
+<li><strong>LGPD.</strong> Minimizacao e anonimizacao de dados pessoais; relato anonimo suportado; coordenadas de relatos tratadas como PII potencial (truncar lat/lon — ver <a href="../../research-logs/research-000074-camadas-georeferenciadas-fala-gavea.md">research-000074 R3</a>).</li>
+<li><strong>PL 2338 (Marco Regulatorio da IA no Brasil).</strong> Transparencia da proveniencia (AiBadge), human-in-the-loop obrigatorio antes de tratar saida de IA como resultado, e inspecionabilidade de modelo/prompts.</li>
+</ul>
+<p><strong>Limitacoes e ameacas a validade (declaradas):</strong></p>
+<ul>
+<li><strong>Validacao externa pendente.</strong> O caso de uso real foi atestado pela stakeholder (Fabiene), mas o produto ainda nao foi avaliado em uso por moradores/agentes; as hipoteses H1 e as RQ permanecem nao medidas.</li>
+<li><strong>Vies de embedding/clustering.</strong> A proximidade espacial no mapa de claims e artefato do modelo de embedding; pode sugerir consenso/divergencia inexistentes (mitigacao: claim visivel no hover, curadoria humana).</li>
+<li><strong>Dataset semente.</strong> As demos correm sobre relatos sinteticos/seed; generalizacao para dados reais e hipotese, nao resultado.</li>
+<li><strong>Reflexividade do corpus.</strong> Como o registro SEJA e co-produzido por IA, ele pode racionalizar decisoes <em>a posteriori</em> (ver RQ4) — o que e simultaneamente um risco de validade e um objeto de estudo.</li>
+</ul>
+<blockquote>
+<p>🔒 <strong>Notas de governanca de terceiros.</strong> Projeto 08 e documento de validacao (Fabiene/GaveaLab): citacao requer autorizacao. Dump de WhatsApp da equipe: nunca reproduzir; nao e fonte deste trabalho. Diagnostico FAPERJ e docs do GaveaLab: citar com credito, confirmar redistribuicao.</p>
+</blockquote>
+<hr />
+<h2 id="6-reprodutibilidade-e-como-construir-sobre-este-trabalho">6. Reprodutibilidade e como construir sobre este trabalho</h2>
+<blockquote>
+<p><em>Diataxis: How-to / Reference.</em> Detalhe suficiente para que outro pesquisador reconstrua, critique ou estenda.</p>
+</blockquote>
+<h3 id="61-obter-o-corpus-e-o-produto">6.1 Obter o corpus e o produto</h3>
+<pre><code class="language-bash"># repo-pai (corpus SEJA das Fases 0-6 + comunicacoes) + submodulo do produto:
+git clone --recurse-submodules https://github.com/Andreymcz/puc-inf2921-c
+# se ja clonou sem submodulos:
+git submodule update --init fala-gavea
+</code></pre>
+<p>Os links 🔴 que apontam para <code>fala-gavea/</code> exigem o submodulo populado. Os links para <code>knowledge/</code> e <code>_output/</code> resolvem direto no repo-pai.</p>
+<h3 id="62-onde-olhar-mapa-do-corpus">6.2 Onde olhar (mapa do corpus)</h3>
+<table>
+<thead>
+<tr>
+<th>O que voce quer estudar</th>
+<th>Onde</th>
+<th>Tipo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A trajetoria completa (espinha)</td>
+<td><a href="../2026-06-26/communication-000077-timeline-projeto.md">077 — timeline</a></td>
+<td>🟢/🟡/🔴</td>
+</tr>
+<tr>
+<td>Casos de uso -&gt; prototipos</td>
+<td><a href="communication-000081-casos-de-uso-prototipos.md">081</a></td>
+<td>🟡</td>
+</tr>
+<tr>
+<td>As decisoes de inflexao de escopo</td>
+<td>reflections <a href="../../reflections/reflection-000037-fala-gavea-missing-analysis-pipeline.md">037</a> / <a href="../../reflections/reflection-000052-atlas-da-amazonia-zoom-in-gavea.md">052</a> / <a href="../../reflections/reflection-000069-gavealab-feedback-loop-categorizacao.md">069</a></td>
+<td>🟡</td>
+</tr>
+<tr>
+<td>O retorno a camada geoespacial</td>
+<td><a href="../../research-logs/research-000074-camadas-georeferenciadas-fala-gavea.md">research-000074</a></td>
+<td>🟡</td>
+</tr>
+<tr>
+<td>As decisoes <code>D-NNN</code> do produto</td>
+<td><a href="../../../fala-gavea/product-design/project/product-design-as-intended.md"><code>product-design-as-intended.md</code></a></td>
+<td>🔴</td>
+</tr>
+<tr>
+<td>A IA do produto (planos)</td>
+<td>fg:<a href="../../../fala-gavea/_output/plans/plan-000100-rag-chat-nl-assistant.md">100 RAG</a> · <a href="../../../fala-gavea/_output/plans/plan-000177-chat-helper-plataforma-rag-self-docs.md">177 helper</a> · <a href="../../../fala-gavea/_output/plans/plan-000178-aibadge-provenance-marker.md">178 AiBadge</a></td>
+<td>🔴</td>
+</tr>
+<tr>
+<td>O produto executavel</td>
+<td><a href="../../../fala-gavea/README.md">README</a> · <a href="../../../fala-gavea/CLAUDE.md">CLAUDE.md</a></td>
+<td>🔴</td>
+</tr>
+</tbody>
+</table>
+<h3 id="63-estender-o-harness-ou-comparar-ganchos-de-pesquisa">6.3 Estender o harness ou comparar (ganchos de pesquisa)</h3>
+<ul>
+<li><strong>Replicar o metodo:</strong> o ciclo SEJA (<code>/research -&gt; /plan -&gt; /implement -&gt; /check -&gt; /document | /communicate -&gt; /reflect</code>) e reproduzivel em outro dominio; o corpus deste projeto serve de <em>baseline</em> comparativo para estudos de engenharia de software assistida por IA.</li>
+<li><strong>Instrumentar a comunicabilidade:</strong> as comunicacoes por publico (EVL/CLT/USR/ACD) sao geradas pelo skill <code>/communicate</code> a partir das mesmas fontes — um terreno para estudar como a <em>mesma intencao de design</em> e re-enquadrada por audiencia.</li>
+<li><strong>Auditar o feedback loop:</strong> o <code>CategoryCurationEvent</code> append-only e um dataset pronto para estudar aprendizado human-in-the-loop few-shot (RQ3).</li>
+</ul>
+<h3 id="64-stack-consolidada-referencia">6.4 Stack consolidada (referencia)</h3>
+<table>
+<thead>
+<tr>
+<th>Camada</th>
+<th>Genese (F0-F5)</th>
+<th>Produto entregue (F6-F10)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Linguagem / gestao</td>
+<td>Python 3.13 + uv</td>
+<td>Python 3.13 + uv</td>
+</tr>
+<tr>
+<td>Web / API</td>
+<td>Streamlit</td>
+<td><strong>FastAPI</strong> (clean architecture)</td>
+</tr>
+<tr>
+<td>Frontend</td>
+<td>Streamlit pages</td>
+<td><strong>React 18 + Vite + TS + Tailwind + react-leaflet</strong></td>
+</tr>
+<tr>
+<td>Persistencia</td>
+<td>SQLite (<code>GaveaLabWorkspace</code>)</td>
+<td>SQLite via <strong>SQLAlchemy</strong></td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>nenhuma (local)</td>
+<td><strong>JWT</strong> roles citizen/agent/admin</td>
+</tr>
+<tr>
+<td>Embeddings</td>
+<td>ChromaDB + sentence-transformers</td>
+<td>idem (multilingual-e5 / nomic)</td>
+</tr>
+<tr>
+<td>LLM local</td>
+<td>Ollama (qwen)</td>
+<td><strong>Ollama</strong> (<code>qwen3:8b</code>) + provider plugavel</td>
+</tr>
+<tr>
+<td>Visualizacao</td>
+<td>UMAP + HDBSCAN + Plotly</td>
+<td>Leaflet + GeoJSON; <strong>BERTopic</strong></td>
+</tr>
+<tr>
+<td>Entrega</td>
+<td>—</td>
+<td><strong>Docker + Railway</strong>; seed showcase</td>
+</tr>
+<tr>
+<td>Qualidade</td>
+<td>pytest, ruff, pyright</td>
+<td>+ <strong>Vitest/RTL</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="7-fechamento">7. Fechamento</h2>
+<blockquote>
+<p>O merito academico nao esta em ter alcancado o escopo inicial, e sim em ter feito o <strong>caminho inverso de forma deliberada e documentada</strong> — e em deixar esse caminho <em>legivel</em> como objeto de pesquisa.</p>
+</blockquote>
+<p>Os dois invariantes que sobreviveram a todas as fases — <strong>camada geoespacial</strong> e <strong>soberania de dados local</strong> — ligam o produto final (fala-gavea) a sua origem amazonica (o Atlas). Em torno deles, o projeto oferece tres contribuicoes ao leitor academico: um <strong>artefato de design research</strong> rastreavel ate evidencia de campo (FAPERJ, 380 respondentes); um <strong>corpus de processo</strong> que documenta IA-assistindo-engenharia ponta a ponta; e uma <strong>mensagem de metacomunicacao textualizada</strong> que torna inspecionavel — e estudavel — o vao entre designer e usuario quando uma IA o medeia.</p>
+<p><strong>Equipe:</strong> Andrey · Mauro · Julia · Herbert · Natali · Sheila · <code>communication-000082</code> · INF2921/CIS2114 (AI Systems Design, PUC-Rio, 2026.1)</p>
+<hr />
+<h2 id="anexo-a-indice-de-fontes-documento-vivo">Anexo A — Indice de fontes (documento vivo)</h2>
+<p><strong>Knowledge (<code>knowledge/</code>):</strong> <a href="../../../knowledge/Reuniao-23-04-2026.md">Reuniao-23-04-2026.md</a> · <a href="../../../knowledge/casos-de-uso.md">casos-de-uso.md</a> · <a href="../../../knowledge/Casos_de_uso_10-06-2026_1.md">Casos_de_uso_1</a> · <a href="../../../knowledge/Casos_de_uso_10-06-2026_2.md">Casos_de_uso_2</a> · <a href="../../../knowledge/Reunioes-stakeholders-1-2.pdf">Reunioes-stakeholders-1-2.pdf</a> · <a href="../../../knowledge/Strategic%20Design%204%20Smart%20City%20Lab%20_Gavea%20Lab%20diagnostico_onepage.pdf">Diagnostico FAPERJ (PDF)</a> · <a href="../../../knowledge/CENARIOS_AGENTS_PUBLICOS_TOPICOS_HERBERT.txt">CENARIOS…HERBERT.txt</a> · <a href="../../../knowledge/RELATOS_HERBERT.txt">RELATOS_HERBERT.txt</a></p>
+<p><strong>SEJA repo-pai (<code>_output/</code>):</strong> <a href="../../research-logs/research-000074-camadas-georeferenciadas-fala-gavea.md">research-000074</a> · <a href="../../check-logs/check-000073-validate-fala-gavea-scaffold.md">check-000073</a> · <a href="../../roadmaps/roadmap-000070-canal-digital-comunitario-seguranca-urbana.md">roadmap-000070</a> · <a href="../../roadmaps/roadmap-000071-gavea-seguranca-demandas-app.md">roadmap-000071</a> · reflections <a href="../../reflections/reflection-000037-fala-gavea-missing-analysis-pipeline.md">037</a> / <a href="../../reflections/reflection-000052-atlas-da-amazonia-zoom-in-gavea.md">052</a> / <a href="../../reflections/reflection-000069-gavealab-feedback-loop-categorizacao.md">069</a> · planos <a href="../../plans/plan-000001-trl3-poc-tttc-local-ollama.md">000001</a> / <a href="../../plans/plan-000008-gavealab-poc-scaffold.md">000008</a> / <a href="../../plans/plan-000016-gavealab-poc-umap-visualization.md">000016</a> / <a href="../../plans/plan-000027-fala-gavea-setup-streamlit.md">000027</a> / <a href="../../plans/plan-000072-fala-gavea-scaffold-e-seja-setup.md">000072</a></p>
+<p><strong>Comunicacoes relacionadas:</strong> <a href="../2026-06-26/communication-000077-timeline-projeto.md">077 — timeline</a> · <a href="communication-000081-casos-de-uso-prototipos.md">081 — casos de uso -&gt; prototipos</a> · <a href="../2026-06-19/communication-000075-academics.md">075 — academicos (anterior)</a></p>
+<p><strong>Produto (<code>fala-gavea/</code>):</strong> <a href="../../../fala-gavea/README.md">README</a> · <a href="../../../fala-gavea/CLAUDE.md">CLAUDE.md</a> · <a href="../../../fala-gavea/product-design/project/product-design-as-intended.md"><code>product-design-as-intended.md</code> (D-NNN)</a> · planos <a href="../../../fala-gavea/_output/plans/plan-000073-feature-b-wave-0-item-1-domain-auth-reports.md">073</a> / <a href="../../../fala-gavea/_output/plans/plan-000082-feature-f-wave-1-item-4-frontend-spa-react.md">082 SPA</a> / <a href="../../../fala-gavea/_output/plans/plan-000094-semantic-search-similar-reports-wave1.md">094 busca</a> / <a href="../../../fala-gavea/_output/plans/plan-000100-rag-chat-nl-assistant.md">100 RAG</a> / <a href="../../../fala-gavea/_output/plans/plan-000174-pluggable-report-type-suggestion.md">174 sugestao</a> / <a href="../../../fala-gavea/_output/plans/plan-000177-chat-helper-plataforma-rag-self-docs.md">177 helper</a> / <a href="../../../fala-gavea/_output/plans/plan-000178-aibadge-provenance-marker.md">178 AiBadge</a> / <a href="../../../fala-gavea/_output/plans/plan-000183-local-showcase-seed-pipeline.md">183 seed</a> · roadmap <a href="../../../fala-gavea/_output/roadmaps/roadmap-000151-citizen-feedback-votes-comments-anonymization.md">151</a></p>
+<blockquote>
+<p>⚠️ Links de <code>fala-gavea/</code> requerem o submodulo populado (<code>git submodule update --init</code>). PDFs abrem a partir do <code>.html</code> aberto localmente.</p>
+</blockquote>
+
+</body>
+</html>
