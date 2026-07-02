@@ -1,3 +1,12 @@
+DONE | 2026-06-30 21:57 UTC | STARTED | 2026-06-30 21:54 UTC | research | communication artifacts para melhorar a escrita da seção "Fase 2 - GaveaLab PoC: análise semântica de conjuntos de relatos" — adicionar detalhes técnicos das intenções, planos e pesquisas executadas/implementadas durante essa fase
+
+---
+
+DONE | 2026-06-25 19:52 UTC | STARTED | 2026-06-25 19:44 UTC | explain | behaviour-evolution — evolução do projeto INF2921 incluindo artefatos do submodule fala-gavea
+
+---
+
+DONE | 2026-06-25 19:40 UTC | STARTED | 2026-06-25 19:29 UTC | plan | Escrita do relatório da disciplina — template para colegas de turma | PLAN | 000075
 DONE | 2026-06-28 21:36 UTC | STARTED | 2026-06-28 21:28 UTC | research | me ajude a gerar prints para as jornadas de usuário no fala-gavea (roteiro guiado, relatório Fase 5, desktop web, incluindo IA)
 
 ---
