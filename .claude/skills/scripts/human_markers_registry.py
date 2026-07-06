@@ -51,6 +51,10 @@ HUMAN_MARKERS_FILES: list[str] = [
     "product-design/ux-research-results.md",
     ".claude/references/template/product-design-as-intended.md",
     "product-design/product-design-as-intended.md",
+    # This project keeps the design files under product-design/project/
+    # (see conventions.md Key Files); registered alongside the flat paths.
+    "product-design/project/ux-research-results.md",
+    "product-design/project/product-design-as-intended.md",
 ]
 
 

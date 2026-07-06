@@ -555,6 +555,18 @@ Pesquisadora tem uma análise completa da consulta: temas identificados, claims 
 
 ---
 
+### D-006: Pipeline wizard -> spec TOML -> gerador deterministico para o python-scaffold v2
+
+**Context**: A v2 da skill /python-scaffold precisa aceitar multiplas entidades com relacionamentos, auth JWT opt-in e templates BDD, mantendo a constraint SEJA de nao-determinismo e a portabilidade zero-dependencia do gerador (research-000089).
+
+**Decision**: O wizard interativo (AskUserQuestion) vive na camada SKILL.md e materializa um scaffold-spec.toml versionado (spec_version = 1, parseado via tomllib stdlib) salvo no projeto gerado; scripts/scaffold.py permanece estritamente nao-interativo e consome apenas a spec. Preview + confirmacao da spec sao obrigatorios antes de escrever arquivos; --spec e o bypass documentado do wizard. Auth JWT e BDD sao opt-in na spec.
+
+**Consequences**: Geracao reproduzivel e auditavel (a spec, nao a conversa, e o contrato); re-runs one-shot em diretorio vazio; golden tests por comparacao byte-a-byte da arvore gerada; o wizard evolui sem tocar o gerador.
+
+**Rejected Alternatives**: YAML (stdlib nao tem parser; PyYAML quebra a zero-dependencia); mini-DSL na CLI (ilegivel para relacoes/enums); wizard gerando codigo direto (viola a constraint de determinismo); merge idempotente em projeto evoluido (e um produto de migracao, nao de scaffold).
+
+*Source: from research-000089 (2026-07-06)*
+
 ## CHANGELOG
 
 <!-- Append-only. Format: YYYY-MM-DD | <id> | added|revised|revoked|superseded | plan-NNNNNN | <note> -->
