@@ -1,5 +1,6 @@
 # Research 000089 | FEATURE-X | 2026-07-06 20:02 | Upgrade python-scaffold: BDD, CRUD com relacionamentos, JWT e sementes SEJA
 tags: python-scaffold, bdd, jwt-auth, code-generation, security
+spawned: plan-000092
 
 ## User brief (verbatim)
 

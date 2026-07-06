@@ -1,8 +1,12 @@
+DONE | 2026-07-06 20:35 UTC | STARTED | 2026-07-06 20:25 UTC | plan | source: research-000089 -- python-scaffold v2 P1 (fundação): templates/ + renderer stdlib, spec loader TOML com validação estrita, multi-entidade 1-N/N-1, caminho --spec, golden tests em 2 tiers | PLAN | 000092
+
+---
+
 DONE | 2026-07-06 20:16 UTC | STARTED | 2026-07-06 20:02 UTC | research | upgrade clean python scaffold (python-scaffold skill do início do fala-gavea): skill que faça scaffold de projeto clean python orientado a práticas ágeis — templates BDD, CRUD de entidade e relacionamentos, autenticação JWT, boas práticas e constituição no design SEJA
 
 ---
 
-STARTED | 2026-07-06 20:16 UTC | check | validate + review (quality gate do plan-000088)
+DONE | 2026-07-06 20:25 UTC | STARTED | 2026-07-06 20:16 UTC | check | validate + review (quality gate do plan-000088) | CHECK | 000090, 000091
 
 ---
 
