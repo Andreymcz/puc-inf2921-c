@@ -57,6 +57,19 @@ def analyze(name, entries, session_gap_hours=3):
     for (a, b), c in trans.most_common(14):
         print(f"  {a:>10} -> {b:<10} {c}")
 
+    # row-normalized conditional probabilities P(next|current), with row n
+    # (added in plan-000088 step 1 to verify the probabilities cited in
+    # research-000087; raw counts above truncate at top-14 and hide row totals)
+    row_totals = Counter()
+    for (a, _b), c in trans.items():
+        row_totals[a] += c
+    print("\n-- P(next|current), row-normalized --")
+    for a, n in row_totals.most_common():
+        row = sorted(((b, c) for (x, b), c in trans.items() if x == a),
+                     key=lambda t: -t[1])
+        parts = ", ".join(f"{b} {100*c/n:.0f}% ({c})" for b, c in row)
+        print(f"  {a:<12} (n={n}): {parts}")
+
     # session signatures (collapse consecutive repeats)
     sigs = Counter()
     for s in sessions:
