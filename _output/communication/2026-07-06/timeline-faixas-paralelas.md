@@ -47,3 +47,7 @@ Sobreposição temporal: F3 (17/jun-1/jul, fala-gavea) e F4 (19-30/jun, puc-inf2
 ## Leitura
 
 > A sobreposição temporal F3 || F4 -- mesmo desenvolvedor, mesma versão do harness, mesmas semanas, perfis opostos (6.7 vs 2.3 inv/sessão) -- é o que permite afirmar que **o tipo de tarefa molda a forma do fluxo**, em vez de atribuir a diferença entre perfis a maturidade ou tempo de uso, que são confundidores colineares entre F1 e F3.
+
+---
+
+> Passe de privacidade (LGPD, Rec 3 research-000087, plan-000088 Step 4, 2026-07-06): aprovado -- exemplos referenciam artefatos por ID; nenhum nome de colega, citação verbatim de brief/reflection/WhatsApp ou conteúdo de relato cidadão presente.

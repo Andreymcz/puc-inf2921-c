@@ -93,3 +93,5 @@ Esse achado sugere que a diferença entre os perfis exploratório e focado não 
 ---
 
 *Números de suporte conforme `_output/tmp/taxonomia-support-counts.md` (plan-000088 Step 1, corpus congelado 24/abr a 30/jun); fonte primária: research-000087. Valores atribuídos apenas à pesquisa original estão marcados como não reproduzidos no texto.*
+
+> Passe de privacidade (LGPD, Rec 3 research-000087, plan-000088 Step 4, 2026-07-06): aprovado -- exemplos referenciam artefatos por ID; nenhum nome de colega, citação verbatim de brief/reflection/WhatsApp ou conteúdo de relato cidadão presente.
