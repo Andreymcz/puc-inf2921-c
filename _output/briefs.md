@@ -1,3 +1,19 @@
+DONE | 2026-07-06 20:16 UTC | STARTED | 2026-07-06 20:02 UTC | research | upgrade clean python scaffold (python-scaffold skill do início do fala-gavea): skill que faça scaffold de projeto clean python orientado a práticas ágeis — templates BDD, CRUD de entidade e relacionamentos, autenticação JWT, boas práticas e constituição no design SEJA
+
+---
+
+STARTED | 2026-07-06 20:16 UTC | check | validate + review (quality gate do plan-000088)
+
+---
+
+STARTED | 2026-07-06 19:58 UTC | implement | plan 88
+
+---
+
+STARTED | 2026-07-06 19:53 UTC | plan | research-000087 follow-ups: reportar taxonomia de 5 arquetipos de fluxo (bootstrap, ondas de roadmap, loop de grooming, micro-loop de feature, fluxo de relato) com contagens de suporte e regra de identificação; e figura de timeline com faixas paralelas (repo pai x fala-gavea)
+
+---
+
 DONE | 2026-07-06 19:07 UTC | STARTED | 2026-07-06 18:26 UTC | research | Coletar informação histórica do repositório sobre o perfil do desenvolvedor usando o harness SEJA — mapear fluxos comuns de skills (ex: research → plan → implement) e comparar 2 perfis: exploratório (puc-inf2921-c) vs focado (fala-gavea), identificando padrões, diferenças e semelhanças
 
 ---
