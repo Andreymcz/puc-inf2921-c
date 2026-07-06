@@ -1,3 +1,7 @@
+DONE | 2026-07-06 19:07 UTC | STARTED | 2026-07-06 18:26 UTC | research | Coletar informação histórica do repositório sobre o perfil do desenvolvedor usando o harness SEJA — mapear fluxos comuns de skills (ex: research → plan → implement) e comparar 2 perfis: exploratório (puc-inf2921-c) vs focado (fala-gavea), identificando padrões, diferenças e semelhanças
+
+---
+
 DONE | 2026-06-30 21:57 UTC | STARTED | 2026-06-30 21:54 UTC | research | communication artifacts para melhorar a escrita da seção "Fase 2 - GaveaLab PoC: análise semântica de conjuntos de relatos" — adicionar detalhes técnicos das intenções, planos e pesquisas executadas/implementadas durante essa fase
 
 ---
