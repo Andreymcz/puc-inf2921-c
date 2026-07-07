@@ -1,6 +1,7 @@
 # Research 000087 | DOCUMENT-O | 2026-07-06 18:26 | Perfis de uso do harness: exploratorio vs focado
 
 tags: harness-usage, mining-de-artefatos, developer-profiles, seja, metodologia-pesquisa
+spawned: plan-000088
 
 ## User brief
 
