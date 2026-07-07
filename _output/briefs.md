@@ -1,3 +1,7 @@
+DONE | 2026-07-07 19:26 UTC | STARTED | 2026-07-07 19:21 UTC | communicate | compartilhar os achados do plano atual para colegas. O objetivo é mapear fluxos comuns para o developer usando o seja no escopo analisado. pode ser o mais breve possível
+
+---
+
 DONE | 2026-07-06 20:35 UTC | STARTED | 2026-07-06 20:25 UTC | plan | source: research-000089 -- python-scaffold v2 P1 (fundação): templates/ + renderer stdlib, spec loader TOML com validação estrita, multi-entidade 1-N/N-1, caminho --spec, golden tests em 2 tiers | PLAN | 000092
 
 ---

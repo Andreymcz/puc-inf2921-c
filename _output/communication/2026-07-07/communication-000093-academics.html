@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Communication 000093 Academics</title>
+  <style>
+body {
+  max-width: 48em;
+  margin: 2em auto;
+  padding: 0 1em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: #222;
+}
+h1, h2, h3 { margin-top: 1.4em; }
+code { background: #f4f4f4; padding: 0.15em 0.3em; border-radius: 3px; }
+pre  { background: #f4f4f4; padding: 1em; overflow-x: auto; border-radius: 4px; }
+pre code { background: none; padding: 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #ddd; padding: 0.5em 0.75em; text-align: left; }
+th { background: #f8f8f8; }
+blockquote { border-left: 4px solid #ddd; margin: 1em 0; padding: 0.5em 1em; color: #555; }
+a { color: #0366d6; }
+
+  </style>
+</head>
+<body>
+
+<h1 id="communication-000093-acd-2026-07-07-1921-fluxos-comuns-do-developer-com-o-harness-seja">Communication 000093 | ACD | 2026-07-07 19:21 | Fluxos comuns do developer com o harness SEJA</h1>
+<p>source: plan-000088 -- digest dos achados para colegas</p>
+<hr />
+<h2 id="1-contexto">1. Contexto</h2>
+<p><strong>Pergunta de pesquisa:</strong> que fluxos de trabalho recorrentes emergem do uso prolongado de um harness de desenvolvimento assistido por agentes (SEJA), além do fluxo canônico <code>research -&gt; plan -&gt; implement</code>? <strong>Método, em uma linha:</strong> mineração do histórico de invocações de skills (briefs-index) de dois repositórios do mesmo desenvolvedor -- perfil exploratório (puc-inf2921-c, <strong>96 invocações</strong>, 24/abr a 30/jun) e perfil focado (fala-gavea, <strong>120 invocações</strong>, 17/jun a 1/jul), corpora congelados na janela da pesquisa -- com sessões definidas por corte de inatividade de até 3 horas e assinaturas de sessão com repetições consecutivas colapsadas. O fluxo canônico domina (<code>plan -&gt; implement</code> é a transição mais frequente em todos os cortes), mas ele se especializa e se recombina em <strong>cinco arquétipos recorrentes</strong>, cuja distribuição distingue os dois perfis.</p>
+<h2 id="2-os-cinco-arquetipos">2. Os cinco arquétipos</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Arquétipo</th>
+<th>Assinatura</th>
+<th>Suporte verificado</th>
+<th>Âncora (por ID)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Fluxo de bootstrap</td>
+<td><code>advise/research -&gt; plan -&gt; implement^n</code></td>
+<td>F1: 3 sessões iniciam com advise; <code>implement -&gt; implement</code> 75% (6/8)</td>
+<td>plan-000001 (tttc-poc), executado por steps em dias e máquinas diferentes</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Execução por ondas de roadmap</td>
+<td><code>plan --roadmap -&gt; (plan[item de onda] -&gt; implement)^n</code></td>
+<td><strong>15 planos</strong> do fala-gavea com <code>source:</code> apontando para roadmap (<strong>8 com "Wave" explícito</strong> na linha) + 4 no repo exploratório; <code>plan -&gt; plan</code> 40% (8/20) em F2. O valor 12 da pesquisa original <strong>não foi reproduzido</strong> por nenhum critério testado</td>
+<td>roadmap-000151 (3 ondas) -&gt; planos 000152-000158</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Loop de grooming</td>
+<td><code>reflect -&gt; (research\|plan) -&gt; plan -&gt; implement</code></td>
+<td>11 reflections em F3; 8 seguidas de research (4) ou plan (4) na mesma sessão</td>
+<td>reflection-000086 (inventário CRUD vs roadmap)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Micro-loop de feature</td>
+<td><code>(research -&gt; plan -&gt; implement)^n</code> na mesma sessão</td>
+<td>P(plan|research) = 70% (16/23) em F3, contra 33% em F2; trio repetido 2-4x por sessão</td>
+<td>sessões de 21/jun e 26/jun no fala-gavea</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Fluxo de relato</td>
+<td><code>research -&gt; communicate</code></td>
+<td><code>communicate -&gt; research</code> 100% (2/2, n pequeno) em F3; F4 dominada por research 31% e communicate 25%</td>
+<td>research-000087 -&gt; plan-000088 -&gt; este digest</td>
+</tr>
+</tbody>
+</table>
+<p>Arquétipos 1 e 5 pertencem ao regime exploratório/de relato; 2, 3 e 4 ao regime focado.</p>
+<h2 id="3-achado-central-f3-f4-como-controle-intra-sujeito">3. Achado central: F3 || F4 como controle intra-sujeito</h2>
+<p>As quatro fases não formam uma linha do tempo global única: F3 (execução focada, fala-gavea) e F4 (cauda de relato, puc-inf2921-c) transcorrem <strong>nas mesmas semanas</strong>, em repositórios distintos.</p>
+<pre><code class="language-mermaid">gantt
+    title Fases de uso do harness SEJA por repositório (2026) -- F3 e F4 são concorrentes
+    dateFormat YYYY-MM-DD
+    axisFormat %d/%m
+    todayMarker off
+
+    section puc-inf2921-c (perfil exploratório)
+    F1 Exploração (3.6 inv/sessão)        :f1, 2026-04-24, 2026-06-10
+    F2 Transição (5.5 inv/sessão)         :f2, 2026-06-10, 2026-06-17
+    F4 Cauda de relato (2.3 inv/sessão)   :active, f4, 2026-06-19, 2026-06-30
+
+    section fala-gavea (perfil focado)
+    F3 Execução focada (6.7 inv/sessão)   :active, f3, 2026-06-17, 2026-07-01
+</code></pre>
+<p>Versão textual (fallback):</p>
+<table>
+<thead>
+<tr>
+<th>Período (2026)</th>
+<th>Fase</th>
+<th>Repositório</th>
+<th>Invocações</th>
+<th>Inv/sessão</th>
+<th>Top skills</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>24/abr - 10/jun</td>
+<td>F1 Exploração</td>
+<td>puc-inf2921-c</td>
+<td>25</td>
+<td>3.6</td>
+<td>implement 48%, plan 28%, advise 12%</td>
+</tr>
+<tr>
+<td>10/jun - 17/jun</td>
+<td>F2 Transição</td>
+<td>puc-inf2921-c</td>
+<td>55</td>
+<td>5.5</td>
+<td>plan 44%, implement 35%, research 13%</td>
+</tr>
+<tr>
+<td>17/jun - 1/jul</td>
+<td>F3 Execução focada</td>
+<td>fala-gavea</td>
+<td>120</td>
+<td>6.7</td>
+<td>plan 34%, implement 25%, research 22%</td>
+</tr>
+<tr>
+<td>19/jun - 30/jun</td>
+<td>F4 Cauda de relato</td>
+<td>puc-inf2921-c</td>
+<td>16</td>
+<td>2.3</td>
+<td>research 31%, communicate 25%, plan 19%</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>A sobreposição temporal F3 || F4 -- mesmo desenvolvedor, mesma versão do harness, mesmas semanas, perfis opostos (<strong>6.7 vs 2.3 inv/sessão</strong>) -- é o que permite afirmar que <strong>o tipo de tarefa molda a forma do fluxo</strong>, em vez de atribuir a diferença entre perfis a maturidade ou tempo de uso, que são confundidores colineares entre F1 e F3.</p>
+</blockquote>
+<h2 id="4-papel-duplo-de-reflect">4. Papel duplo de /reflect</h2>
+<p>O achado qualitativo que conecta a taxonomia à comparação de perfis é que a mesma skill pode ocupar funções distintas em arquétipos distintos, e o caso mais nítido é <code>/reflect</code>: no perfil exploratório ela opera como captura livre de ideação e pivô (ex.: reflection-000052, registro de um pivô de escopo), enquanto no perfil focado opera como checkpoint periódico ancorado em artefatos, inventariando lacunas contra o roadmap e alimentando o loop de grooming (ex.: reflection-000086). Mesma skill, mesma interface, funções opostas -- válvula de mudança de direção em um regime, instrumento de manutenção de direção no outro. A diferença entre os perfis não está no vocabulário de skills, e sim na gramática com que o desenvolvedor as combina.</p>
+<hr />
+<h2 id="artefatos-fonte">Artefatos-fonte</h2>
+<ul>
+<li>Taxonomia completa (5 arquétipos, regra de identificação): <a href="../2026-07-06/taxonomia-arquetipos-fluxo.md">taxonomia-arquetipos-fluxo.md</a></li>
+<li>Figura de timeline (gantt + fallback): <a href="../2026-07-06/timeline-faixas-paralelas.md">timeline-faixas-paralelas.md</a></li>
+<li>Pesquisa de origem: <a href="../../research-logs/research-000087-perfis-de-uso-do-harness-exploratorio-vs-focado.md">research-000087</a></li>
+<li>Plano executor: <a href="../../plans/plan-000088-followups-research-087-taxonomia-arquetipos-timeline.md">plan-000088</a></li>
+<li>Números verificados (corpus congelado 96/120): <a href="../../tmp/taxonomia-support-counts.md">taxonomia-support-counts.md</a></li>
+</ul>
+<blockquote>
+<p>Passe de privacidade (LGPD, Rec 3 research-000087, plan-000088 Step 4, 2026-07-06): aprovado -- exemplos referenciam artefatos por ID; nenhum nome de colega, citação verbatim de brief/reflection/WhatsApp ou conteúdo de relato cidadão presente. Este digest herda o passe dos artefatos-fonte.</p>
+</blockquote>
+
+</body>
+</html>
