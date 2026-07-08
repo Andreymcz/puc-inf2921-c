@@ -24,6 +24,42 @@ th { background: #f8f8f8; }
 blockquote { border-left: 4px solid #ddd; margin: 1em 0; padding: 0.5em 1em; color: #555; }
 a { color: #0366d6; }
 
+/* --- gantt figure (SVG estatico, autocontido) --- */
+figure.viz-root {
+  --surface-1: #fcfcfb;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #898781;
+  --gridline: #e1e0d9;
+  --baseline: #c3c2b7;
+  --series-1: #2a78d6;  /* puc-inf2921-c (exploratorio) */
+  --series-2: #1baf7a;  /* fala-gavea (focado) */
+  margin: 1.25em 0;
+  padding: 14px 14px 10px;
+  background: var(--surface-1);
+  border: 1px solid rgba(11,11,11,0.10);
+  border-radius: 6px;
+}
+figure.viz-root .viz-title {
+  font-size: 0.85em; font-weight: 600; color: var(--text-primary);
+  margin: 0 0 6px;
+}
+figure.viz-root .viz-legend {
+  display: flex; gap: 1.25em; flex-wrap: wrap;
+  font-size: 0.8em; color: var(--text-secondary);
+  margin: 0 0 10px;
+}
+figure.viz-root .viz-legend .swatch {
+  display: inline-block; width: 11px; height: 11px; border-radius: 3px;
+  margin-right: 0.4em; vertical-align: -1px;
+}
+figure.viz-root svg { display: block; width: 100%; height: auto; }
+figure.viz-root svg text { font-family: inherit; }
+figure.viz-root svg rect.bar:hover { opacity: 0.85; }
+figure.viz-root figcaption {
+  font-size: 0.75em; color: var(--text-muted); margin-top: 8px;
+}
+
   </style>
 </head>
 <body>
@@ -85,6 +121,67 @@ a { color: #0366d6; }
 <p>Arquétipos 1 e 5 pertencem ao regime exploratório/de relato; 2, 3 e 4 ao regime focado.</p>
 <h2 id="3-achado-central-f3-f4-como-controle-intra-sujeito">3. Achado central: F3 || F4 como controle intra-sujeito</h2>
 <p>As quatro fases não formam uma linha do tempo global única: F3 (execução focada, fala-gavea) e F4 (cauda de relato, puc-inf2921-c) transcorrem <strong>nas mesmas semanas</strong>, em repositórios distintos.</p>
+<figure class="viz-root">
+  <p class="viz-title">Fases de uso do harness SEJA por repositório (2026) -- F3 e F4 são concorrentes</p>
+  <div class="viz-legend">
+    <span><span class="swatch" style="background:#2a78d6"></span>puc-inf2921-c (perfil exploratório)</span>
+    <span><span class="swatch" style="background:#1baf7a"></span>fala-gavea (perfil focado)</span>
+  </div>
+  <svg viewBox="0 0 760 156" role="img"
+       aria-label="Gantt: F1 24/abr a 10/jun e F2 10 a 17/jun no puc-inf2921-c; F3 17/jun a 1/jul no fala-gavea; F4 19 a 30/jun no puc-inf2921-c. F3 e F4 se sobrepõem de 19 a 30/jun.">
+    <!-- gridlines (inícios de mês) -->
+    <line x1="91"  y1="10" x2="91"  y2="130" stroke="#e1e0d9" stroke-width="1"/>
+    <line x1="423" y1="10" x2="423" y2="130" stroke="#e1e0d9" stroke-width="1"/>
+    <!-- faixa de sobreposição F3 || F4 (19-30/jun) -->
+    <rect x="615" y="22" width="118" height="100" fill="rgba(11,11,11,0.045)"/>
+    <line x1="615" y1="22" x2="615" y2="122" stroke="#c3c2b7" stroke-width="1" stroke-dasharray="3 3"/>
+    <line x1="733" y1="22" x2="733" y2="122" stroke="#c3c2b7" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="674" y="14" text-anchor="middle" font-size="11" font-weight="600" fill="#52514e">F3 || F4 (19-30/jun)</text>
+    <!-- trilha 1: puc-inf2921-c -->
+    <text x="16" y="16" font-size="11" font-weight="600" fill="#52514e">puc-inf2921-c</text>
+    <rect class="bar" x="16" y="28" width="502" height="26" rx="4" fill="#2a78d6">
+      <title>F1 Exploração -- puc-inf2921-c -- 24/abr a 10/jun -- 25 invocações, 3.6 inv/sessão (implement 48%, plan 28%, advise 12%)</title>
+    </rect>
+    <rect class="bar" x="520" y="28" width="74" height="26" rx="4" fill="#2a78d6">
+      <title>F2 Transição -- puc-inf2921-c -- 10/jun a 17/jun -- 55 invocações, 5.5 inv/sessão (plan 44%, implement 35%, research 13%)</title>
+    </rect>
+    <rect class="bar" x="615" y="28" width="118" height="26" rx="4" fill="#2a78d6">
+      <title>F4 Cauda de relato -- puc-inf2921-c -- 19/jun a 30/jun -- 16 invocações, 2.3 inv/sessão (research 31%, communicate 25%, plan 19%)</title>
+    </rect>
+    <text x="26"  y="45" font-size="11" font-weight="600" fill="#ffffff" pointer-events="none">F1 Exploração (3.6 inv/sessão)</text>
+    <text x="557" y="45" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff" pointer-events="none">F2 (5.5)</text>
+    <text x="674" y="45" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff" pointer-events="none">F4 (2.3)</text>
+    <!-- trilha 2: fala-gavea -->
+    <text x="16" y="76" font-size="11" font-weight="600" fill="#52514e">fala-gavea</text>
+    <text x="586" y="101" text-anchor="end" font-size="11" fill="#898781">F3 Execução focada</text>
+    <rect class="bar" x="594" y="84" width="150" height="26" rx="4" fill="#1baf7a">
+      <title>F3 Execução focada -- fala-gavea -- 17/jun a 1/jul -- 120 invocações, 6.7 inv/sessão (plan 34%, implement 25%, research 22%)</title>
+    </rect>
+    <text x="669" y="101" text-anchor="middle" font-size="11" font-weight="600" fill="#0b0b0b" pointer-events="none">F3 (6.7)</text>
+    <!-- eixo -->
+    <line x1="16" y1="130" x2="744" y2="130" stroke="#c3c2b7" stroke-width="1"/>
+    <g stroke="#c3c2b7" stroke-width="1">
+      <line x1="16"  y1="130" x2="16"  y2="134"/>
+      <line x1="91"  y1="130" x2="91"  y2="134"/>
+      <line x1="423" y1="130" x2="423" y2="134"/>
+      <line x1="519" y1="130" x2="519" y2="134"/>
+      <line x1="594" y1="130" x2="594" y2="134"/>
+      <line x1="744" y1="130" x2="744" y2="134"/>
+    </g>
+    <g font-size="11" fill="#898781" style="font-variant-numeric: tabular-nums">
+      <text x="16"  y="146">24/abr</text>
+      <text x="91"  y="146" text-anchor="middle">1/mai</text>
+      <text x="423" y="146" text-anchor="middle">1/jun</text>
+      <text x="519" y="146" text-anchor="middle">10/jun</text>
+      <text x="594" y="146" text-anchor="middle">17/jun</text>
+      <text x="744" y="146" text-anchor="end">1/jul</text>
+    </g>
+  </svg>
+  <figcaption>Barras coloridas por repositório; números entre parênteses = invocações por sessão. Passe o mouse sobre uma barra para período, invocações e top skills. Valores exatos na tabela abaixo.</figcaption>
+</figure>
+
+<details>
+  <summary>Fonte Mermaid do diagrama (para reuso em Markdown)</summary>
 <pre><code class="language-mermaid">gantt
     title Fases de uso do harness SEJA por repositório (2026) -- F3 e F4 são concorrentes
     dateFormat YYYY-MM-DD
@@ -99,6 +196,7 @@ a { color: #0366d6; }
     section fala-gavea (perfil focado)
     F3 Execução focada (6.7 inv/sessão)   :active, f3, 2026-06-17, 2026-07-01
 </code></pre>
+</details>
 <p>Versão textual (fallback):</p>
 <table>
 <thead>
