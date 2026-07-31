@@ -20,6 +20,28 @@ A: Não — a pasta `2026-07-31/` contém um único artefato, e a regra do skill
 
 ---
 
+---
+
+## Revisão 2 — reescrita a partir dos slides finais
+
+**Q: Por que o primeiro roteiro foi descartado?**
+A: Ele vendia o artefato ("mapa + busca semântica + chat"), não a tese. Os slides finais da apresentação trazem o argumento real, que é muito mais forte: **silêncio racional** (o cidadão cala por cálculo de risco, não por apatia) espelhado com a **cegueira do gestor** (dado demais, território de menos). O produto existe para reconstruir confiança, e o roteiro passou a ser construído sobre isso.
+
+**Q: O que mudou de concreto?**
+- Abertura trocada: de "um poste apagado" para o silêncio como estratégia de sobrevivência.
+- Problema virou espelhado (cidadão + gestor), que é o que distingue o projeto de um canal de denúncia comum.
+- Solução ancorada na **votação em pins** — "medo individual vira sinal coletivo" — mecanismo ausente do roteiro anterior.
+- Diferencial reformulado pelo que se escolheu **não** fazer: anonimato, coordenada arredondada a 3 casas, IA local, humano no loop. Ética como decisão de projeto, não como disclaimer.
+- Impacto: de "reduzir tempo de acionamento" (meta sem baseline) para **confiança + replicabilidade** — que é o que interessa a quem financia.
+- Removida a citação aos "cinco mil relatos": era dataset sintético e enfraquecia o pitch.
+- Equipe corrigida para incluir Sheila Manhães; adicionados os profs. Renato Cerqueira e Gabriel Banaggia e a URL de produção.
+- Adicionadas duas seções novas: "Por que o roteiro está construído assim" (defesa de cada escolha) e cortes ordenados para a versão de 1:00.
+
+**Q: O roteiro cabe em 1:30?**
+A: 244 palavras. A ~165 palavras/min fecha em ~1:29 — apertado. A seção "Versão 1:00" lista 4 cortes em ordem de prioridade, com a contagem de palavras de cada um, e nomeia as 4 frases que não podem sair.
+
+---
+
 ## Pontos em aberto para a equipe
 
 1. Cronometrar o fluxo de registro antes de gravar (roteiro afirma "menos de dois minutos").

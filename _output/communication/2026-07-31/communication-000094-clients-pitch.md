@@ -1,92 +1,111 @@
-# Communication 000094 | CLT | 2026-07-31 | Pitch — Fala, Gávea!
+# Communication 000094 | CLT | 2026-07-31 | Pitch — fala, Gávea!
 
-**Produto:** Fala, Gávea! — sistema de demandas cidadãs para segurança urbana
+**Produto:** fala, Gávea! — inteligência territorial para a reconstrução da confiança nas instituições públicas
 **Destinatária:** Fabiene (coordenação / avaliação de pitch)
 **Formato:** roteiro de vídeo, 1min–1min30
-**Equipe:** Andrey, Mauro, Julia, Herbert, Natali — INF2921/CIS2114 2026.1
+**Equipe:** Andrey Rodrigues, Herbert Espíndola, Júlia Calixto, Natalí Garcia, Sheila Manhães — INF2921/CIS2114 2026.1
+**Profs.:** Renato Cerqueira & Gabriel Banaggia
+**No ar:** https://fala-gavea-production.up.railway.app/
 
-> Estruturado nos 7 passos da orientação recebida. Duração-alvo: **1:25**. Narração: ~215 palavras (≈150 palavras/min).
-
----
-
-## Roteiro de narração (com marcações de tempo e imagem)
-
-### [0:00–0:09] 1. Frase de impacto
-
-> "Um poste apagado na Gávea. Quem você avisa?
-> A maioria das pessoas não sabe — e é por isso que o poste continua apagado."
-
-**Imagem:** rua escura da Gávea à noite / poste apagado. Corte seco para o logo **Fala, Gávea!**
+> Estrutura dos 7 passos da orientação recebida. Narração: **244 palavras**. Em ritmo firme (~165 palavras/min) fecha em **~1:29**. Se o locutor for mais pausado, use os cortes marcados na seção "Versão 1:00".
 
 ---
 
-### [0:09–0:24] 2. O problema
+## Roteiro de narração
 
-> "Todo dia moradores enxergam problemas de segurança urbana: iluminação quebrada, lixo acumulado, pontos de risco.
-> Mas o relato se perde — vira mensagem em grupo de WhatsApp, reclamação em rede social, ligação sem protocolo.
-> E do outro lado, o agente público recebe informação dispersa, sem localização, sem prioridade, sem histórico. Ninguém consegue enxergar o padrão."
+### [0:00–0:09] 1. Frase de impacto — *22 palavras*
 
-**Imagem:** montagem rápida — prints de grupos de mensagens, papéis, planilha bagunçada.
+> "Na Gávea, muita gente vê o problema e escolhe não falar.
+> Não por apatia. Por cálculo: **denunciar expõe quem denuncia**."
 
----
-
-### [0:24–0:47] 3. A solução
-
-> "Imagine se cada relato virasse um ponto no mapa — e cada ponto, uma ação rastreável.
-> É isso que o **Fala, Gávea!** faz. O cidadão abre o sistema, marca no mapa onde viu o problema, escolhe o tipo e a urgência, descreve, e envia. Menos de dois minutos.
-> O agente público recebe tudo num painel: mapa, filtros, agrupamento por tema, relatos parecidos — e um assistente de IA com quem ele conversa em português para entender o que está acontecendo no bairro.
-> Quando decide agir, cria um encaminhamento para o órgão responsável e acompanha até a resolução."
-
-**Imagem (screen recording, ritmo rápido):** formulário + mapa Leaflet → envio → painel do agente → busca semântica → chat NL → encaminhamento mudando de status.
+**Imagem:** rosto de moradora olhando para a rua, sem falar. Silêncio de 1 segundo antes do corte. Sem música ainda.
 
 ---
 
-### [0:47–1:00] 4. O diferencial
+### [0:09–0:26] 2. O problema — *40 palavras*
 
-> "O diferencial não é o mapa — é a IA que trabalha *dentro* do fluxo do agente.
-> A busca é semântica: procure por 'rua escura' e o sistema traz relatos de 'poste queimado' e 'iluminação apagada'.
-> E ela roda **local**: o dado do cidadão não sai para nuvem nenhuma. Se a IA cair, o sistema continua funcionando — a tecnologia apoia a decisão humana, nunca a substitui."
+> "Chamamos isso de **silêncio racional**. O canal oficial é lento, a resposta não vem, e o risco é imediato.
+> Do outro lado do balcão, o gestor público tem o problema inverso: dado demais, território de menos. Vê o bairro como estatística — não vê a esquina."
 
-**Imagem:** busca "rua escura" retornando resultados com palavras diferentes; selo/legenda **"IA local · dado do cidadão não sai daqui"**.
+**Imagem:** tela dividida. Esquerda: protocolo/formulário burocrático parado. Direita: dashboard genérico com números agregados do "bairro". Legenda entrando: **silêncio racional** ↔ **cegueira do gestor**.
 
----
-
-### [1:00–1:12] 5. O impacto
-
-> "O que muda: o relato deixa de ser desabafo e vira demanda com dono, prazo e status.
-> Na nossa demonstração, o sistema organiza cinco mil relatos e faz o agente sair da leitura um-a-um para a triagem por tema em segundos.
-> A meta é simples: reduzir o tempo entre 'o cidadão viu' e 'o órgão foi acionado'."
-
-**Imagem:** mapa com os clusters de relatos (Rocinha, PUC, Baixo Gávea, Parque da Cidade); contador de relatos; ciclo de status `aguardando → em andamento → finalizado`.
+> *Este é o coração do pitch. Não corra: pausa de meio segundo antes de "Do outro lado do balcão".*
 
 ---
 
-### [1:12–1:22] 6. Como fazer acontecer
+### [0:26–0:52] 3. A solução — *63 palavras*
 
-> "O sistema já existe e está no ar: API, aplicação web, autenticação por papel e deploy em container.
-> O próximo passo é um piloto real na Gávea, com uma associação de moradores e um órgão parceiro — e a migração do banco para escala municipal."
+> "O **fala, Gávea!** quebra esse ciclo.
+> O morador registra o que viu, de forma anônima — e o relato vira um pin no mapa que o vizinho pode votar. **Medo individual vira sinal coletivo.**
+> Do lado do gestor, a IA agrupa relatos parecidos, e ele pergunta em português o que quer ver. Dezenas de relatos viram um encaminhamento só, com órgão responsável e prazo."
 
-**Imagem:** URL do deploy na tela; três ícones — *Piloto* · *Parceria* · *Escala*.
-
----
-
-### [1:22–1:30] 7. Convite
-
-> "O Fala, Gávea! nasceu como projeto de curso, mas foi construído para funcionar de verdade.
-> Nos ajude a levar isso para a rua: com um bairro parceiro, a gente transforma reclamação em resolução.
-> **Fala, Gávea!** — a cidade escuta."
-
-**Imagem:** equipe / logo / call-to-action com contato.
+**Imagem (screen recording, ritmo rápido):** registro anônimo → pin surgindo no mapa → outros votos acumulando no mesmo pin (o pin cresce/muda de cor) → painel do agente → assistente de filtros interpretando a pergunta em linguagem natural → agrupamento semântico → encaminhamento único criado.
 
 ---
 
-## Versão enxuta (60s)
+### [0:52–1:06] 4. O diferencial — *42 palavras*
 
-Se precisar cortar para 1:00, remova estes trechos e mantenha o resto intacto:
+> "Nosso diferencial é o que a gente escolheu **não** fazer.
+> Coordenada arredondada, relato anônimo, prioridade vinda do voto do grupo — nunca de um morador exposto.
+> A IA roda local: o texto não sai da máquina.
+> E ela nunca decide. Quem delibera é o gestor público."
 
-- Passo 2: corte a frase "E do outro lado, o agente público..." (mostre em imagem)
-- Passo 3: corte "agrupamento por tema, relatos parecidos"
-- Passo 5: mantenha só a primeira e a última frase
+**Imagem:** três selos entrando em sequência — **Anônimo por design** · **IA local (LGPD)** · **Humano no loop**. Fechar no gestor clicando "encaminhar".
+
+---
+
+### [1:06–1:18] 5. O impacto — *30 palavras*
+
+> "O que muda é a **confiança**.
+> O cidadão fala porque é seguro — e acompanha o que aconteceu com o relato dele.
+> E o modelo é replicável para qualquer território do Brasil."
+
+**Imagem:** tela de acompanhamento do cidadão (status → solução → histórico). Corte para o mapa da Gávea afastando até virar mapa do Brasil com outros territórios acendendo.
+
+---
+
+### [1:18–1:26] 6. Como fará acontecer — *25 palavras*
+
+> "O sistema já está no ar.
+> O próximo passo é um piloto com uma associação de moradores e um órgão parceiro."
+
+**Imagem:** URL na tela (`fala-gavea-production.up.railway.app`) + dois ícones: *Associação de moradores* · *Órgão parceiro*.
+
+---
+
+### [1:26–1:33] 7. Convite — *22 palavras*
+
+> "Décadas de descaso ensinaram esse bairro a se calar.
+> A gente quer provar que falar funciona.
+> **fala, Gávea!**"
+
+**Imagem:** a mesma moradora do início — agora falando (sem áudio, com o pin aparecendo no mapa ao lado). Logo + equipe + contato.
+
+---
+
+## Versão 1:00
+
+Se precisar cortar, remova nesta ordem — cada corte preserva o argumento:
+
+1. Passo 4: corte `"A IA roda local: o texto não sai da máquina."` (o selo na tela já comunica) — **−11 palavras**
+2. Passo 5: corte `"O cidadão fala porque é seguro — e acompanha o que aconteceu com o relato dele."` — **−16 palavras**
+3. Passo 3: corte `"e ele pergunta em português o que quer ver"` — **−9 palavras**
+4. Passo 2: corte `"O canal oficial é lento, a resposta não vem, e o risco é imediato."` (mostre em imagem) — **−14 palavras**
+
+Nunca corte: a abertura, `"Medo individual vira sinal coletivo"`, `"Quem delibera é o gestor público"` e o convite final. São as quatro frases que carregam o pitch.
+
+---
+
+## Por que o roteiro está construído assim
+
+| Passo | Escolha | Motivo |
+|---|---|---|
+| 1 | Abre com cena, não com estatística | Não temos dado público auditado sobre subnotificação na Gávea. Uma cena verdadeira é mais forte — e mais defensável — que um número frágil. |
+| 2 | Apresenta **dois** problemas espelhados | É o que diferencia o projeto de um "canal de denúncia". O cidadão cala e o gestor não enxerga são a mesma falha vista dos dois lados. |
+| 3 | "Medo individual vira sinal coletivo" | Traduz a votação em pins em uma frase. É o mecanismo do produto, não uma feature. |
+| 4 | Diferencial pelo que **não** se faz | Anonimato, arredondamento e IA local são decisões de projeto, não limitações. Enunciar como escolha ética é mais forte que listar tecnologia. |
+| 5 | Fecha em confiança + replicabilidade | Confiança é a tese do projeto; replicabilidade é o que interessa a quem financia. |
+| 7 | Ecoa o "silêncio" da abertura | Fecha o arco narrativo: começa em quem não fala, termina em quem fala. |
 
 ---
 
@@ -94,27 +113,29 @@ Se precisar cortar para 1:00, remova estes trechos e mantenha o resto intacto:
 
 | Item | Nota |
 |---|---|
-| Ritmo | ~150 palavras/min; pausa de 1s entre os blocos 2→3 e 4→5 |
-| Áudio | narração gravada separada do screen recording; música baixa só nos passos 1 e 7 |
-| Screen recording | rodar `make seed` (perfil showcase) antes, para o mapa aparecer povoado |
-| Legendas | obrigatórias — a maior parte assiste sem som |
-| Duração final | conferir ≤ 1:30 antes de exportar |
+| Ritmo | ~165 palavras/min. Pausa de 1s entre os blocos 2→3 e 4→5. |
+| Música | entra só no passo 3; sai no passo 4 (o bloco ético pede silêncio); volta no 7. |
+| Áudio | narração gravada separada do screen recording. |
+| Screen recording | rodar `make seed` (perfil showcase) antes — o mapa precisa aparecer povoado e com votos acumulados. |
+| Votação em pins | gravar o momento em que um segundo voto muda o pin. É a imagem que sustenta a frase mais importante do pitch. |
+| Legendas | obrigatórias — a maior parte assiste sem som. |
+| Duração final | conferir ≤ 1:30 antes de exportar. |
 
 ---
 
-## Nota de honestidade sobre os números
+## Nota de honestidade sobre as afirmações
 
-Para não gerar problema em avaliação ou em conversa com parceiro real, use os números como estão abaixo:
-
-| Afirmação no roteiro | Base real | Como falar |
+| Afirmação no roteiro | Base | Como sustentar se perguntarem |
 |---|---|---|
-| "cinco mil relatos" | `data/seed_relatos_fala_gavea_5k.csv` — dataset **sintético** de demonstração | Dizer "na nossa demonstração" (já está no roteiro). Não apresentar como volume real da Gávea. |
-| "menos de dois minutos" | tempo do fluxo de registro medido pela equipe | Cronometrar uma vez antes de gravar para confirmar. |
-| "está no ar" | deploy em container (Railway) | Confirmar que a URL está viva no dia da gravação. |
-| "reduzir o tempo entre o cidadão viu e o órgão foi acionado" | meta declarada, **sem baseline medido** | Manter como meta ("A meta é simples..."), nunca como resultado obtido. |
+| "de forma anônima" / "coordenada arredondada" | decisão de projeto documentada (arredondamento a 3 casas + token de reivindicação) | Confirmar que o build gravado tem o arredondamento ativo. |
+| "a IA roda local: o texto não sai da máquina" | Ollama local por padrão | Verdadeiro **por padrão**. Se a demo gravada usar outro backend, corte a frase. |
+| "quem delibera é o gestor público" | não há ação automática — a IA sugere, agrupa e prioriza | Sustentável como está. |
+| "o sistema já está no ar" | deploy Railway | Conferir que a URL responde no dia da gravação. |
+| "replicável para qualquer território" | arquitetura permite, **não foi testado em outro bairro** | Falar como propriedade do modelo (está assim no roteiro), nunca como fato demonstrado. |
+| "com órgão responsável e prazo" | encaminhamento tem órgão + ciclo de vida de status | O termo "SLA" dos slides é a intenção de produto; "prazo" é a palavra segura no vídeo. |
 
-Se a equipe conseguir um dado público de segurança urbana ou iluminação do Rio antes da gravação, ele substitui bem a abertura do passo 1 e dá mais credibilidade.
+Nenhum número de subnotificação, de tempo de resposta ou de volume de relatos foi usado no roteiro — a base atual é de dados de demonstração, e citá-la como realidade da Gávea seria frágil em avaliação e desonesto com um parceiro real.
 
 ---
 
-*Fala, Gávea! — INF2921/CIS2114 2026.1 | Equipe: Andrey, Mauro, Julia, Herbert, Natali*
+*fala, Gávea! — INF2921/CIS2114 2026.1 | Andrey Rodrigues, Herbert Espíndola, Júlia Calixto, Natalí Garcia, Sheila Manhães*
